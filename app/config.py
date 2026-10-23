@@ -53,9 +53,13 @@ class Settings:
     openai_model: str = field(default_factory=lambda: _env("OPENAI_MODEL", "gpt-4o-mini"))
     llm_mode: str = field(default_factory=lambda: _env("LLM_MODE", "auto"))  # auto|anthropic|openai|off
     llm_max_tool_calls: int = field(default_factory=lambda: _env_int("LLM_MAX_TOOL_CALLS", 12))
+    # Wall-clock budget for the LLM writer; past it the scripted writer takes over.
+    llm_deadline_s: int = field(default_factory=lambda: _env_int("LLM_DEADLINE_S", 120))
 
     # --- App ------------------------------------------------------------------
     runs_per_ip_per_10min: int = field(default_factory=lambda: _env_int("RUNS_PER_IP_PER_10MIN", 8))
+    lookups_per_ip_per_10min: int = field(default_factory=lambda: _env_int("LOOKUPS_PER_IP_PER_10MIN", 60))
+    max_active_runs: int = field(default_factory=lambda: _env_int("MAX_ACTIVE_RUNS", 12))
     public_repo_url: str = field(
         default_factory=lambda: _env("PUBLIC_REPO_URL", "https://github.com/kbns2000/taste-fit")
     )

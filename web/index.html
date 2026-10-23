@@ -37,13 +37,13 @@
       <div class="fields">
         <label class="field">
           <span>Brand A</span>
-          <input id="in-a" name="a" placeholder="e.g. Patagonia" required maxlength="120">
-          <div class="suggest" id="sug-a" hidden></div>
+          <input id="in-a" name="a" placeholder="e.g. Patagonia" required maxlength="120" role="combobox" aria-autocomplete="list" aria-controls="sug-a" aria-expanded="false">
+          <div class="suggest" id="sug-a" role="listbox" hidden></div>
         </label>
         <label class="field" id="field-b">
           <span>Partner B</span>
-          <input id="in-b" name="b" placeholder="e.g. Bon Iver, Blue Bottle Coffee…" maxlength="120">
-          <div class="suggest" id="sug-b" hidden></div>
+          <input id="in-b" name="b" placeholder="e.g. Bon Iver, Blue Bottle Coffee…" maxlength="120" role="combobox" aria-autocomplete="list" aria-controls="sug-b" aria-expanded="false">
+          <div class="suggest" id="sug-b" role="listbox" hidden></div>
         </label>
         <label class="field">
           <span>City <small>(optional)</small></span>
@@ -52,7 +52,7 @@
         <button type="submit" id="run-btn" class="primary">Run Taste-Fit</button>
       </div>
       <div class="presets" id="presets" aria-label="Try an example"></div>
-      <p class="hint" id="form-hint"></p>
+      <p class="hint" id="form-hint" aria-live="polite"></p>
     </form>
   </section>
 
@@ -61,7 +61,7 @@
       <h2>Agent run</h2>
       <span id="progress-status" class="badge badge-muted">starting</span>
     </div>
-    <ol id="steps" class="steps"></ol>
+    <ol id="steps" class="steps" aria-live="polite"></ol>
   </section>
 
   <section id="results" hidden>
@@ -152,7 +152,7 @@
     </article>
   </section>
 
-  <section id="error" class="card error" hidden></section>
+  <section id="error" class="card error" role="alert" hidden></section>
 
   <section id="how" class="how">
     <h2>How it works</h2>

@@ -24,7 +24,7 @@ VARIABLE_KEYS = ["QLOO_BASE_URL", "QLOO_MODE", "QLOO_MAX_CALLS_PER_RUN", "QLOO_D
                  "ANTHROPIC_MODEL", "ANTHROPIC_EFFORT", "OPENAI_BASE_URL", "OPENAI_MODEL", "LLM_MODE",
                  "LLM_MAX_TOOL_CALLS", "RUNS_PER_IP_PER_10MIN", "PUBLIC_REPO_URL"]
 IGNORE = [".venv/*", ".git/*", ".github/*", "tests/*", "deploy/*", "scripts/*", "docs/*", "__pycache__/*",
-          "*/__pycache__/*", ".pytest_cache/*", ".env", "*.log", ".dockerignore"]
+          "*/__pycache__/*", ".pytest_cache/*", ".env", ".env.*", "*.log", ".dockerignore"]
 
 
 def main() -> int:
@@ -58,6 +58,10 @@ def main() -> int:
 
     if not args.no_upload:
         root = Path(__file__).resolve().parent.parent
+        stray = [p.name for p in root.glob(".env*") if p.name != ".env.example"]
+        if stray:
+            print(f"refusing to upload: remove local env files first: {', '.join(stray)}", file=sys.stderr)
+            return 3
         api.upload_folder(repo_id=repo_id, repo_type="space", folder_path=str(root),
                           ignore_patterns=IGNORE, commit_message="deploy Taste-Fit")
         print("uploaded; the Space will build the Docker image (2-4 minutes).")

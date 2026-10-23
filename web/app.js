@@ -9,12 +9,16 @@
   const state = { mode: "fit", source: "mock", run: null, es: null, map: null, layers: [] };
 
   // ---------- boot ----------
+  function setSourceBadge(source, reason) {
+    const badge = $("#source-badge");
+    const live = source === "live";
+    badge.textContent = live ? "live Qloo data" : reason ? "demo data (live Qloo unavailable)" : source === "live-exhausted" ? "demo data (daily Qloo budget used)" : "demo data (no Qloo key)";
+    badge.className = "badge " + (live ? "badge-live" : "badge-mock");
+    badge.title = live ? "Signals come from the Qloo Insights API" : reason ? "Last run fell back to demo data: " + reason : "Deterministic demo world shaped like Qloo responses";
+  }
   fetch("/api/health").then((r) => r.json()).then((h) => {
     state.source = h.qloo_source;
-    const badge = $("#source-badge");
-    badge.textContent = h.qloo_source === "live" ? "live Qloo data" : "demo data (no Qloo key)";
-    badge.className = "badge " + (h.qloo_source === "live" ? "badge-live" : "badge-mock");
-    badge.title = h.qloo_source === "live" ? "Signals come from the Qloo Insights API" : "Deterministic demo world shaped like Qloo responses";
+    setSourceBadge(h.qloo_source);
     $("#foot-meta").textContent = `v${h.version} · Qloo: ${h.qloo_source} · writer: ${h.llm_provider === "none" ? "scripted" : h.llm_model}`;
   }).catch(() => {});
   fetch("/api/presets").then((r) => r.json()).then((p) => {
@@ -46,29 +50,43 @@
 
   // ---------- type-ahead ----------
   function attachSuggest(input, box) {
-    let timer = null, last = "";
+    let timer = null, last = "", seq = 0;
+    const pick = (b) => { input.value = b.dataset.name; box.hidden = true; last = input.value; input.focus(); };
     input.addEventListener("input", () => {
       clearTimeout(timer);
       const q = input.value.trim();
       if (q.length < 2) { box.hidden = true; return; }
       timer = setTimeout(async () => {
-        if (q === last || document.activeElement !== input) return; last = q;
+        if (q === last || document.activeElement !== input) return;
+        const mine = ++seq;
         try {
           const r = await fetch("/api/resolve", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ query: q }) });
+          if (mine !== seq || q !== input.value.trim() || document.activeElement !== input) return; // stale
+          if (r.status === 429) { $("#form-hint").textContent = "Type-ahead paused for a moment (rate limit); you can still run with the name as typed."; return; }
           if (!r.ok) return;
+          last = q;
           const d = await r.json();
           if (!d.results.length) { box.hidden = true; return; }
-          box.innerHTML = d.results.slice(0, 6).map((e) =>
-            `<button type="button" data-name="${esc(e.name)}"><span>${esc(e.name)}</span><small>${esc(e.type)}${e.disambiguation ? " · " + esc(e.disambiguation) : ""}</small></button>`).join("");
+          box.innerHTML = d.results.slice(0, 6).map((e, i) =>
+            `<button type="button" role="option" id="${box.id}-opt-${i}" data-name="${esc(e.name)}"><span>${esc(e.name)}</span><small>${esc(e.type)}${e.disambiguation ? " · " + esc(e.disambiguation) : ""}</small></button>`).join("");
           box.hidden = false;
         } catch (_) { /* ignore */ }
       }, 260);
     });
-    box.addEventListener("mousedown", (e) => {
-      const b = e.target.closest("button"); if (!b) return;
-      e.preventDefault(); input.value = b.dataset.name; box.hidden = true; last = input.value;
+    box.addEventListener("mousedown", (e) => { const b = e.target.closest("button"); if (b) { e.preventDefault(); pick(b); } });
+    box.addEventListener("click", (e) => { const b = e.target.closest("button"); if (b) pick(b); });
+    input.addEventListener("keydown", (e) => {
+      if (box.hidden) return;
+      const opts = $$("button", box); const cur = opts.findIndex((o) => o.classList.contains("hover"));
+      if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+        e.preventDefault();
+        const next = e.key === "ArrowDown" ? Math.min(cur + 1, opts.length - 1) : Math.max(cur - 1, 0);
+        opts.forEach((o, i) => o.classList.toggle("hover", i === next));
+        input.setAttribute("aria-activedescendant", opts[next] ? opts[next].id : "");
+      } else if (e.key === "Enter" && cur >= 0) { e.preventDefault(); pick(opts[cur]); }
+      else if (e.key === "Escape") { box.hidden = true; }
     });
-    input.addEventListener("blur", () => setTimeout(() => { box.hidden = true; }, 120));
+    input.addEventListener("blur", () => setTimeout(() => { if (!box.contains(document.activeElement)) box.hidden = true; }, 120));
   }
   attachSuggest($("#in-a"), $("#sug-a"));
   attachSuggest($("#in-b"), $("#sug-b"));
@@ -111,9 +129,19 @@
   function listen(id) {
     const es = new EventSource(`/api/runs/${id}/events`);
     state.es = es;
-    const on = (kind, fn) => es.addEventListener(kind, (ev) => fn(JSON.parse(ev.data)));
+    let lastSeq = 0;
+    const on = (kind, fn) => es.addEventListener(kind, (ev) => {
+      const d = JSON.parse(ev.data);
+      if (d.seq && d.seq <= lastSeq) return; // replayed after a reconnect
+      if (d.seq) lastSeq = d.seq;
+      fn(d);
+    });
+    on("reset", () => { $("#steps").innerHTML = ""; });
     on("step", (d) => addStep(d.text, "active", d.t));
-    on("resolved", (d) => addStep(`Resolved: ${d.a.name} (${d.a.type})${d.b ? " and " + d.b.name + " (" + d.b.type + ")" : ""}`, "done", d.t));
+    on("resolved", (d) => {
+      const alt = (k) => (d.alternatives && d.alternatives[k] && d.alternatives[k].length) ? ` (other matches: ${d.alternatives[k].map((x) => x.name + " · " + x.type).join(", ")})` : "";
+      addStep(`Resolved: ${d.a.name} (${d.a.type})${alt("a")}${d.b ? " and " + d.b.name + " (" + d.b.type + ")" + alt("b") : ""}`, "done", d.t);
+    });
     on("fit", (d) => addStep(`Taste-Fit ${d.fit.fit}/100 (${d.fit.band}) from ${d.cites.join(", ")}`, "done", d.t));
     on("picks", (d) => addStep(`${d.items.length} ${d.type}${d.items.length === 1 ? "" : "s"}: ${d.items.slice(0, 3).map((p) => p.name).join(", ")}…`, "done", d.t));
     on("heatmap", (d) => addStep(`Heatmap: ${d.cells.length} cells, ${d.zones.length} hot zones`, "done", d.t));
@@ -127,18 +155,32 @@
       es.close(); state.es = null; $("#run-btn").disabled = false;
       setStatus(d.status === "done" ? "complete" : "failed", d.status === "done" ? "badge-live" : "badge-weak");
       if (d.status !== "done") return;
-      const r = await fetch(`/api/runs/${id}`); const st = await r.json();
-      render(st.result);
+      try {
+        const r = await fetch(`/api/runs/${id}`); const st = await r.json();
+        render(st.result);
+      } catch (err) { showError("The run finished but its result could not be loaded: " + err.message); }
     });
-    es.onerror = () => { /* the browser retries; the end event closes it */ };
+    es.onerror = () => {
+      if (es.readyState === EventSource.CLOSED) {
+        state.es = null; $("#run-btn").disabled = false;
+        setStatus("connection lost", "badge-weak");
+        showError("Lost the connection to the agent run. Reload the page and try again.");
+      }
+      // otherwise the browser reconnects with Last-Event-ID and the server resumes after it
+    };
   }
 
   // ---------- render ----------
   function render(res) {
-    $("#results").hidden = false;
-    renderLedger(res);
-    if (res.mode === "scout") { renderScout(res); return; }
-    renderFit(res);
+    try {
+      $("#results").hidden = false;
+      setSourceBadge(res.source, res.fallback_reason);
+      renderLedger(res);
+      if (res.mode === "scout") { renderScout(res); return; }
+      renderFit(res);
+    } catch (err) {
+      showError("The result could not be rendered: " + err.message);
+    }
   }
 
   function renderFit(res) {
@@ -156,7 +198,8 @@
     $("#fresh-note").textContent = `${f.fresh_reach}% of ${b.name}'s top taste tags are new to ${a.name}'s audience. Around 40% is the sweet spot: enough new reach without losing the shared core. Sources: ${res.fit_cites.join(", ")}.`;
 
     // demographics
-    const dc = $("#demo-chart"); dc.innerHTML = "";
+    const dc = $("#demo-chart"); dc.innerHTML = ""; $("#demo-note").textContent = "";
+    $("#val-align").textContent = f.demographics.length ? Math.round(f.audience_alignment) : "n/a";
     if (f.demographics.length) {
       const maxv = Math.max(0.3, ...f.demographics.map((d) => Math.max(Math.abs(d.a), Math.abs(d.b))));
       f.demographics.forEach((d) => {
@@ -170,7 +213,7 @@
       $("#demo-note").textContent = (f.agreeing_segments.length ? `Both over-index on ${f.agreeing_segments.join(", ")}. ` : "No segment where both over-index. ")
         + (f.diverging_segments.length ? `They pull apart on ${f.diverging_segments.join(", ")}.` : "");
     } else {
-      dc.innerHTML = '<p class="muted small">Qloo returned no demographic index for this pair.</p>';
+      dc.innerHTML = '<p class="muted small">Qloo returned no demographic index for this pair, so audience alignment uses a neutral 50.</p>';
     }
 
     // overlap
@@ -231,7 +274,7 @@
     });
     (res.zones || []).forEach((z, i) => {
       const l = L.circleMarker([z.lat, z.lon], { radius: 10, color: "#2fa36b", weight: 3, fillColor: "#fff", fillOpacity: 1 }).addTo(state.map)
-        .bindTooltip(`Hot zone ${i + 1}${z.near ? " · near " + z.near : ""} · affinity ${z.affinity}`);
+        .bindTooltip(`Hot zone ${i + 1}${z.near ? " · near " + esc(z.near) : ""} · affinity ${z.affinity}`);
       state.layers.push(l); bounds.push([z.lat, z.lon]);
     });
     (res.picks.place || []).forEach((p) => {
@@ -246,8 +289,10 @@
   function cites(list) { return (list || []).map((c) => `<a class="cite" data-cite="${esc(c)}" href="#ledger">${esc(c)}</a>`).join(""); }
 
   function renderBrief(res) {
-    const br = res.brief, v = res.verification;
-    const vb = $("#verdict-badge"); vb.textContent = br.verdict.replace(/_/g, " "); vb.className = "badge badge-" + br.verdict;
+    const br = Object.assign({ headline: "", verdict: "", why: [], target_segments: [], message_angles: [], channels: [], activations: [], risks: [], next_steps: [] }, res.brief || {});
+    br.activations = (br.activations || []).map((x) => Object.assign({ title: "", format: "", entities: [], rationale: "", cites: [] }, x));
+    const v = Object.assign({ passed: true, issues: [], checked: { citations: 0, entities: 0 } }, res.verification || {});
+    const vb = $("#verdict-badge"); vb.textContent = String(br.verdict || "").replace(/_/g, " "); vb.className = "badge badge-" + br.verdict;
     const ok = $("#verify-badge");
     const errs = v.issues.filter((i) => i.level === "error").length, warns = v.issues.length - errs;
     ok.textContent = v.passed ? `verified · ${v.checked.citations} citations, ${v.checked.entities} entities` : `verifier flagged ${errs} issue${errs === 1 ? "" : "s"}`;

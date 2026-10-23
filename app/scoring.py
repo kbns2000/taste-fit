@@ -167,8 +167,9 @@ def compute_fit(a_vec: dict[str, float], b_vec: dict[str, float], names: dict[st
             elif (va > 0.15 and vb < -0.15) or (va < -0.15 and vb > 0.15):
                 diverging.append(label)
 
+    fit = round(fit, 1)  # band the number the user sees
     return FitScore(
-        fit=round(fit, 1), band=band_for(fit),
+        fit=fit, band=band_for(fit),
         shared_taste=round(shared, 1), audience_alignment=round(alignment, 1),
         fresh_reach=round(fresh, 1), balance=round(balance, 1),
         shared_tags=shared_tags, a_only_tags=a_only, b_only_tags=b_only,

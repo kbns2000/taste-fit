@@ -8,7 +8,10 @@ brief through the strict `finalize_brief` tool.
 
 from __future__ import annotations
 
+import time
 from typing import Any, Callable, Optional
+
+from pydantic import BaseModel, Field, ValidationError
 
 from ..qloo.models import QlooError, QuotaExceeded
 from .llm.base import LLMError, LLMProvider, Message, ToolResult
@@ -16,6 +19,39 @@ from .prompts import SYSTEM_PROMPT, tool_result_text, user_instruction
 from .tools import FINALIZE_TOOL, LLM_TOOL_SPECS, RunCapExceeded, ToolBox, hot_zones, pick_summary
 
 Emit = Callable[[str, dict[str, Any]], None]
+
+
+class _Why(BaseModel):
+    text: str = Field(min_length=1)
+    cites: list[str] = Field(default_factory=list)
+
+
+class _Activation(BaseModel):
+    title: str = Field(min_length=1)
+    format: str = ""
+    entities: list[str] = Field(default_factory=list)
+    rationale: str = ""
+    cites: list[str] = Field(default_factory=list)
+
+
+class Brief(BaseModel):
+    """Shape of a finished brief; the LLM's finalize_brief payload is validated against it."""
+    headline: str = Field(min_length=1)
+    verdict: str = Field(pattern="^(go|go_with_conditions|no_go)$")
+    why: list[_Why] = Field(min_length=1)
+    target_segments: list[str] = Field(default_factory=list)
+    message_angles: list[str] = Field(default_factory=list)
+    channels: list[str] = Field(default_factory=list)
+    activations: list[_Activation] = Field(default_factory=list)
+    risks: list[str] = Field(default_factory=list)
+    next_steps: list[str] = Field(default_factory=list)
+
+
+def validate_brief(payload: Any) -> Optional[dict[str, Any]]:
+    try:
+        return Brief.model_validate(payload).model_dump()
+    except ValidationError:
+        return None
 
 
 # ---------------------------------------------------------------------------
@@ -27,6 +63,9 @@ def scripted_brief(ctx: dict[str, Any]) -> dict[str, Any]:
     a, b, city = ctx["a"]["name"], ctx["b"]["name"], ctx.get("city")
     shared = [t["name"] for t in fit["shared_tags"][:4]]
     fresh = [t["name"] for t in fit["b_only_tags"][:3]]
+    groups = ctx.get("fit_cite_groups") or {}
+    tag_cites = groups.get("tags") or ctx["fit_cites"][:1]
+    demo_cites = groups.get("demographics") or ctx["fit_cites"][1:3] or ctx["fit_cites"]
     cites = ctx["fit_cites"]
     band = fit["band"]
     verdict = {"strong": "go", "workable": "go_with_conditions", "weak": "no_go"}[band]
@@ -34,19 +73,22 @@ def scripted_brief(ctx: dict[str, Any]) -> dict[str, Any]:
     why = []
     if shared:
         why.append({"text": f"Fans of {a} and {b} share a taste core around {', '.join(shared)} "
-                            f"(shared taste {fit['shared_taste']}/100).", "cites": cites[:1]})
+                            f"(shared taste {fit['shared_taste']}/100).", "cites": tag_cites})
     else:
         why.append({"text": f"Qloo finds no taste tags that both audiences over-index on "
-                            f"(shared taste {fit['shared_taste']}/100).", "cites": cites[:1]})
+                            f"(shared taste {fit['shared_taste']}/100).", "cites": tag_cites})
     if fit["agreeing_segments"]:
         why.append({"text": f"Both audiences over-index on the same segments: {', '.join(fit['agreeing_segments'])} "
-                            f"(audience alignment {fit['audience_alignment']}/100).", "cites": cites[1:3] or cites})
+                            f"(audience alignment {fit['audience_alignment']}/100).", "cites": demo_cites})
     elif fit["diverging_segments"]:
         why.append({"text": f"The audiences pull apart on {', '.join(fit['diverging_segments'])} "
-                            f"(audience alignment {fit['audience_alignment']}/100).", "cites": cites[1:3] or cites})
+                            f"(audience alignment {fit['audience_alignment']}/100).", "cites": demo_cites})
+    elif not fit["demographics"]:
+        why.append({"text": "Qloo returned no demographic index for this pair, so audience alignment is set to a "
+                            "neutral 50 and the score leans on taste overlap alone.", "cites": demo_cites})
     if fresh:
         why.append({"text": f"{b} brings reach {a} does not have: {', '.join(fresh)} "
-                            f"({fit['fresh_reach']}% of {b}'s top tags are new to {a}'s audience).", "cites": cites[:1]})
+                            f"({fit['fresh_reach']}% of {b}'s top tags are new to {a}'s audience).", "cites": tag_cites})
 
     activations = []
     for kind, picks in ctx["picks"].items():
@@ -130,8 +172,14 @@ def scripted_brief(ctx: dict[str, Any]) -> dict[str, Any]:
 def _run_tool(name: str, args: dict[str, Any], toolbox: ToolBox, ctx: dict[str, Any]) -> dict[str, Any]:
     a_id, b_id = ctx["a"]["entity_id"], ctx["b"]["entity_id"]
     if name == "recommend":
-        city = args.get("city") or None
-        rows, ids = toolbox.recommend([a_id, b_id], args["target_type"], take=int(args.get("take") or 6),
+        if args.get("target_type") not in ACTIVATION_TYPES:
+            raise ValueError(f"target_type must be one of {', '.join(ACTIVATION_TYPES)}")
+        city = str(args.get("city") or "").strip()[:80] or None
+        try:
+            take = max(1, min(int(args.get("take") or 6), 10))
+        except (TypeError, ValueError):
+            take = 6
+        rows, ids = toolbox.recommend([a_id, b_id], args["target_type"], take=take,
                                       city=city, exclude_ids=[a_id, b_id])
         picks = [pick_summary(e, a_id, b_id) for e in rows]
         ctx["picks"].setdefault(args["target_type"], [])
@@ -141,7 +189,10 @@ def _run_tool(name: str, args: dict[str, Any], toolbox: ToolBox, ctx: dict[str, 
         return {"ledger_ids": ids, "results": [
             {k: p[k] for k in ("name", "type", "affinity", "driver", "locality", "format")} for p in picks]}
     if name == "heatmap":
-        cells, ids = toolbox.heatmap([a_id, b_id], args["city"])
+        city = str(args.get("city") or "").strip()[:80]
+        if not city:
+            raise ValueError("city is required")
+        cells, ids = toolbox.heatmap([a_id, b_id], city)
         places = [toolbox.entities[p["entity_id"]] for p in ctx["picks"].get("place", []) if p["entity_id"] in toolbox.entities]
         zones = hot_zones(cells, places)
         if zones:
@@ -149,25 +200,33 @@ def _run_tool(name: str, args: dict[str, Any], toolbox: ToolBox, ctx: dict[str, 
             ctx["heatmap"] = [c.model_dump() for c in cells]
         return {"ledger_ids": ids, "cells": len(cells), "hot_zones": zones}
     if name == "find_tags":
-        rows, ids = toolbox.find_tags(args["query"])
+        rows, ids = toolbox.find_tags(str(args.get("query") or "")[:80])
         return {"ledger_ids": ids, "tags": [{"name": t.name, "tag_id": t.tag_id} for t in rows]}
     raise ValueError(f"unknown tool {name}")
 
 
 def llm_brief(ctx: dict[str, Any], toolbox: ToolBox, provider: LLMProvider, max_tool_calls: int,
-              emit: Optional[Emit] = None) -> tuple[Optional[dict[str, Any]], dict[str, Any]]:
+              emit: Optional[Emit] = None, deadline_s: float = 120.0) -> tuple[Optional[dict[str, Any]], dict[str, Any]]:
     """Returns (brief or None, meta). None means the caller should use the scripted writer."""
     meta: dict[str, Any] = {"provider": provider.name, "model": provider.model, "tool_calls": 0, "turns": 0}
     system = SYSTEM_PROMPT.format(max_tools=max_tool_calls)
     messages: list[Message] = [Message("user", user_instruction(ctx))]
     tools = LLM_TOOL_SPECS + [FINALIZE_TOOL]
     nudged = False
-    for _ in range(max_tool_calls + 3):
+    resubmitted = False
+    started = time.monotonic()
+    for _ in range(max_tool_calls + 4):
+        if time.monotonic() - started > deadline_s:
+            meta["error"] = f"writer exceeded {int(deadline_s)}s"
+            return None, meta
         meta["turns"] += 1
         try:
             response = provider.complete(system, messages, tools)
         except LLMError as exc:
             meta["error"] = str(exc)
+            return None, meta
+        except Exception as exc:  # SDK/type errors must never fail the run
+            meta["error"] = f"{exc.__class__.__name__}"
             return None, meta
         if response.usage:
             meta.setdefault("usage", []).append(response.usage)
@@ -188,7 +247,17 @@ def llm_brief(ctx: dict[str, Any], toolbox: ToolBox, provider: LLMProvider, max_
         final: Optional[dict[str, Any]] = None
         for call in response.tool_calls:
             if call.name == "finalize_brief":
-                final = call.input
+                valid = validate_brief(call.input)
+                if valid is None:
+                    if resubmitted:
+                        meta["error"] = "finalize_brief payload did not match the schema"
+                        return None, meta
+                    resubmitted = True
+                    results.append(ToolResult(call.id, "brief rejected: it does not match the finalize_brief schema "
+                                              "(headline, verdict, why[], activations[] ...). Resubmit the full brief.",
+                                              is_error=True))
+                    continue
+                final = valid
                 results.append(ToolResult(call.id, "received"))
                 continue
             if meta["tool_calls"] >= max_tool_calls:
@@ -202,8 +271,8 @@ def llm_brief(ctx: dict[str, Any], toolbox: ToolBox, provider: LLMProvider, max_
                 results.append(ToolResult(call.id, tool_result_text(payload)))
             except (RunCapExceeded, QuotaExceeded) as exc:
                 results.append(ToolResult(call.id, f"{exc}; call finalize_brief with the evidence you have", is_error=True))
-            except (QlooError, ValueError, KeyError) as exc:
-                results.append(ToolResult(call.id, f"tool failed: {exc}", is_error=True))
+            except Exception as exc:  # QlooError, bad arguments, anything else
+                results.append(ToolResult(call.id, f"tool failed: {exc.__class__.__name__}: {exc}"[:300], is_error=True))
         if final is not None:
             return final, meta
         messages.append(Message("tool", tool_results=results))

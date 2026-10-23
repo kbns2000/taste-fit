@@ -80,7 +80,7 @@ pip install -r requirements-dev.txt
 cp .env.example .env                               # fill QLOO_API_KEY (and optionally an LLM key)
 set -a; . ./.env; set +a                           # or export the variables your own way
 uvicorn app.main:app --reload --port 7860          # open http://127.0.0.1:7860
-python -m pytest                                   # 30 tests, mock data, no network
+python -m pytest                                   # 38 tests, mock data, no network
 ```
 
 Without `QLOO_API_KEY` the app runs on demo data and the header badge says so. Hackathon keys use `https://hackathon.api.qloo.com` (the default); production keys set `QLOO_BASE_URL=https://api.qloo.com`.
@@ -110,7 +110,10 @@ The deploy script creates a Docker Space, stores keys as Space **secrets**, uplo
 | `OPENAI_API_KEY` / `OPENAI_BASE_URL` / `OPENAI_MODEL` | – | any OpenAI-compatible writer |
 | `LLM_MODE` | `auto` | `anthropic` / `openai` / `off` |
 | `LLM_MAX_TOOL_CALLS` | `12` | extra Qloo calls the writer may make |
-| `RUNS_PER_IP_PER_10MIN` | `8` | demo rate limit |
+| `LLM_DEADLINE_S` | `120` | writer time limit before the scripted writer takes over |
+| `RUNS_PER_IP_PER_10MIN` | `8` | demo rate limit for agent runs |
+| `LOOKUPS_PER_IP_PER_10MIN` | `60` | demo rate limit for type-ahead lookups |
+| `MAX_ACTIVE_RUNS` | `12` | concurrent runs per process; more → HTTP 503 |
 
 ## API
 
@@ -147,7 +150,7 @@ app/agent/pipeline.py    fit check / partner scout orchestration
 app/agent/llm/           Anthropic SDK provider, OpenAI-compatible provider
 app/main.py              FastAPI app, SSE, rate limiting
 web/                     UI (index.html, styles.css, app.js, Leaflet map)
-tests/                   30 tests (scoring, mock, live adapter with fake transport, API, agent loop)
+tests/                   38 tests (scoring, mock, live adapter with fake transport, API, agent loop, review regressions)
 deploy/hf_space.py       Hugging Face Space deployment
 ```
 

@@ -18,6 +18,7 @@ cache hit) is appended, which is how the agent builds its evidence ledger.
 from __future__ import annotations
 
 import datetime as _dt
+import re
 import threading
 import time
 from dataclasses import dataclass, field
@@ -49,6 +50,7 @@ class CallRecord:
     source: str = "live"
     error: Optional[str] = None
     preview: list[str] = field(default_factory=list)
+    http_status: Optional[int] = None
 
     def as_dict(self) -> dict[str, Any]:
         return {
@@ -101,6 +103,22 @@ class QlooClient(Protocol):
 # Response normalisation (shared by live client; the mock builds models directly)
 # --------------------------------------------------------------------------
 
+def _api_message(response: httpx.Response) -> str:
+    """Short, safe description of an error response (no raw bodies in the ledger)."""
+    try:
+        data = response.json()
+    except ValueError:
+        return "request rejected"
+    if isinstance(data, dict):
+        for key in ("error", "message", "detail", "reason"):
+            value = data.get(key)
+            if isinstance(value, str) and value.strip():
+                return re.sub(r"\s+", " ", value.strip())[:120]
+            if isinstance(value, dict) and isinstance(value.get("message"), str):
+                return re.sub(r"\s+", " ", value["message"].strip())[:120]
+    return "request rejected"
+
+
 def _num(value: Any) -> Optional[float]:
     try:
         if value is None:
@@ -146,7 +164,17 @@ def _entity_from_raw(raw: dict, signal_ids: Optional[Iterable[str]] = None) -> O
             break
     explain: dict[str, float] = {}
     exp = query.get("explainability")
-    if isinstance(exp, dict):
+    if isinstance(exp, list):
+        # list shape: [{"entity_id": ..., "score"|"weight"|"affinity": ...}, ...]
+        wanted = set(s.lower() for s in (signal_ids or []))
+        for item in exp:
+            if not isinstance(item, dict):
+                continue
+            key = str(item.get("entity_id") or item.get("id") or "")
+            score = next((_num(item[k]) for k in ("score", "weight", "affinity", "value") if k in item), None)
+            if key and score is not None and (not wanted or key.lower() in wanted):
+                explain[key] = score
+    elif isinstance(exp, dict):
         # Shapes seen in the wild: {"signal.interests.entities": {id: score}}
         # or {id: score}. Pick numeric leaves keyed by entity ids.
         candidates = [exp] + [v for v in exp.values() if isinstance(v, dict)]
@@ -332,7 +360,8 @@ class LiveQlooClient:
         if trace is not None:
             trace.append(record)
         if record.status == "error":
-            raise QlooError(record.error or "Qloo request failed")
+            raise QlooError(record.error or "Qloo request failed", status=record.http_status,
+                            retryable=record.http_status is None or record.http_status == 429 or record.http_status >= 500)
         return payload
 
     def _fetch(self, path: str, params: dict[str, str], record: CallRecord) -> Any:
@@ -377,13 +406,14 @@ class LiveQlooClient:
                 delay *= 2
                 continue
             record.status = "error"
-            body = response.text[:200].replace("\n", " ")
+            record.http_status = response.status_code
             if response.status_code in (401, 403):
                 record.error = f"QLOO_AUTH ({response.status_code}): key rejected for {self._base_url}"
             elif response.status_code == 429:
                 record.error = "QLOO_RATE_LIMIT (429): retry later"
             else:
-                record.error = f"HTTP {response.status_code}: {body}"
+                # Keep only the API's own short message, never the raw body.
+                record.error = f"QLOO_HTTP_{response.status_code}: {_api_message(response)}"
             return None
 
     # -- lookup routes -----------------------------------------------------------

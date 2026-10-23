@@ -37,6 +37,7 @@ class ToolBox:
         self.max_calls = max_calls
         self.entities: dict[str, Entity] = {}  # id -> resolved entity
         self._demo_cache: dict[str, tuple[Optional[Demographics], list[str]]] = {}
+        self.alternatives: dict[str, list[dict[str, Any]]] = {}  # resolved id -> other search hits
 
     # -- guard -------------------------------------------------------------------
     def _check_cap(self) -> None:
@@ -46,26 +47,38 @@ class ToolBox:
     def _absorb(self, purpose: str, names: list[str]) -> list[str]:
         return self.ledger.absorb(purpose, names)
 
+    def _call(self, purpose: str, fn):
+        """Run a client call; a failed call is still filed in the ledger under its own purpose."""
+        try:
+            return fn()
+        except QlooError:
+            self._absorb(f"{purpose} (failed)", [])
+            raise
+
     # -- entity lookup -----------------------------------------------------------
     def resolve(self, query: str, type_hint: Optional[str] = None) -> Optional[Entity]:
         """Find the best-matching Qloo entity for a free-text name."""
         self._check_cap()
         types = [type_hint] if type_hint and type_hint != "any" else None
-        results = self.client.search(query, types=types, take=5, trace=self.ledger.trace)
-        self._absorb(f"resolve '{query}'", [e.name for e in results])
+        label = f"resolve '{query}'"
+        results = self._call(label, lambda: self.client.search(query, types=types, take=5, trace=self.ledger.trace))
+        self._absorb(label, [e.name for e in results])
         if not results:
             return None
         preferred = ("brand", "artist", "place", "podcast", "destination", "tv_show", "movie", "book", "person", "videogame")
         results.sort(key=lambda e: (preferred.index(e.type) if e.type in preferred else 99, -(e.popularity or 0)))
         best = results[0]
         self.entities[best.entity_id] = best
+        self.alternatives[best.entity_id] = [
+            {"name": e.name, "type": e.type, "disambiguation": e.disambiguation} for e in results[1:4]]
         return best
 
     def candidates(self, query: str, type_hint: Optional[str] = None, take: int = 5) -> list[Entity]:
         self._check_cap()
         types = [type_hint] if type_hint and type_hint != "any" else None
-        results = self.client.search(query, types=types, take=take, trace=self.ledger.trace)
-        self._absorb(f"search '{query}'", [e.name for e in results])
+        label = f"search '{query}'"
+        results = self._call(label, lambda: self.client.search(query, types=types, take=take, trace=self.ledger.trace))
+        self._absorb(label, [e.name for e in results])
         for e in results:
             self.entities[e.entity_id] = e
         return results
@@ -73,41 +86,52 @@ class ToolBox:
     # -- taste profile -----------------------------------------------------------
     def taste_tags(self, entity_ids: list[str], take: int = 30) -> tuple[list[Tag], list[str]]:
         self._check_cap()
-        rows = self.client.taste_tags(entity_ids, take=take, trace=self.ledger.trace)
-        ids = self._absorb(f"taste tags for {self._names(entity_ids)}", [t.name for t in rows])
+        label = f"taste tags for {self._names(entity_ids)}"
+        rows = self._call(label, lambda: self.client.taste_tags(entity_ids, take=take, trace=self.ledger.trace))
+        ids = self._absorb(label, [t.name for t in rows])
         return rows, ids
 
     def demographics(self, entity_id: str) -> tuple[Optional[Demographics], list[str]]:
         if entity_id in self._demo_cache:  # same run, same entity: reuse (and re-cite) the call
             return self._demo_cache[entity_id]
         self._check_cap()
-        rows = self.client.demographics([entity_id], trace=self.ledger.trace)
-        ids = self._absorb(f"demographics for {self._names([entity_id])}", [])
+        label = f"demographics for {self._names([entity_id])}"
+        rows = self._call(label, lambda: self.client.demographics([entity_id], trace=self.ledger.trace))
+        ids = self._absorb(label, [])
         self._demo_cache[entity_id] = ((rows[0] if rows else None), ids)
         return self._demo_cache[entity_id]
 
     def compare(self, a_id: str, b_id: str) -> tuple[dict[str, float], dict[str, float], dict[str, str], list[str], str]:
         """Tag vectors for A and B. Prefers /v2/analysis/compare; falls back to two tag insights."""
         self._check_cap()
+        label = f"compare audiences {self._names([a_id])} vs {self._names([b_id])}"
         try:
             rows = self.client.compare([a_id], [b_id], trace=self.ledger.trace)
-            ids = self._absorb(f"compare audiences {self._names([a_id])} vs {self._names([b_id])}", [t.name for t in rows])
+            ids = self._absorb(label, [t.name for t in rows])
             a, b, names = vectors_from_compare(rows)
             if a and b:
                 return a, b, names, ids, "compare"
-        except QlooError:
-            self._absorb(f"compare audiences {self._names([a_id])} vs {self._names([b_id])} (unavailable)", [])
+        except QlooError as exc:
+            if exc.status == 400 or getattr(exc, "status", None) in (401, 403):
+                self._absorb(f"{label} (failed)", [])
+                raise
+            self._absorb(f"{label} (unavailable)", [])
         a_rows, ids_a = self.taste_tags([a_id], take=50)
         b_rows, ids_b = self.taste_tags([b_id], take=50)
         a, b, names = vectors_from_tags(a_rows, b_rows)
         return a, b, names, ids_a + ids_b, "tags"
 
     def fit(self, a_id: str, b_id: str) -> tuple[FitScore, list[str]]:
+        score, groups = self.fit_with_groups(a_id, b_id)
+        return score, groups["tags"] + groups["demographics"]
+
+    def fit_with_groups(self, a_id: str, b_id: str) -> tuple[FitScore, dict[str, list[str]]]:
+        """Fit score plus the ledger ids behind each input (tags vs demographics)."""
         a_vec, b_vec, names, ids, _ = self.compare(a_id, b_id)
         a_demo, ids_a = self.demographics(a_id)
         b_demo, ids_b = self.demographics(b_id)
         score = compute_fit(a_vec, b_vec, names, a_demo, b_demo)
-        return score, ids + ids_a + ids_b
+        return score, {"tags": ids, "demographics": ids_a + ids_b}
 
     # -- activations -------------------------------------------------------------
     def recommend(self, entity_ids: list[str], target_type: str, take: int = 8,
@@ -116,11 +140,11 @@ class ToolBox:
         self._check_cap()
         filter_location = city if target_type == "place" and city else None
         signal_location = city if target_type != "place" and city else None
-        rows = self.client.recommend(entity_ids, target_type, take=take, filter_location=filter_location,
-                                     signal_location=signal_location, filter_tags=filter_tags,
-                                     explainability=len(entity_ids) > 1, exclude_ids=exclude_ids,
-                                     trace=self.ledger.trace)
         label = f"{target_type}s for fans of {self._names(entity_ids)}" + (f" in {city}" if city else "")
+        rows = self._call(label, lambda: self.client.recommend(
+            entity_ids, target_type, take=take, filter_location=filter_location,
+            signal_location=signal_location, filter_tags=filter_tags,
+            explainability=len(entity_ids) > 1, exclude_ids=exclude_ids, trace=self.ledger.trace))
         ids = self._absorb(label, [e.name for e in rows])
         for e in rows:
             self.entities.setdefault(e.entity_id, e)
@@ -128,14 +152,16 @@ class ToolBox:
 
     def heatmap(self, entity_ids: list[str], city: str) -> tuple[list[HeatCell], list[str]]:
         self._check_cap()
-        cells = self.client.heatmap(entity_ids, city, trace=self.ledger.trace)
-        ids = self._absorb(f"heatmap of {self._names(entity_ids)} fans in {city}", [])
+        label = f"heatmap of {self._names(entity_ids)} fans in {city}"
+        cells = self._call(label, lambda: self.client.heatmap(entity_ids, city, trace=self.ledger.trace))
+        ids = self._absorb(label, [])
         return cells, ids
 
     def find_tags(self, query: str) -> tuple[list[Tag], list[str]]:
         self._check_cap()
-        rows = self.client.find_tags(query, take=10, trace=self.ledger.trace)
-        ids = self._absorb(f"find tags '{query}'", [t.name for t in rows])
+        label = f"find tags '{query}'"
+        rows = self._call(label, lambda: self.client.find_tags(query, take=10, trace=self.ledger.trace))
+        ids = self._absorb(label, [t.name for t in rows])
         return rows, ids
 
     # -- helpers -----------------------------------------------------------------

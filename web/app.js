@@ -284,13 +284,14 @@
         <button type="button" data-b="${esc(r.entity.name)}">Full fit check →</button>
       </div>`).join("");
     $("#scout-more").textContent = res.more_candidates.length ? "Also proposed by Qloo (not scored): " + res.more_candidates.map((m) => m.entity.name).join(", ") : "";
-    $("#scout-list").addEventListener("click", (e) => {
-      const b = e.target.closest("button"); if (!b) return;
-      setMode("fit"); $("#in-a").value = res.a.name; $("#in-b").value = b.dataset.b; $("#in-city").value = res.city || "";
-      $("#run-form").requestSubmit();
-    }, { once: true });
+    state.scout = res;
     $("#results").scrollIntoView({ behavior: "smooth", block: "start" });
   }
+  $("#scout-list").addEventListener("click", (e) => {
+    const b = e.target.closest("button"); if (!b || !state.scout) return;
+    setMode("fit"); $("#in-a").value = state.scout.a.name; $("#in-b").value = b.dataset.b; $("#in-city").value = state.scout.city || "";
+    $("#run-form").requestSubmit();
+  });
 
   function renderLedger(res) {
     const tb = $("#ledger tbody");

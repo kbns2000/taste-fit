@@ -1,0 +1,23 @@
+name: ci
+on:
+  push:
+  pull_request:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - run: pip install -r requirements-dev.txt
+      - run: python -m pytest -q
+        env:
+          QLOO_MODE: mock
+          LLM_MODE: "off"
+      - name: smoke the server on demo data
+        run: |
+          QLOO_MODE=mock uvicorn app.main:app --port 7860 & sleep 3
+          curl -fsS http://127.0.0.1:7860/api/health
+          curl -fsS -X POST http://127.0.0.1:7860/api/runs -H 'content-type: application/json' \
+            -d '{"mode":"fit","a":"Patagonia","b":"Bon Iver","city":"New York"}'

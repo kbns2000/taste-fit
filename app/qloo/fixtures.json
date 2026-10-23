@@ -1,0 +1,3116 @@
+{
+ "tags": {
+  "urn:tag:keyword:brand:sustainability": {
+   "name": "Sustainability",
+   "type": "urn:tag:keyword:brand"
+  },
+  "urn:tag:keyword:brand:outdoor_lifestyle": {
+   "name": "Outdoor Lifestyle",
+   "type": "urn:tag:keyword:brand"
+  },
+  "urn:tag:keyword:brand:hiking": {
+   "name": "Hiking",
+   "type": "urn:tag:keyword:brand"
+  },
+  "urn:tag:keyword:brand:climbing": {
+   "name": "Climbing",
+   "type": "urn:tag:keyword:brand"
+  },
+  "urn:tag:keyword:brand:trail_running": {
+   "name": "Trail Running",
+   "type": "urn:tag:keyword:brand"
+  },
+  "urn:tag:keyword:brand:minimalism": {
+   "name": "Minimalism",
+   "type": "urn:tag:keyword:brand"
+  },
+  "urn:tag:keyword:brand:craft_coffee": {
+   "name": "Craft Coffee",
+   "type": "urn:tag:keyword:brand"
+  },
+  "urn:tag:keyword:brand:third_wave_coffee": {
+   "name": "Third Wave Coffee",
+   "type": "urn:tag:keyword:brand"
+  },
+  "urn:tag:keyword:brand:wellness": {
+   "name": "Wellness",
+   "type": "urn:tag:keyword:brand"
+  },
+  "urn:tag:keyword:brand:yoga": {
+   "name": "Yoga",
+   "type": "urn:tag:keyword:brand"
+  },
+  "urn:tag:keyword:brand:running": {
+   "name": "Running",
+   "type": "urn:tag:keyword:brand"
+  },
+  "urn:tag:keyword:brand:streetwear": {
+   "name": "Streetwear",
+   "type": "urn:tag:keyword:brand"
+  },
+  "urn:tag:keyword:brand:skate_culture": {
+   "name": "Skate Culture",
+   "type": "urn:tag:keyword:brand"
+  },
+  "urn:tag:keyword:brand:luxury": {
+   "name": "Luxury",
+   "type": "urn:tag:keyword:brand"
+  },
+  "urn:tag:keyword:brand:premium_pricing": {
+   "name": "Premium Pricing",
+   "type": "urn:tag:keyword:brand"
+  },
+  "urn:tag:keyword:brand:design_led": {
+   "name": "Design Led",
+   "type": "urn:tag:keyword:brand"
+  },
+  "urn:tag:keyword:brand:clean_beauty": {
+   "name": "Clean Beauty",
+   "type": "urn:tag:keyword:brand"
+  },
+  "urn:tag:keyword:brand:natural_ingredients": {
+   "name": "Natural Ingredients",
+   "type": "urn:tag:keyword:brand"
+  },
+  "urn:tag:keyword:brand:tech_early_adopters": {
+   "name": "Tech Early Adopters",
+   "type": "urn:tag:keyword:brand"
+  },
+  "urn:tag:keyword:brand:remote_work": {
+   "name": "Remote Work",
+   "type": "urn:tag:keyword:brand"
+  },
+  "urn:tag:keyword:brand:travel": {
+   "name": "Travel",
+   "type": "urn:tag:keyword:brand"
+  },
+  "urn:tag:keyword:brand:van_life": {
+   "name": "Van Life",
+   "type": "urn:tag:keyword:brand"
+  },
+  "urn:tag:keyword:brand:cycling": {
+   "name": "Cycling",
+   "type": "urn:tag:keyword:brand"
+  },
+  "urn:tag:keyword:brand:vintage": {
+   "name": "Vintage",
+   "type": "urn:tag:keyword:brand"
+  },
+  "urn:tag:keyword:brand:urban_living": {
+   "name": "Urban Living",
+   "type": "urn:tag:keyword:brand"
+  },
+  "urn:tag:keyword:brand:foodie": {
+   "name": "Foodie",
+   "type": "urn:tag:keyword:brand"
+  },
+  "urn:tag:keyword:brand:plant_based": {
+   "name": "Plant Based",
+   "type": "urn:tag:keyword:brand"
+  },
+  "urn:tag:keyword:brand:home_decor": {
+   "name": "Home Decor",
+   "type": "urn:tag:keyword:brand"
+  },
+  "urn:tag:keyword:brand:fitness_community": {
+   "name": "Fitness Community",
+   "type": "urn:tag:keyword:brand"
+  },
+  "urn:tag:keyword:brand:limited_drops": {
+   "name": "Limited Drops",
+   "type": "urn:tag:keyword:brand"
+  },
+  "urn:tag:keyword:brand:sneaker_culture": {
+   "name": "Sneaker Culture",
+   "type": "urn:tag:keyword:brand"
+  },
+  "urn:tag:keyword:brand:photography": {
+   "name": "Photography",
+   "type": "urn:tag:keyword:brand"
+  },
+  "urn:tag:keyword:brand:bookish": {
+   "name": "Bookish",
+   "type": "urn:tag:keyword:brand"
+  },
+  "urn:tag:keyword:brand:meditation": {
+   "name": "Meditation",
+   "type": "urn:tag:keyword:brand"
+  },
+  "urn:tag:keyword:brand:family": {
+   "name": "Family",
+   "type": "urn:tag:keyword:brand"
+  },
+  "urn:tag:keyword:brand:value_pricing": {
+   "name": "Value Pricing",
+   "type": "urn:tag:keyword:brand"
+  },
+  "urn:tag:genre:music:indie_folk": {
+   "name": "Indie Folk",
+   "type": "urn:tag:genre:music"
+  },
+  "urn:tag:genre:music:psychedelic_rock": {
+   "name": "Psychedelic Rock",
+   "type": "urn:tag:genre:music"
+  },
+  "urn:tag:genre:music:electronic": {
+   "name": "Electronic",
+   "type": "urn:tag:genre:music"
+  },
+  "urn:tag:genre:music:hip_hop": {
+   "name": "Hip Hop",
+   "type": "urn:tag:genre:music"
+  },
+  "urn:tag:genre:music:pop": {
+   "name": "Pop",
+   "type": "urn:tag:genre:music"
+  },
+  "urn:tag:genre:media:documentary": {
+   "name": "Documentary",
+   "type": "urn:tag:genre:media"
+  },
+  "urn:tag:genre:media:storytelling": {
+   "name": "Storytelling",
+   "type": "urn:tag:genre:media"
+  },
+  "urn:tag:genre:media:science": {
+   "name": "Science",
+   "type": "urn:tag:genre:media"
+  },
+  "urn:tag:genre:media:business": {
+   "name": "Business",
+   "type": "urn:tag:genre:media"
+  },
+  "urn:tag:category:place:cafe": {
+   "name": "Cafe",
+   "type": "urn:tag:category:place"
+  },
+  "urn:tag:category:place:music_venue": {
+   "name": "Music Venue",
+   "type": "urn:tag:category:place"
+  },
+  "urn:tag:category:place:climbing_gym": {
+   "name": "Climbing Gym",
+   "type": "urn:tag:category:place"
+  },
+  "urn:tag:category:place:bookstore": {
+   "name": "Bookstore",
+   "type": "urn:tag:category:place"
+  },
+  "urn:tag:category:place:restaurant": {
+   "name": "Restaurant",
+   "type": "urn:tag:category:place"
+  },
+  "urn:tag:category:place:park": {
+   "name": "Park",
+   "type": "urn:tag:category:place"
+  },
+  "urn:tag:category:place:retail_street": {
+   "name": "Retail Street",
+   "type": "urn:tag:category:place"
+  },
+  "urn:tag:category:place:hotel": {
+   "name": "Hotel",
+   "type": "urn:tag:category:place"
+  },
+  "urn:tag:category:place:grocery": {
+   "name": "Grocery",
+   "type": "urn:tag:category:place"
+  }
+ },
+ "entities": [
+  {
+   "entity_id": "CD7C38CF-25EB-5B57-848D-F38C550B9A04",
+   "name": "Patagonia",
+   "type": "brand",
+   "popularity": 0.97,
+   "tags": {
+    "urn:tag:keyword:brand:sustainability": 1,
+    "urn:tag:keyword:brand:outdoor_lifestyle": 1,
+    "urn:tag:keyword:brand:hiking": 0.9,
+    "urn:tag:keyword:brand:climbing": 0.8,
+    "urn:tag:keyword:brand:trail_running": 0.6,
+    "urn:tag:keyword:brand:travel": 0.5,
+    "urn:tag:keyword:brand:van_life": 0.5,
+    "urn:tag:keyword:brand:premium_pricing": 0.5,
+    "urn:tag:keyword:brand:photography": 0.4,
+    "urn:tag:genre:music:indie_folk": 0.4,
+    "urn:tag:genre:media:documentary": 0.5
+   },
+   "demographics": {
+    "age": {
+     "24_and_younger": -0.1,
+     "25_to_29": 0.3,
+     "30_to_34": 0.5,
+     "35_to_44": 0.4,
+     "45_to_54": -0.1,
+     "55_and_older": -0.4
+    },
+    "gender": {
+     "male": 0.12,
+     "female": -0.12
+    }
+   },
+   "description": "Outdoor apparel brand known for environmental activism.",
+   "akas": []
+  },
+  {
+   "entity_id": "4BFD1A62-716D-51D9-90AC-3021ECD908B5",
+   "name": "Arc'teryx",
+   "type": "brand",
+   "popularity": 0.9,
+   "tags": {
+    "urn:tag:keyword:brand:outdoor_lifestyle": 1,
+    "urn:tag:keyword:brand:climbing": 1,
+    "urn:tag:keyword:brand:hiking": 0.8,
+    "urn:tag:keyword:brand:premium_pricing": 0.9,
+    "urn:tag:keyword:brand:design_led": 0.7,
+    "urn:tag:keyword:brand:trail_running": 0.5,
+    "urn:tag:keyword:brand:minimalism": 0.5,
+    "urn:tag:keyword:brand:tech_early_adopters": 0.3
+   },
+   "demographics": {
+    "age": {
+     "24_and_younger": -0.2,
+     "25_to_29": 0.2,
+     "30_to_34": 0.5,
+     "35_to_44": 0.5,
+     "45_to_54": 0.0,
+     "55_and_older": -0.4
+    },
+    "gender": {
+     "male": 0.35,
+     "female": -0.35
+    }
+   },
+   "description": "Technical outdoor apparel from Vancouver.",
+   "akas": [
+    "Arcteryx"
+   ]
+  },
+  {
+   "entity_id": "FDCAC0FA-F8A5-5E81-A691-F79E41975CC0",
+   "name": "The North Face",
+   "type": "brand",
+   "popularity": 0.98,
+   "tags": {
+    "urn:tag:keyword:brand:outdoor_lifestyle": 1,
+    "urn:tag:keyword:brand:hiking": 0.8,
+    "urn:tag:keyword:brand:streetwear": 0.5,
+    "urn:tag:keyword:brand:value_pricing": 0.3,
+    "urn:tag:keyword:brand:travel": 0.5,
+    "urn:tag:keyword:brand:family": 0.3,
+    "urn:tag:keyword:brand:climbing": 0.4
+   },
+   "demographics": {
+    "age": {
+     "24_and_younger": 0.3,
+     "25_to_29": 0.3,
+     "30_to_34": 0.2,
+     "35_to_44": 0.1,
+     "45_to_54": -0.2,
+     "55_and_older": -0.4
+    },
+    "gender": {
+     "male": 0.25,
+     "female": -0.25
+    }
+   },
+   "description": "Outdoor apparel and equipment brand.",
+   "akas": []
+  },
+  {
+   "entity_id": "259AA4CD-6AD5-5026-8143-D0F0A892B965",
+   "name": "REI",
+   "type": "brand",
+   "popularity": 0.93,
+   "tags": {
+    "urn:tag:keyword:brand:outdoor_lifestyle": 1,
+    "urn:tag:keyword:brand:hiking": 1,
+    "urn:tag:keyword:brand:cycling": 0.7,
+    "urn:tag:keyword:brand:family": 0.5,
+    "urn:tag:keyword:brand:sustainability": 0.6,
+    "urn:tag:keyword:brand:travel": 0.5,
+    "urn:tag:keyword:brand:van_life": 0.4,
+    "urn:tag:keyword:brand:trail_running": 0.5
+   },
+   "demographics": {
+    "age": {
+     "24_and_younger": -0.3,
+     "25_to_29": 0.1,
+     "30_to_34": 0.3,
+     "35_to_44": 0.5,
+     "45_to_54": 0.3,
+     "55_and_older": -0.1
+    },
+    "gender": {
+     "male": 0.15,
+     "female": -0.15
+    }
+   },
+   "description": "Member-owned outdoor retail co-op.",
+   "akas": [
+    "REI Co-op"
+   ]
+  },
+  {
+   "entity_id": "F463F167-CA79-581F-BAA7-199CA879BC77",
+   "name": "Allbirds",
+   "type": "brand",
+   "popularity": 0.86,
+   "tags": {
+    "urn:tag:keyword:brand:sustainability": 1,
+    "urn:tag:keyword:brand:minimalism": 0.8,
+    "urn:tag:keyword:brand:running": 0.5,
+    "urn:tag:keyword:brand:tech_early_adopters": 0.7,
+    "urn:tag:keyword:brand:remote_work": 0.6,
+    "urn:tag:keyword:brand:urban_living": 0.6,
+    "urn:tag:keyword:brand:wellness": 0.4,
+    "urn:tag:keyword:brand:design_led": 0.5
+   },
+   "demographics": {
+    "age": {
+     "24_and_younger": -0.1,
+     "25_to_29": 0.4,
+     "30_to_34": 0.6,
+     "35_to_44": 0.3,
+     "45_to_54": -0.2,
+     "55_and_older": -0.5
+    },
+    "gender": {
+     "male": 0.05,
+     "female": -0.05
+    }
+   },
+   "description": "Sustainable footwear brand from San Francisco.",
+   "akas": []
+  },
+  {
+   "entity_id": "40156FBC-5D1F-5356-932B-6B0AA6B9E949",
+   "name": "Blue Bottle Coffee",
+   "type": "brand",
+   "popularity": 0.9,
+   "tags": {
+    "urn:tag:keyword:brand:craft_coffee": 1,
+    "urn:tag:keyword:brand:third_wave_coffee": 1,
+    "urn:tag:keyword:brand:minimalism": 0.8,
+    "urn:tag:keyword:brand:design_led": 0.7,
+    "urn:tag:keyword:brand:urban_living": 0.7,
+    "urn:tag:keyword:brand:premium_pricing": 0.6,
+    "urn:tag:keyword:brand:remote_work": 0.5,
+    "urn:tag:keyword:brand:foodie": 0.5,
+    "urn:tag:genre:music:indie_folk": 0.3,
+    "urn:tag:keyword:brand:photography": 0.3
+   },
+   "demographics": {
+    "age": {
+     "24_and_younger": -0.1,
+     "25_to_29": 0.5,
+     "30_to_34": 0.6,
+     "35_to_44": 0.2,
+     "45_to_54": -0.3,
+     "55_and_older": -0.5
+    },
+    "gender": {
+     "male": -0.05,
+     "female": 0.05
+    }
+   },
+   "description": "Specialty coffee roaster and cafe chain.",
+   "akas": [
+    "Blue Bottle"
+   ]
+  },
+  {
+   "entity_id": "2EB298D4-7692-5044-934C-2EDFA2C34947",
+   "name": "Stumptown Coffee Roasters",
+   "type": "brand",
+   "popularity": 0.8,
+   "tags": {
+    "urn:tag:keyword:brand:craft_coffee": 1,
+    "urn:tag:keyword:brand:third_wave_coffee": 0.9,
+    "urn:tag:keyword:brand:vintage": 0.4,
+    "urn:tag:keyword:brand:cycling": 0.4,
+    "urn:tag:genre:music:indie_folk": 0.5,
+    "urn:tag:keyword:brand:urban_living": 0.6,
+    "urn:tag:keyword:brand:foodie": 0.4,
+    "urn:tag:keyword:brand:sustainability": 0.4
+   },
+   "demographics": {
+    "age": {
+     "24_and_younger": 0.0,
+     "25_to_29": 0.4,
+     "30_to_34": 0.5,
+     "35_to_44": 0.2,
+     "45_to_54": -0.2,
+     "55_and_older": -0.5
+    },
+    "gender": {
+     "male": 0.1,
+     "female": -0.1
+    }
+   },
+   "description": "Portland-born third-wave coffee roaster.",
+   "akas": [
+    "Stumptown"
+   ]
+  },
+  {
+   "entity_id": "6DAD1F14-3DCB-52D2-A43E-F33EDEF5F454",
+   "name": "Glossier",
+   "type": "brand",
+   "popularity": 0.9,
+   "tags": {
+    "urn:tag:keyword:brand:clean_beauty": 1,
+    "urn:tag:keyword:brand:minimalism": 0.7,
+    "urn:tag:keyword:brand:design_led": 0.7,
+    "urn:tag:keyword:brand:urban_living": 0.6,
+    "urn:tag:genre:music:pop": 0.5,
+    "urn:tag:keyword:brand:wellness": 0.5,
+    "urn:tag:keyword:brand:natural_ingredients": 0.5,
+    "urn:tag:keyword:brand:limited_drops": 0.3
+   },
+   "demographics": {
+    "age": {
+     "24_and_younger": 0.5,
+     "25_to_29": 0.6,
+     "30_to_34": 0.2,
+     "35_to_44": -0.2,
+     "45_to_54": -0.5,
+     "55_and_older": -0.6
+    },
+    "gender": {
+     "male": -0.6,
+     "female": 0.6
+    }
+   },
+   "description": "Direct-to-consumer beauty brand born from a blog.",
+   "akas": []
+  },
+  {
+   "entity_id": "31DD8B90-8234-5F1D-9D9D-4D505AE0B776",
+   "name": "Aesop",
+   "type": "brand",
+   "popularity": 0.85,
+   "tags": {
+    "urn:tag:keyword:brand:natural_ingredients": 1,
+    "urn:tag:keyword:brand:design_led": 1,
+    "urn:tag:keyword:brand:luxury": 0.7,
+    "urn:tag:keyword:brand:minimalism": 0.9,
+    "urn:tag:keyword:brand:premium_pricing": 0.8,
+    "urn:tag:keyword:brand:home_decor": 0.5,
+    "urn:tag:keyword:brand:bookish": 0.4,
+    "urn:tag:keyword:brand:urban_living": 0.6
+   },
+   "demographics": {
+    "age": {
+     "24_and_younger": -0.3,
+     "25_to_29": 0.2,
+     "30_to_34": 0.6,
+     "35_to_44": 0.5,
+     "45_to_54": 0.0,
+     "55_and_older": -0.4
+    },
+    "gender": {
+     "male": -0.1,
+     "female": 0.1
+    }
+   },
+   "description": "Australian skincare brand with design-led stores.",
+   "akas": []
+  },
+  {
+   "entity_id": "24D04374-6EF2-56E9-9A01-B31A876FCE4C",
+   "name": "Supreme",
+   "type": "brand",
+   "popularity": 0.95,
+   "tags": {
+    "urn:tag:keyword:brand:streetwear": 1,
+    "urn:tag:keyword:brand:skate_culture": 1,
+    "urn:tag:keyword:brand:limited_drops": 1,
+    "urn:tag:keyword:brand:sneaker_culture": 0.8,
+    "urn:tag:genre:music:hip_hop": 0.7,
+    "urn:tag:keyword:brand:urban_living": 0.5,
+    "urn:tag:keyword:brand:luxury": 0.4
+   },
+   "demographics": {
+    "age": {
+     "24_and_younger": 0.8,
+     "25_to_29": 0.4,
+     "30_to_34": -0.1,
+     "35_to_44": -0.4,
+     "45_to_54": -0.6,
+     "55_and_older": -0.7
+    },
+    "gender": {
+     "male": 0.55,
+     "female": -0.55
+    }
+   },
+   "description": "Skate-born streetwear label famous for drops.",
+   "akas": []
+  },
+  {
+   "entity_id": "3EA32DDA-C3C9-5775-859D-F97B4E5E0FC1",
+   "name": "Nike",
+   "type": "brand",
+   "popularity": 1.0,
+   "tags": {
+    "urn:tag:keyword:brand:running": 1,
+    "urn:tag:keyword:brand:sneaker_culture": 1,
+    "urn:tag:keyword:brand:fitness_community": 0.8,
+    "urn:tag:keyword:brand:streetwear": 0.6,
+    "urn:tag:genre:music:hip_hop": 0.5,
+    "urn:tag:genre:music:pop": 0.4,
+    "urn:tag:keyword:brand:value_pricing": 0.2
+   },
+   "demographics": {
+    "age": {
+     "24_and_younger": 0.5,
+     "25_to_29": 0.3,
+     "30_to_34": 0.1,
+     "35_to_44": -0.1,
+     "45_to_54": -0.3,
+     "55_and_older": -0.5
+    },
+    "gender": {
+     "male": 0.3,
+     "female": -0.3
+    }
+   },
+   "description": "Global sportswear brand.",
+   "akas": []
+  },
+  {
+   "entity_id": "C7A8E319-E803-5247-9415-6F5ED0B198E1",
+   "name": "Lululemon",
+   "type": "brand",
+   "popularity": 0.95,
+   "tags": {
+    "urn:tag:keyword:brand:yoga": 1,
+    "urn:tag:keyword:brand:wellness": 1,
+    "urn:tag:keyword:brand:running": 0.6,
+    "urn:tag:keyword:brand:fitness_community": 0.8,
+    "urn:tag:keyword:brand:premium_pricing": 0.6,
+    "urn:tag:keyword:brand:urban_living": 0.5,
+    "urn:tag:keyword:brand:meditation": 0.5,
+    "urn:tag:keyword:brand:minimalism": 0.3
+   },
+   "demographics": {
+    "age": {
+     "24_and_younger": 0.0,
+     "25_to_29": 0.4,
+     "30_to_34": 0.5,
+     "35_to_44": 0.3,
+     "45_to_54": -0.2,
+     "55_and_older": -0.5
+    },
+    "gender": {
+     "male": -0.45,
+     "female": 0.45
+    }
+   },
+   "description": "Athletic apparel rooted in yoga.",
+   "akas": []
+  },
+  {
+   "entity_id": "CCCCB2B4-E2A4-538C-BBB6-FA5AD7423C41",
+   "name": "Peloton",
+   "type": "brand",
+   "popularity": 0.85,
+   "tags": {
+    "urn:tag:keyword:brand:fitness_community": 1,
+    "urn:tag:keyword:brand:tech_early_adopters": 0.7,
+    "urn:tag:keyword:brand:wellness": 0.7,
+    "urn:tag:keyword:brand:running": 0.4,
+    "urn:tag:keyword:brand:premium_pricing": 0.7,
+    "urn:tag:keyword:brand:remote_work": 0.6,
+    "urn:tag:keyword:brand:family": 0.3
+   },
+   "demographics": {
+    "age": {
+     "24_and_younger": -0.4,
+     "25_to_29": 0.1,
+     "30_to_34": 0.5,
+     "35_to_44": 0.6,
+     "45_to_54": 0.1,
+     "55_and_older": -0.4
+    },
+    "gender": {
+     "male": -0.1,
+     "female": 0.1
+    }
+   },
+   "description": "Connected fitness brand.",
+   "akas": []
+  },
+  {
+   "entity_id": "D67CC3F3-4A62-56FA-82EB-49C9ADEAD114",
+   "name": "Oatly",
+   "type": "brand",
+   "popularity": 0.84,
+   "tags": {
+    "urn:tag:keyword:brand:plant_based": 1,
+    "urn:tag:keyword:brand:sustainability": 0.8,
+    "urn:tag:keyword:brand:craft_coffee": 0.7,
+    "urn:tag:keyword:brand:third_wave_coffee": 0.6,
+    "urn:tag:keyword:brand:foodie": 0.4,
+    "urn:tag:keyword:brand:urban_living": 0.5,
+    "urn:tag:keyword:brand:design_led": 0.5,
+    "urn:tag:keyword:brand:wellness": 0.4
+   },
+   "demographics": {
+    "age": {
+     "24_and_younger": 0.2,
+     "25_to_29": 0.5,
+     "30_to_34": 0.4,
+     "35_to_44": 0.0,
+     "45_to_54": -0.4,
+     "55_and_older": -0.6
+    },
+    "gender": {
+     "male": -0.15,
+     "female": 0.15
+    }
+   },
+   "description": "Oat drink company with a playful voice.",
+   "akas": []
+  },
+  {
+   "entity_id": "9880CA48-1DF9-5003-8E9D-144A78E919DE",
+   "name": "Vans",
+   "type": "brand",
+   "popularity": 0.93,
+   "tags": {
+    "urn:tag:keyword:brand:skate_culture": 1,
+    "urn:tag:keyword:brand:streetwear": 0.8,
+    "urn:tag:keyword:brand:sneaker_culture": 0.7,
+    "urn:tag:genre:music:psychedelic_rock": 0.4,
+    "urn:tag:keyword:brand:value_pricing": 0.4,
+    "urn:tag:keyword:brand:photography": 0.3
+   },
+   "demographics": {
+    "age": {
+     "24_and_younger": 0.7,
+     "25_to_29": 0.3,
+     "30_to_34": 0.0,
+     "35_to_44": -0.3,
+     "45_to_54": -0.5,
+     "55_and_older": -0.6
+    },
+    "gender": {
+     "male": 0.35,
+     "female": -0.35
+    }
+   },
+   "description": "Skate shoe and apparel brand.",
+   "akas": []
+  },
+  {
+   "entity_id": "9C7C51DB-4A78-569D-BA0E-86189845E2CD",
+   "name": "Carhartt WIP",
+   "type": "brand",
+   "popularity": 0.8,
+   "tags": {
+    "urn:tag:keyword:brand:streetwear": 1,
+    "urn:tag:keyword:brand:vintage": 0.7,
+    "urn:tag:keyword:brand:skate_culture": 0.5,
+    "urn:tag:keyword:brand:urban_living": 0.6,
+    "urn:tag:keyword:brand:photography": 0.4,
+    "urn:tag:keyword:brand:cycling": 0.3,
+    "urn:tag:keyword:brand:design_led": 0.3
+   },
+   "demographics": {
+    "age": {
+     "24_and_younger": 0.5,
+     "25_to_29": 0.5,
+     "30_to_34": 0.1,
+     "35_to_44": -0.3,
+     "45_to_54": -0.5,
+     "55_and_older": -0.6
+    },
+    "gender": {
+     "male": 0.5,
+     "female": -0.5
+    }
+   },
+   "description": "Workwear reinterpreted for streetwear.",
+   "akas": [
+    "Carhartt Work In Progress"
+   ]
+  },
+  {
+   "entity_id": "FDAB7A0E-3ED1-5065-B9F7-A5DB50610B6A",
+   "name": "MUJI",
+   "type": "brand",
+   "popularity": 0.88,
+   "tags": {
+    "urn:tag:keyword:brand:minimalism": 1,
+    "urn:tag:keyword:brand:design_led": 0.9,
+    "urn:tag:keyword:brand:home_decor": 0.8,
+    "urn:tag:keyword:brand:value_pricing": 0.4,
+    "urn:tag:keyword:brand:bookish": 0.4,
+    "urn:tag:keyword:brand:urban_living": 0.6,
+    "urn:tag:keyword:brand:remote_work": 0.3
+   },
+   "demographics": {
+    "age": {
+     "24_and_younger": -0.1,
+     "25_to_29": 0.3,
+     "30_to_34": 0.4,
+     "35_to_44": 0.3,
+     "45_to_54": -0.1,
+     "55_and_older": -0.3
+    },
+    "gender": {
+     "male": -0.1,
+     "female": 0.1
+    }
+   },
+   "description": "Japanese no-brand lifestyle goods.",
+   "akas": [
+    "Mujirushi Ryohin"
+   ]
+  },
+  {
+   "entity_id": "72269026-4A3E-51B0-A316-FD3ABB6638B1",
+   "name": "Trader Joe's",
+   "type": "brand",
+   "popularity": 0.95,
+   "tags": {
+    "urn:tag:keyword:brand:foodie": 0.8,
+    "urn:tag:keyword:brand:value_pricing": 0.9,
+    "urn:tag:keyword:brand:family": 0.6,
+    "urn:tag:keyword:brand:plant_based": 0.4,
+    "urn:tag:keyword:brand:wellness": 0.3,
+    "urn:tag:keyword:brand:urban_living": 0.3
+   },
+   "demographics": {
+    "age": {
+     "24_and_younger": -0.2,
+     "25_to_29": 0.2,
+     "30_to_34": 0.3,
+     "35_to_44": 0.4,
+     "45_to_54": 0.2,
+     "55_and_older": -0.1
+    },
+    "gender": {
+     "male": -0.2,
+     "female": 0.2
+    }
+   },
+   "description": "Quirky grocery chain.",
+   "akas": [
+    "Trader Joes"
+   ]
+  },
+  {
+   "entity_id": "12B41168-56FA-5D93-B6EE-2C55F7435705",
+   "name": "Erewhon",
+   "type": "brand",
+   "popularity": 0.7,
+   "tags": {
+    "urn:tag:keyword:brand:wellness": 1,
+    "urn:tag:keyword:brand:luxury": 0.8,
+    "urn:tag:keyword:brand:plant_based": 0.7,
+    "urn:tag:keyword:brand:premium_pricing": 1,
+    "urn:tag:keyword:brand:natural_ingredients": 0.6,
+    "urn:tag:keyword:brand:yoga": 0.5,
+    "urn:tag:keyword:brand:foodie": 0.6,
+    "urn:tag:genre:music:pop": 0.3
+   },
+   "demographics": {
+    "age": {
+     "24_and_younger": 0.2,
+     "25_to_29": 0.6,
+     "30_to_34": 0.4,
+     "35_to_44": 0.0,
+     "45_to_54": -0.4,
+     "55_and_older": -0.6
+    },
+    "gender": {
+     "male": -0.3,
+     "female": 0.3
+    }
+   },
+   "description": "Los Angeles luxury wellness grocer.",
+   "akas": []
+  },
+  {
+   "entity_id": "0D108220-FA2E-50FD-BF7C-0ED90EAB9D1F",
+   "name": "Bon Iver",
+   "type": "artist",
+   "popularity": 0.9,
+   "tags": {
+    "urn:tag:genre:music:indie_folk": 1,
+    "urn:tag:keyword:brand:outdoor_lifestyle": 0.6,
+    "urn:tag:keyword:brand:craft_coffee": 0.5,
+    "urn:tag:keyword:brand:photography": 0.4,
+    "urn:tag:keyword:brand:sustainability": 0.4,
+    "urn:tag:keyword:brand:bookish": 0.4,
+    "urn:tag:keyword:brand:van_life": 0.3,
+    "urn:tag:keyword:brand:minimalism": 0.3
+   },
+   "demographics": {
+    "age": {
+     "24_and_younger": -0.1,
+     "25_to_29": 0.4,
+     "30_to_34": 0.5,
+     "35_to_44": 0.3,
+     "45_to_54": -0.2,
+     "55_and_older": -0.5
+    },
+    "gender": {
+     "male": 0.05,
+     "female": -0.05
+    }
+   },
+   "description": "Indie folk project of Justin Vernon.",
+   "akas": []
+  },
+  {
+   "entity_id": "E1B7230C-876A-5719-8143-A12530F9882C",
+   "name": "Khruangbin",
+   "type": "artist",
+   "popularity": 0.82,
+   "tags": {
+    "urn:tag:genre:music:psychedelic_rock": 1,
+    "urn:tag:keyword:brand:vintage": 0.7,
+    "urn:tag:keyword:brand:travel": 0.6,
+    "urn:tag:keyword:brand:design_led": 0.4,
+    "urn:tag:keyword:brand:craft_coffee": 0.4,
+    "urn:tag:keyword:brand:urban_living": 0.5,
+    "urn:tag:keyword:brand:foodie": 0.4,
+    "urn:tag:keyword:brand:photography": 0.3
+   },
+   "demographics": {
+    "age": {
+     "24_and_younger": 0.0,
+     "25_to_29": 0.5,
+     "30_to_34": 0.5,
+     "35_to_44": 0.2,
+     "45_to_54": -0.3,
+     "55_and_older": -0.6
+    },
+    "gender": {
+     "male": 0.1,
+     "female": -0.1
+    }
+   },
+   "description": "Texas trio blending global psychedelic grooves.",
+   "akas": []
+  },
+  {
+   "entity_id": "CCEB8DC5-8BAD-5A10-80E4-73F16626528E",
+   "name": "Tame Impala",
+   "type": "artist",
+   "popularity": 0.92,
+   "tags": {
+    "urn:tag:genre:music:psychedelic_rock": 1,
+    "urn:tag:genre:music:electronic": 0.5,
+    "urn:tag:genre:music:pop": 0.4,
+    "urn:tag:keyword:brand:streetwear": 0.4,
+    "urn:tag:keyword:brand:vintage": 0.4,
+    "urn:tag:keyword:brand:urban_living": 0.4
+   },
+   "demographics": {
+    "age": {
+     "24_and_younger": 0.3,
+     "25_to_29": 0.5,
+     "30_to_34": 0.3,
+     "35_to_44": -0.1,
+     "45_to_54": -0.5,
+     "55_and_older": -0.7
+    },
+    "gender": {
+     "male": 0.15,
+     "female": -0.15
+    }
+   },
+   "description": "Psychedelic pop from Kevin Parker.",
+   "akas": []
+  },
+  {
+   "entity_id": "70F048C7-283F-50CE-8BDA-1EF67598CF0A",
+   "name": "Fleet Foxes",
+   "type": "artist",
+   "popularity": 0.8,
+   "tags": {
+    "urn:tag:genre:music:indie_folk": 1,
+    "urn:tag:keyword:brand:outdoor_lifestyle": 0.7,
+    "urn:tag:keyword:brand:hiking": 0.5,
+    "urn:tag:keyword:brand:bookish": 0.5,
+    "urn:tag:keyword:brand:vintage": 0.4,
+    "urn:tag:keyword:brand:photography": 0.3,
+    "urn:tag:keyword:brand:sustainability": 0.3
+   },
+   "demographics": {
+    "age": {
+     "24_and_younger": -0.2,
+     "25_to_29": 0.3,
+     "30_to_34": 0.5,
+     "35_to_44": 0.4,
+     "45_to_54": -0.1,
+     "55_and_older": -0.5
+    },
+    "gender": {
+     "male": 0.15,
+     "female": -0.15
+    }
+   },
+   "description": "Seattle-born baroque folk band.",
+   "akas": []
+  },
+  {
+   "entity_id": "86EAC8F1-4A12-56AF-A03F-FAD203ABBC5E",
+   "name": "Phoebe Bridgers",
+   "type": "artist",
+   "popularity": 0.9,
+   "tags": {
+    "urn:tag:genre:music:indie_folk": 0.9,
+    "urn:tag:genre:music:pop": 0.4,
+    "urn:tag:keyword:brand:bookish": 0.5,
+    "urn:tag:keyword:brand:urban_living": 0.5,
+    "urn:tag:keyword:brand:clean_beauty": 0.3,
+    "urn:tag:keyword:brand:vintage": 0.3
+   },
+   "demographics": {
+    "age": {
+     "24_and_younger": 0.6,
+     "25_to_29": 0.5,
+     "30_to_34": 0.1,
+     "35_to_44": -0.3,
+     "45_to_54": -0.6,
+     "55_and_older": -0.7
+    },
+    "gender": {
+     "male": -0.5,
+     "female": 0.5
+    }
+   },
+   "description": "Indie singer-songwriter.",
+   "akas": []
+  },
+  {
+   "entity_id": "8750773A-3BBF-5F23-AF79-64D15C4CE6CB",
+   "name": "Tyler, the Creator",
+   "type": "artist",
+   "popularity": 0.95,
+   "tags": {
+    "urn:tag:genre:music:hip_hop": 1,
+    "urn:tag:keyword:brand:streetwear": 0.9,
+    "urn:tag:keyword:brand:skate_culture": 0.7,
+    "urn:tag:keyword:brand:limited_drops": 0.6,
+    "urn:tag:keyword:brand:sneaker_culture": 0.6,
+    "urn:tag:keyword:brand:design_led": 0.3
+   },
+   "demographics": {
+    "age": {
+     "24_and_younger": 0.8,
+     "25_to_29": 0.4,
+     "30_to_34": -0.1,
+     "35_to_44": -0.5,
+     "45_to_54": -0.7,
+     "55_and_older": -0.8
+    },
+    "gender": {
+     "male": 0.45,
+     "female": -0.45
+    }
+   },
+   "description": "Rapper, producer and fashion designer.",
+   "akas": [
+    "Tyler the Creator"
+   ]
+  },
+  {
+   "entity_id": "02E4C723-0737-5956-8D8F-8ECFA77F56E9",
+   "name": "Kendrick Lamar",
+   "type": "artist",
+   "popularity": 0.98,
+   "tags": {
+    "urn:tag:genre:music:hip_hop": 1,
+    "urn:tag:keyword:brand:sneaker_culture": 0.6,
+    "urn:tag:keyword:brand:streetwear": 0.5,
+    "urn:tag:genre:media:storytelling": 0.5,
+    "urn:tag:keyword:brand:urban_living": 0.4
+   },
+   "demographics": {
+    "age": {
+     "24_and_younger": 0.5,
+     "25_to_29": 0.5,
+     "30_to_34": 0.2,
+     "35_to_44": -0.2,
+     "45_to_54": -0.6,
+     "55_and_older": -0.7
+    },
+    "gender": {
+     "male": 0.4,
+     "female": -0.4
+    }
+   },
+   "description": "Pulitzer-winning rapper.",
+   "akas": []
+  },
+  {
+   "entity_id": "A220E1F1-FF69-5E60-8607-BBC59C08C6AB",
+   "name": "ODESZA",
+   "type": "artist",
+   "popularity": 0.85,
+   "tags": {
+    "urn:tag:genre:music:electronic": 1,
+    "urn:tag:keyword:brand:outdoor_lifestyle": 0.5,
+    "urn:tag:keyword:brand:travel": 0.5,
+    "urn:tag:keyword:brand:trail_running": 0.3,
+    "urn:tag:keyword:brand:tech_early_adopters": 0.4,
+    "urn:tag:keyword:brand:photography": 0.4,
+    "urn:tag:keyword:brand:wellness": 0.3
+   },
+   "demographics": {
+    "age": {
+     "24_and_younger": 0.2,
+     "25_to_29": 0.6,
+     "30_to_34": 0.4,
+     "35_to_44": 0.0,
+     "45_to_54": -0.5,
+     "55_and_older": -0.7
+    },
+    "gender": {
+     "male": 0.2,
+     "female": -0.2
+    }
+   },
+   "description": "Electronic duo from Seattle.",
+   "akas": []
+  },
+  {
+   "entity_id": "7A4FC534-DFA8-589B-8BAD-4587033FC144",
+   "name": "Billie Eilish",
+   "type": "artist",
+   "popularity": 0.99,
+   "tags": {
+    "urn:tag:genre:music:pop": 1,
+    "urn:tag:keyword:brand:streetwear": 0.6,
+    "urn:tag:keyword:brand:sustainability": 0.4,
+    "urn:tag:keyword:brand:plant_based": 0.5,
+    "urn:tag:keyword:brand:clean_beauty": 0.3
+   },
+   "demographics": {
+    "age": {
+     "24_and_younger": 0.9,
+     "25_to_29": 0.3,
+     "30_to_34": -0.2,
+     "35_to_44": -0.5,
+     "45_to_54": -0.7,
+     "55_and_older": -0.8
+    },
+    "gender": {
+     "male": -0.35,
+     "female": 0.35
+    }
+   },
+   "description": "Pop artist.",
+   "akas": []
+  },
+  {
+   "entity_id": "10B79445-2D7E-5D50-9299-AB0DA98A6449",
+   "name": "Mac DeMarco",
+   "type": "artist",
+   "popularity": 0.8,
+   "tags": {
+    "urn:tag:genre:music:indie_folk": 0.6,
+    "urn:tag:genre:music:psychedelic_rock": 0.6,
+    "urn:tag:keyword:brand:skate_culture": 0.5,
+    "urn:tag:keyword:brand:vintage": 0.6,
+    "urn:tag:keyword:brand:craft_coffee": 0.3,
+    "urn:tag:keyword:brand:streetwear": 0.3
+   },
+   "demographics": {
+    "age": {
+     "24_and_younger": 0.5,
+     "25_to_29": 0.5,
+     "30_to_34": 0.1,
+     "35_to_44": -0.3,
+     "45_to_54": -0.6,
+     "55_and_older": -0.7
+    },
+    "gender": {
+     "male": 0.3,
+     "female": -0.3
+    }
+   },
+   "description": "Slacker-rock singer-songwriter.",
+   "akas": []
+  },
+  {
+   "entity_id": "AE2FD11E-5EB9-5D8B-AEBE-BACE0FD27B26",
+   "name": "Bonobo",
+   "type": "artist",
+   "popularity": 0.8,
+   "tags": {
+    "urn:tag:genre:music:electronic": 1,
+    "urn:tag:keyword:brand:travel": 0.6,
+    "urn:tag:keyword:brand:design_led": 0.5,
+    "urn:tag:keyword:brand:craft_coffee": 0.4,
+    "urn:tag:keyword:brand:minimalism": 0.4,
+    "urn:tag:keyword:brand:urban_living": 0.5,
+    "urn:tag:keyword:brand:photography": 0.4
+   },
+   "demographics": {
+    "age": {
+     "24_and_younger": -0.1,
+     "25_to_29": 0.4,
+     "30_to_34": 0.6,
+     "35_to_44": 0.3,
+     "45_to_54": -0.3,
+     "55_and_older": -0.6
+    },
+    "gender": {
+     "male": 0.25,
+     "female": -0.25
+    }
+   },
+   "description": "Downtempo electronic producer.",
+   "akas": []
+  },
+  {
+   "entity_id": "10F06A4C-4274-588A-90F9-328F5635683B",
+   "name": "How I Built This",
+   "type": "podcast",
+   "popularity": 0.9,
+   "tags": {
+    "urn:tag:genre:media:business": 1,
+    "urn:tag:genre:media:storytelling": 0.8,
+    "urn:tag:keyword:brand:tech_early_adopters": 0.6,
+    "urn:tag:keyword:brand:remote_work": 0.5,
+    "urn:tag:keyword:brand:craft_coffee": 0.3,
+    "urn:tag:keyword:brand:sustainability": 0.3
+   },
+   "demographics": {
+    "age": {
+     "24_and_younger": -0.3,
+     "25_to_29": 0.3,
+     "30_to_34": 0.6,
+     "35_to_44": 0.5,
+     "45_to_54": 0.0,
+     "55_and_older": -0.4
+    },
+    "gender": {
+     "male": 0.2,
+     "female": -0.2
+    }
+   },
+   "description": "Founders tell their stories with Guy Raz.",
+   "akas": []
+  },
+  {
+   "entity_id": "430D0BE5-B91A-51F5-96B3-E4A4AFFF4C42",
+   "name": "99% Invisible",
+   "type": "podcast",
+   "popularity": 0.85,
+   "tags": {
+    "urn:tag:keyword:brand:design_led": 1,
+    "urn:tag:genre:media:storytelling": 0.9,
+    "urn:tag:keyword:brand:urban_living": 0.8,
+    "urn:tag:keyword:brand:bookish": 0.5,
+    "urn:tag:keyword:brand:minimalism": 0.5,
+    "urn:tag:keyword:brand:home_decor": 0.4,
+    "urn:tag:keyword:brand:photography": 0.4
+   },
+   "demographics": {
+    "age": {
+     "24_and_younger": -0.2,
+     "25_to_29": 0.4,
+     "30_to_34": 0.6,
+     "35_to_44": 0.4,
+     "45_to_54": -0.1,
+     "55_and_older": -0.5
+    },
+    "gender": {
+     "male": 0.1,
+     "female": -0.1
+    }
+   },
+   "description": "Design and architecture storytelling.",
+   "akas": []
+  },
+  {
+   "entity_id": "425B432A-5AC3-5B7A-8229-20B7E13F7B54",
+   "name": "Radiolab",
+   "type": "podcast",
+   "popularity": 0.88,
+   "tags": {
+    "urn:tag:genre:media:science": 1,
+    "urn:tag:genre:media:storytelling": 0.9,
+    "urn:tag:keyword:brand:bookish": 0.6,
+    "urn:tag:genre:media:documentary": 0.5,
+    "urn:tag:keyword:brand:family": 0.3
+   },
+   "demographics": {
+    "age": {
+     "24_and_younger": -0.2,
+     "25_to_29": 0.2,
+     "30_to_34": 0.4,
+     "35_to_44": 0.5,
+     "45_to_54": 0.1,
+     "55_and_older": -0.3
+    },
+    "gender": {
+     "male": 0.1,
+     "female": -0.1
+    }
+   },
+   "description": "Curiosity-driven science storytelling.",
+   "akas": []
+  },
+  {
+   "entity_id": "E2CF6E62-9F47-5508-93D6-1B72A0AB1693",
+   "name": "The Daily",
+   "type": "podcast",
+   "popularity": 0.95,
+   "tags": {
+    "urn:tag:genre:media:storytelling": 0.6,
+    "urn:tag:genre:media:business": 0.4,
+    "urn:tag:keyword:brand:urban_living": 0.5,
+    "urn:tag:keyword:brand:remote_work": 0.4,
+    "urn:tag:keyword:brand:family": 0.3
+   },
+   "demographics": {
+    "age": {
+     "24_and_younger": -0.2,
+     "25_to_29": 0.3,
+     "30_to_34": 0.4,
+     "35_to_44": 0.4,
+     "45_to_54": 0.1,
+     "55_and_older": -0.2
+    },
+    "gender": {
+     "male": -0.05,
+     "female": 0.05
+    }
+   },
+   "description": "Daily news podcast from The New York Times.",
+   "akas": []
+  },
+  {
+   "entity_id": "D632F20E-17B7-5E59-8F12-F02A637EE6A1",
+   "name": "Huberman Lab",
+   "type": "podcast",
+   "popularity": 0.92,
+   "tags": {
+    "urn:tag:keyword:brand:wellness": 1,
+    "urn:tag:genre:media:science": 0.8,
+    "urn:tag:keyword:brand:fitness_community": 0.8,
+    "urn:tag:keyword:brand:meditation": 0.6,
+    "urn:tag:keyword:brand:running": 0.4,
+    "urn:tag:keyword:brand:tech_early_adopters": 0.5
+   },
+   "demographics": {
+    "age": {
+     "24_and_younger": 0.0,
+     "25_to_29": 0.5,
+     "30_to_34": 0.5,
+     "35_to_44": 0.2,
+     "45_to_54": -0.3,
+     "55_and_older": -0.6
+    },
+    "gender": {
+     "male": 0.5,
+     "female": -0.5
+    }
+   },
+   "description": "Neuroscience and health protocols.",
+   "akas": []
+  },
+  {
+   "entity_id": "EC7BD4B3-184F-5224-AFEC-DC29CD812429",
+   "name": "The Dirtbag Diaries",
+   "type": "podcast",
+   "popularity": 0.6,
+   "tags": {
+    "urn:tag:keyword:brand:outdoor_lifestyle": 1,
+    "urn:tag:keyword:brand:climbing": 0.9,
+    "urn:tag:keyword:brand:hiking": 0.8,
+    "urn:tag:keyword:brand:van_life": 0.8,
+    "urn:tag:genre:media:storytelling": 0.7,
+    "urn:tag:keyword:brand:sustainability": 0.5,
+    "urn:tag:keyword:brand:photography": 0.4
+   },
+   "demographics": {
+    "age": {
+     "24_and_younger": -0.2,
+     "25_to_29": 0.3,
+     "30_to_34": 0.5,
+     "35_to_44": 0.4,
+     "45_to_54": 0.0,
+     "55_and_older": -0.4
+    },
+    "gender": {
+     "male": 0.4,
+     "female": -0.4
+    }
+   },
+   "description": "Adventure stories from the outdoors.",
+   "akas": []
+  },
+  {
+   "entity_id": "6DB4B0BA-DCA6-5827-B342-D486BA3D6DF6",
+   "name": "Song Exploder",
+   "type": "podcast",
+   "popularity": 0.78,
+   "tags": {
+    "urn:tag:genre:media:storytelling": 0.8,
+    "urn:tag:genre:music:indie_folk": 0.6,
+    "urn:tag:genre:music:electronic": 0.5,
+    "urn:tag:genre:music:psychedelic_rock": 0.4,
+    "urn:tag:keyword:brand:design_led": 0.4,
+    "urn:tag:keyword:brand:bookish": 0.3
+   },
+   "demographics": {
+    "age": {
+     "24_and_younger": 0.0,
+     "25_to_29": 0.5,
+     "30_to_34": 0.5,
+     "35_to_44": 0.2,
+     "45_to_54": -0.4,
+     "55_and_older": -0.6
+    },
+    "gender": {
+     "male": 0.15,
+     "female": -0.15
+    }
+   },
+   "description": "Musicians take apart their songs.",
+   "akas": []
+  },
+  {
+   "entity_id": "E68F49B7-365B-5C00-B630-890991DF15B6",
+   "name": "Armchair Expert",
+   "type": "podcast",
+   "popularity": 0.9,
+   "tags": {
+    "urn:tag:genre:media:storytelling": 0.7,
+    "urn:tag:genre:music:pop": 0.5,
+    "urn:tag:keyword:brand:wellness": 0.4,
+    "urn:tag:keyword:brand:family": 0.4,
+    "urn:tag:keyword:brand:urban_living": 0.3
+   },
+   "demographics": {
+    "age": {
+     "24_and_younger": 0.0,
+     "25_to_29": 0.3,
+     "30_to_34": 0.4,
+     "35_to_44": 0.3,
+     "45_to_54": -0.1,
+     "55_and_older": -0.4
+    },
+    "gender": {
+     "male": -0.3,
+     "female": 0.3
+    }
+   },
+   "description": "Dax Shepard's long-form interviews.",
+   "akas": []
+  },
+  {
+   "entity_id": "09909650-E7C5-568D-B5BD-EE42E663A73C",
+   "name": "Free Solo",
+   "type": "movie",
+   "popularity": 0.9,
+   "tags": {
+    "urn:tag:keyword:brand:climbing": 1,
+    "urn:tag:keyword:brand:outdoor_lifestyle": 1,
+    "urn:tag:genre:media:documentary": 1,
+    "urn:tag:keyword:brand:photography": 0.5,
+    "urn:tag:keyword:brand:van_life": 0.4
+   },
+   "demographics": {
+    "age": {
+     "24_and_younger": -0.1,
+     "25_to_29": 0.3,
+     "30_to_34": 0.5,
+     "35_to_44": 0.4,
+     "45_to_54": 0.0,
+     "55_and_older": -0.4
+    },
+    "gender": {
+     "male": 0.35,
+     "female": -0.35
+    }
+   },
+   "description": "Alex Honnold climbs El Capitan without a rope.",
+   "akas": []
+  },
+  {
+   "entity_id": "011F43EB-733C-5970-B80F-5438E4070ACD",
+   "name": "180° South",
+   "type": "movie",
+   "popularity": 0.6,
+   "tags": {
+    "urn:tag:keyword:brand:outdoor_lifestyle": 1,
+    "urn:tag:keyword:brand:sustainability": 0.9,
+    "urn:tag:keyword:brand:travel": 0.8,
+    "urn:tag:genre:media:documentary": 1,
+    "urn:tag:keyword:brand:van_life": 0.6,
+    "urn:tag:keyword:brand:climbing": 0.5,
+    "urn:tag:genre:music:indie_folk": 0.4
+   },
+   "demographics": {
+    "age": {
+     "24_and_younger": -0.2,
+     "25_to_29": 0.3,
+     "30_to_34": 0.5,
+     "35_to_44": 0.4,
+     "45_to_54": 0.1,
+     "55_and_older": -0.3
+    },
+    "gender": {
+     "male": 0.4,
+     "female": -0.4
+    }
+   },
+   "description": "A journey to Patagonia inspired by Yvon Chouinard.",
+   "akas": [
+    "180 Degrees South"
+   ]
+  },
+  {
+   "entity_id": "72265866-2BB3-5084-9D31-189877D5B232",
+   "name": "Chef's Table",
+   "type": "tv_show",
+   "popularity": 0.88,
+   "tags": {
+    "urn:tag:keyword:brand:foodie": 1,
+    "urn:tag:genre:media:documentary": 0.9,
+    "urn:tag:keyword:brand:design_led": 0.6,
+    "urn:tag:keyword:brand:travel": 0.6,
+    "urn:tag:keyword:brand:craft_coffee": 0.4,
+    "urn:tag:keyword:brand:luxury": 0.4
+   },
+   "demographics": {
+    "age": {
+     "24_and_younger": -0.2,
+     "25_to_29": 0.3,
+     "30_to_34": 0.5,
+     "35_to_44": 0.4,
+     "45_to_54": 0.0,
+     "55_and_older": -0.4
+    },
+    "gender": {
+     "male": -0.05,
+     "female": 0.05
+    }
+   },
+   "description": "Netflix series profiling chefs.",
+   "akas": []
+  },
+  {
+   "entity_id": "D3DFEFDD-E2B5-5F31-AE62-76F466C9540D",
+   "name": "Abstract: The Art of Design",
+   "type": "tv_show",
+   "popularity": 0.75,
+   "tags": {
+    "urn:tag:keyword:brand:design_led": 1,
+    "urn:tag:genre:media:documentary": 0.9,
+    "urn:tag:keyword:brand:minimalism": 0.6,
+    "urn:tag:keyword:brand:urban_living": 0.5,
+    "urn:tag:keyword:brand:photography": 0.5,
+    "urn:tag:keyword:brand:home_decor": 0.4
+   },
+   "demographics": {
+    "age": {
+     "24_and_younger": -0.1,
+     "25_to_29": 0.4,
+     "30_to_34": 0.5,
+     "35_to_44": 0.3,
+     "45_to_54": -0.2,
+     "55_and_older": -0.5
+    },
+    "gender": {
+     "male": 0.1,
+     "female": -0.1
+    }
+   },
+   "description": "Netflix documentary series on designers.",
+   "akas": [
+    "Abstract"
+   ]
+  },
+  {
+   "entity_id": "2A7903FA-59A9-5118-9746-040C8CCE039E",
+   "name": "Our Planet",
+   "type": "tv_show",
+   "popularity": 0.9,
+   "tags": {
+    "urn:tag:genre:media:documentary": 1,
+    "urn:tag:keyword:brand:sustainability": 0.9,
+    "urn:tag:keyword:brand:outdoor_lifestyle": 0.6,
+    "urn:tag:keyword:brand:family": 0.6,
+    "urn:tag:keyword:brand:travel": 0.5
+   },
+   "demographics": {
+    "age": {
+     "24_and_younger": -0.2,
+     "25_to_29": 0.1,
+     "30_to_34": 0.3,
+     "35_to_44": 0.5,
+     "45_to_54": 0.3,
+     "55_and_older": 0.0
+    },
+    "gender": {
+     "male": 0.05,
+     "female": -0.05
+    }
+   },
+   "description": "Nature documentary narrated by David Attenborough.",
+   "akas": []
+  },
+  {
+   "entity_id": "DB03B39D-A8D5-58FC-9304-CEF674228358",
+   "name": "Portland, Oregon",
+   "type": "destination",
+   "popularity": 0.85,
+   "tags": {
+    "urn:tag:keyword:brand:craft_coffee": 1,
+    "urn:tag:keyword:brand:cycling": 0.8,
+    "urn:tag:keyword:brand:outdoor_lifestyle": 0.8,
+    "urn:tag:keyword:brand:vintage": 0.6,
+    "urn:tag:keyword:brand:bookish": 0.6,
+    "urn:tag:genre:music:indie_folk": 0.6,
+    "urn:tag:keyword:brand:sustainability": 0.7,
+    "urn:tag:keyword:brand:foodie": 0.6
+   },
+   "demographics": {
+    "age": {
+     "24_and_younger": -0.1,
+     "25_to_29": 0.4,
+     "30_to_34": 0.5,
+     "35_to_44": 0.3,
+     "45_to_54": -0.2,
+     "55_and_older": -0.5
+    },
+    "gender": {
+     "male": 0.05,
+     "female": -0.05
+    }
+   },
+   "description": "",
+   "akas": [
+    "Portland"
+   ],
+   "lat": 45.5152,
+   "lon": -122.6784
+  },
+  {
+   "entity_id": "77EF1AE6-239C-52E9-A6EE-0BC95264CECD",
+   "name": "Boulder, Colorado",
+   "type": "destination",
+   "popularity": 0.8,
+   "tags": {
+    "urn:tag:keyword:brand:outdoor_lifestyle": 1,
+    "urn:tag:keyword:brand:climbing": 0.9,
+    "urn:tag:keyword:brand:hiking": 0.9,
+    "urn:tag:keyword:brand:trail_running": 0.8,
+    "urn:tag:keyword:brand:wellness": 0.6,
+    "urn:tag:keyword:brand:cycling": 0.7,
+    "urn:tag:keyword:brand:sustainability": 0.5
+   },
+   "demographics": {
+    "age": {
+     "24_and_younger": -0.1,
+     "25_to_29": 0.4,
+     "30_to_34": 0.5,
+     "35_to_44": 0.3,
+     "45_to_54": -0.1,
+     "55_and_older": -0.4
+    },
+    "gender": {
+     "male": 0.2,
+     "female": -0.2
+    }
+   },
+   "description": "",
+   "akas": [
+    "Boulder"
+   ],
+   "lat": 40.015,
+   "lon": -105.2705
+  },
+  {
+   "entity_id": "1982688B-AE2F-5AC3-82F5-417BE504E2E5",
+   "name": "Lisbon",
+   "type": "destination",
+   "popularity": 0.88,
+   "tags": {
+    "urn:tag:keyword:brand:travel": 1,
+    "urn:tag:keyword:brand:remote_work": 0.8,
+    "urn:tag:keyword:brand:foodie": 0.7,
+    "urn:tag:keyword:brand:design_led": 0.5,
+    "urn:tag:keyword:brand:vintage": 0.5,
+    "urn:tag:keyword:brand:craft_coffee": 0.5,
+    "urn:tag:keyword:brand:photography": 0.6
+   },
+   "demographics": {
+    "age": {
+     "24_and_younger": 0.0,
+     "25_to_29": 0.5,
+     "30_to_34": 0.5,
+     "35_to_44": 0.2,
+     "45_to_54": -0.3,
+     "55_and_older": -0.6
+    },
+    "gender": {
+     "male": 0.0,
+     "female": -0.0
+    }
+   },
+   "description": "",
+   "akas": [],
+   "lat": 38.7223,
+   "lon": -9.1393
+  },
+  {
+   "entity_id": "4A24AF09-348C-57A6-8984-25C4290307DF",
+   "name": "Kyoto",
+   "type": "destination",
+   "popularity": 0.9,
+   "tags": {
+    "urn:tag:keyword:brand:travel": 1,
+    "urn:tag:keyword:brand:minimalism": 0.8,
+    "urn:tag:keyword:brand:design_led": 0.6,
+    "urn:tag:keyword:brand:bookish": 0.5,
+    "urn:tag:keyword:brand:meditation": 0.6,
+    "urn:tag:keyword:brand:photography": 0.7,
+    "urn:tag:keyword:brand:foodie": 0.6
+   },
+   "demographics": {
+    "age": {
+     "24_and_younger": -0.2,
+     "25_to_29": 0.3,
+     "30_to_34": 0.5,
+     "35_to_44": 0.4,
+     "45_to_54": 0.0,
+     "55_and_older": -0.3
+    },
+    "gender": {
+     "male": -0.05,
+     "female": 0.05
+    }
+   },
+   "description": "",
+   "akas": [],
+   "lat": 35.0116,
+   "lon": 135.7681
+  },
+  {
+   "entity_id": "D418C2BD-1DAE-506B-A9B9-4C6ECCE4F190",
+   "name": "Devoción",
+   "type": "place",
+   "popularity": 0.6857142857142857,
+   "tags": {
+    "urn:tag:category:place:cafe": 1,
+    "urn:tag:keyword:brand:craft_coffee": 1,
+    "urn:tag:keyword:brand:third_wave_coffee": 0.9,
+    "urn:tag:keyword:brand:design_led": 0.7,
+    "urn:tag:keyword:brand:home_decor": 0.5,
+    "urn:tag:keyword:brand:urban_living": 0.6,
+    "urn:tag:keyword:brand:remote_work": 0.5
+   },
+   "demographics": {
+    "age": {
+     "24_and_younger": -0.1,
+     "25_to_29": 0.5,
+     "30_to_34": 0.5,
+     "35_to_44": 0.2,
+     "45_to_54": -0.3,
+     "55_and_older": -0.5
+    },
+    "gender": {
+     "male": 0.0,
+     "female": -0.0
+    }
+   },
+   "description": "",
+   "akas": [],
+   "locality": "New York",
+   "neighborhood": "Williamsburg",
+   "lat": 40.7155,
+   "lon": -73.9616,
+   "address": "69 Grand St, Brooklyn, NY"
+  },
+  {
+   "entity_id": "7F1368F0-03CA-5516-8773-2C1DA09D47F7",
+   "name": "Sey Coffee",
+   "type": "place",
+   "popularity": 0.6428571428571428,
+   "tags": {
+    "urn:tag:category:place:cafe": 1,
+    "urn:tag:keyword:brand:craft_coffee": 1,
+    "urn:tag:keyword:brand:third_wave_coffee": 1,
+    "urn:tag:keyword:brand:minimalism": 0.8,
+    "urn:tag:keyword:brand:design_led": 0.6,
+    "urn:tag:keyword:brand:photography": 0.4
+   },
+   "demographics": {
+    "age": {
+     "24_and_younger": 0.0,
+     "25_to_29": 0.6,
+     "30_to_34": 0.5,
+     "35_to_44": 0.1,
+     "45_to_54": -0.4,
+     "55_and_older": -0.6
+    },
+    "gender": {
+     "male": 0.1,
+     "female": -0.1
+    }
+   },
+   "description": "",
+   "akas": [],
+   "locality": "New York",
+   "neighborhood": "Bushwick",
+   "lat": 40.7055,
+   "lon": -73.9325,
+   "address": "18 Grattan St, Brooklyn, NY"
+  },
+  {
+   "entity_id": "07235E76-5AFF-5D49-9359-AA44590389D2",
+   "name": "Roberta's",
+   "type": "place",
+   "popularity": 0.6,
+   "tags": {
+    "urn:tag:category:place:restaurant": 1,
+    "urn:tag:keyword:brand:foodie": 1,
+    "urn:tag:keyword:brand:urban_living": 0.6,
+    "urn:tag:keyword:brand:vintage": 0.4,
+    "urn:tag:genre:music:psychedelic_rock": 0.3
+   },
+   "demographics": {
+    "age": {
+     "24_and_younger": 0.1,
+     "25_to_29": 0.5,
+     "30_to_34": 0.4,
+     "35_to_44": 0.1,
+     "45_to_54": -0.4,
+     "55_and_older": -0.6
+    },
+    "gender": {
+     "male": 0.1,
+     "female": -0.1
+    }
+   },
+   "description": "",
+   "akas": [],
+   "locality": "New York",
+   "neighborhood": "Bushwick",
+   "lat": 40.7051,
+   "lon": -73.9336,
+   "address": "261 Moore St, Brooklyn, NY"
+  },
+  {
+   "entity_id": "95ADA076-65C7-5709-AFF9-09658DD0EFCC",
+   "name": "Brooklyn Bowl",
+   "type": "place",
+   "popularity": 0.6,
+   "tags": {
+    "urn:tag:category:place:music_venue": 1,
+    "urn:tag:genre:music:indie_folk": 0.5,
+    "urn:tag:genre:music:psychedelic_rock": 0.5,
+    "urn:tag:keyword:brand:foodie": 0.4,
+    "urn:tag:keyword:brand:urban_living": 0.5
+   },
+   "demographics": {
+    "age": {
+     "24_and_younger": 0.1,
+     "25_to_29": 0.5,
+     "30_to_34": 0.4,
+     "35_to_44": 0.1,
+     "45_to_54": -0.4,
+     "55_and_older": -0.6
+    },
+    "gender": {
+     "male": 0.2,
+     "female": -0.2
+    }
+   },
+   "description": "",
+   "akas": [],
+   "locality": "New York",
+   "neighborhood": "Williamsburg",
+   "lat": 40.7219,
+   "lon": -73.9575,
+   "address": "61 Wythe Ave, Brooklyn, NY"
+  },
+  {
+   "entity_id": "45C107F6-4A27-5F23-A4A3-8FA965DC9023",
+   "name": "Elsewhere",
+   "type": "place",
+   "popularity": 0.6857142857142857,
+   "tags": {
+    "urn:tag:category:place:music_venue": 1,
+    "urn:tag:genre:music:electronic": 0.9,
+    "urn:tag:genre:music:hip_hop": 0.4,
+    "urn:tag:keyword:brand:streetwear": 0.4,
+    "urn:tag:keyword:brand:urban_living": 0.5
+   },
+   "demographics": {
+    "age": {
+     "24_and_younger": 0.5,
+     "25_to_29": 0.6,
+     "30_to_34": 0.1,
+     "35_to_44": -0.4,
+     "45_to_54": -0.7,
+     "55_and_older": -0.8
+    },
+    "gender": {
+     "male": 0.2,
+     "female": -0.2
+    }
+   },
+   "description": "",
+   "akas": [],
+   "locality": "New York",
+   "neighborhood": "Bushwick",
+   "lat": 40.7088,
+   "lon": -73.923,
+   "address": "599 Johnson Ave, Brooklyn, NY"
+  },
+  {
+   "entity_id": "C645C0DB-ECB2-5520-A793-5C78F3BD510E",
+   "name": "Public Records",
+   "type": "place",
+   "popularity": 0.6857142857142857,
+   "tags": {
+    "urn:tag:category:place:music_venue": 1,
+    "urn:tag:genre:music:electronic": 0.8,
+    "urn:tag:keyword:brand:plant_based": 0.7,
+    "urn:tag:keyword:brand:design_led": 0.7,
+    "urn:tag:keyword:brand:sustainability": 0.5,
+    "urn:tag:keyword:brand:foodie": 0.5
+   },
+   "demographics": {
+    "age": {
+     "24_and_younger": 0.0,
+     "25_to_29": 0.6,
+     "30_to_34": 0.5,
+     "35_to_44": 0.1,
+     "45_to_54": -0.5,
+     "55_and_older": -0.7
+    },
+    "gender": {
+     "male": 0.1,
+     "female": -0.1
+    }
+   },
+   "description": "",
+   "akas": [],
+   "locality": "New York",
+   "neighborhood": "Gowanus",
+   "lat": 40.6797,
+   "lon": -73.987,
+   "address": "233 Butler St, Brooklyn, NY"
+  },
+  {
+   "entity_id": "6B98A3BF-257F-54FC-805E-27C53E2E6979",
+   "name": "Brooklyn Boulders",
+   "type": "place",
+   "popularity": 0.6857142857142857,
+   "tags": {
+    "urn:tag:category:place:climbing_gym": 1,
+    "urn:tag:keyword:brand:climbing": 1,
+    "urn:tag:keyword:brand:fitness_community": 0.8,
+    "urn:tag:keyword:brand:outdoor_lifestyle": 0.7,
+    "urn:tag:keyword:brand:remote_work": 0.3
+   },
+   "demographics": {
+    "age": {
+     "24_and_younger": 0.0,
+     "25_to_29": 0.5,
+     "30_to_34": 0.5,
+     "35_to_44": 0.2,
+     "45_to_54": -0.4,
+     "55_and_older": -0.6
+    },
+    "gender": {
+     "male": 0.3,
+     "female": -0.3
+    }
+   },
+   "description": "",
+   "akas": [],
+   "locality": "New York",
+   "neighborhood": "Gowanus",
+   "lat": 40.6773,
+   "lon": -73.9845,
+   "address": "575 Degraw St, Brooklyn, NY"
+  },
+  {
+   "entity_id": "81C3FB6A-BBD5-5F0D-93E6-7D7599C09EA9",
+   "name": "McNally Jackson Books",
+   "type": "place",
+   "popularity": 0.8142857142857143,
+   "tags": {
+    "urn:tag:category:place:bookstore": 1,
+    "urn:tag:keyword:brand:bookish": 1,
+    "urn:tag:keyword:brand:design_led": 0.5,
+    "urn:tag:keyword:brand:urban_living": 0.6,
+    "urn:tag:genre:media:storytelling": 0.5
+   },
+   "demographics": {
+    "age": {
+     "24_and_younger": -0.1,
+     "25_to_29": 0.4,
+     "30_to_34": 0.5,
+     "35_to_44": 0.3,
+     "45_to_54": -0.2,
+     "55_and_older": -0.4
+    },
+    "gender": {
+     "male": -0.15,
+     "female": 0.15
+    }
+   },
+   "description": "",
+   "akas": [],
+   "locality": "New York",
+   "neighborhood": "SoHo",
+   "lat": 40.7238,
+   "lon": -73.9966,
+   "address": "52 Prince St, New York, NY"
+  },
+  {
+   "entity_id": "3D40F824-D00C-5DC1-8565-36ECCDD25C55",
+   "name": "The Standard, High Line",
+   "type": "place",
+   "popularity": 0.6857142857142857,
+   "tags": {
+    "urn:tag:category:place:hotel": 1,
+    "urn:tag:keyword:brand:luxury": 0.9,
+    "urn:tag:keyword:brand:design_led": 0.7,
+    "urn:tag:keyword:brand:travel": 0.7,
+    "urn:tag:genre:music:pop": 0.4,
+    "urn:tag:keyword:brand:premium_pricing": 0.8
+   },
+   "demographics": {
+    "age": {
+     "24_and_younger": 0.0,
+     "25_to_29": 0.5,
+     "30_to_34": 0.5,
+     "35_to_44": 0.2,
+     "45_to_54": -0.4,
+     "55_and_older": -0.6
+    },
+    "gender": {
+     "male": 0.05,
+     "female": -0.05
+    }
+   },
+   "description": "",
+   "akas": [],
+   "locality": "New York",
+   "neighborhood": "Meatpacking",
+   "lat": 40.7409,
+   "lon": -74.008,
+   "address": "848 Washington St, New York, NY"
+  },
+  {
+   "entity_id": "E038A8E4-E140-5544-8BFD-CA31B29A58E5",
+   "name": "Prospect Park",
+   "type": "place",
+   "popularity": 0.6428571428571428,
+   "tags": {
+    "urn:tag:category:place:park": 1,
+    "urn:tag:keyword:brand:running": 0.8,
+    "urn:tag:keyword:brand:cycling": 0.7,
+    "urn:tag:keyword:brand:family": 0.7,
+    "urn:tag:keyword:brand:outdoor_lifestyle": 0.6,
+    "urn:tag:keyword:brand:hiking": 0.3
+   },
+   "demographics": {
+    "age": {
+     "24_and_younger": -0.1,
+     "25_to_29": 0.2,
+     "30_to_34": 0.4,
+     "35_to_44": 0.5,
+     "45_to_54": 0.1,
+     "55_and_older": -0.2
+    },
+    "gender": {
+     "male": 0.0,
+     "female": -0.0
+    }
+   },
+   "description": "",
+   "akas": [],
+   "locality": "New York",
+   "neighborhood": "Park Slope",
+   "lat": 40.6602,
+   "lon": -73.969,
+   "address": "Brooklyn, NY"
+  },
+  {
+   "entity_id": "39B6F78A-E67B-52E6-8504-57CBAD6DEBA5",
+   "name": "Hudson Yards",
+   "type": "place",
+   "popularity": 0.7285714285714285,
+   "tags": {
+    "urn:tag:category:place:retail_street": 1,
+    "urn:tag:keyword:brand:luxury": 0.9,
+    "urn:tag:keyword:brand:tech_early_adopters": 0.5,
+    "urn:tag:keyword:brand:premium_pricing": 0.8,
+    "urn:tag:keyword:brand:travel": 0.5
+   },
+   "demographics": {
+    "age": {
+     "24_and_younger": 0.0,
+     "25_to_29": 0.3,
+     "30_to_34": 0.4,
+     "35_to_44": 0.3,
+     "45_to_54": 0.0,
+     "55_and_older": -0.3
+    },
+    "gender": {
+     "male": 0.05,
+     "female": -0.05
+    }
+   },
+   "description": "",
+   "akas": [],
+   "locality": "New York",
+   "neighborhood": "Hudson Yards",
+   "lat": 40.7538,
+   "lon": -74.0022,
+   "address": "20 Hudson Yards, New York, NY"
+  },
+  {
+   "entity_id": "2868B2B7-3BAF-52FA-8CF3-3A4FB97290FC",
+   "name": "Sightglass Coffee",
+   "type": "place",
+   "popularity": 0.8571428571428571,
+   "tags": {
+    "urn:tag:category:place:cafe": 1,
+    "urn:tag:keyword:brand:craft_coffee": 1,
+    "urn:tag:keyword:brand:third_wave_coffee": 1,
+    "urn:tag:keyword:brand:tech_early_adopters": 0.6,
+    "urn:tag:keyword:brand:design_led": 0.6,
+    "urn:tag:keyword:brand:remote_work": 0.6
+   },
+   "demographics": {
+    "age": {
+     "24_and_younger": -0.1,
+     "25_to_29": 0.5,
+     "30_to_34": 0.6,
+     "35_to_44": 0.2,
+     "45_to_54": -0.4,
+     "55_and_older": -0.6
+    },
+    "gender": {
+     "male": 0.2,
+     "female": -0.2
+    }
+   },
+   "description": "",
+   "akas": [],
+   "locality": "San Francisco",
+   "neighborhood": "SoMa",
+   "lat": 37.7769,
+   "lon": -122.4089,
+   "address": "270 7th St, San Francisco, CA"
+  },
+  {
+   "entity_id": "1F506582-E67A-5771-B27C-01A3C7D121F9",
+   "name": "Tartine Manufactory",
+   "type": "place",
+   "popularity": 0.8142857142857143,
+   "tags": {
+    "urn:tag:category:place:cafe": 0.8,
+    "urn:tag:category:place:restaurant": 0.8,
+    "urn:tag:keyword:brand:foodie": 1,
+    "urn:tag:keyword:brand:craft_coffee": 0.7,
+    "urn:tag:keyword:brand:design_led": 0.5
+   },
+   "demographics": {
+    "age": {
+     "24_and_younger": -0.1,
+     "25_to_29": 0.5,
+     "30_to_34": 0.5,
+     "35_to_44": 0.2,
+     "45_to_54": -0.3,
+     "55_and_older": -0.5
+    },
+    "gender": {
+     "male": -0.1,
+     "female": 0.1
+    }
+   },
+   "description": "",
+   "akas": [],
+   "locality": "San Francisco",
+   "neighborhood": "Mission",
+   "lat": 37.7614,
+   "lon": -122.4111,
+   "address": "595 Alabama St, San Francisco, CA"
+  },
+  {
+   "entity_id": "4354CA0A-E641-5A40-88F5-856C5A03E3F8",
+   "name": "Mission Cliffs",
+   "type": "place",
+   "popularity": 0.7285714285714285,
+   "tags": {
+    "urn:tag:category:place:climbing_gym": 1,
+    "urn:tag:keyword:brand:climbing": 1,
+    "urn:tag:keyword:brand:fitness_community": 0.8,
+    "urn:tag:keyword:brand:outdoor_lifestyle": 0.7,
+    "urn:tag:keyword:brand:tech_early_adopters": 0.3
+   },
+   "demographics": {
+    "age": {
+     "24_and_younger": 0.0,
+     "25_to_29": 0.5,
+     "30_to_34": 0.5,
+     "35_to_44": 0.2,
+     "45_to_54": -0.4,
+     "55_and_older": -0.6
+    },
+    "gender": {
+     "male": 0.3,
+     "female": -0.3
+    }
+   },
+   "description": "",
+   "akas": [],
+   "locality": "San Francisco",
+   "neighborhood": "Mission",
+   "lat": 37.7641,
+   "lon": -122.4144,
+   "address": "2295 Harrison St, San Francisco, CA"
+  },
+  {
+   "entity_id": "E2906D6A-CFFF-5F42-94DA-DC1968BAC993",
+   "name": "The Independent",
+   "type": "place",
+   "popularity": 0.6428571428571428,
+   "tags": {
+    "urn:tag:category:place:music_venue": 1,
+    "urn:tag:genre:music:indie_folk": 0.6,
+    "urn:tag:genre:music:psychedelic_rock": 0.6,
+    "urn:tag:genre:music:electronic": 0.4
+   },
+   "demographics": {
+    "age": {
+     "24_and_younger": 0.1,
+     "25_to_29": 0.5,
+     "30_to_34": 0.4,
+     "35_to_44": 0.1,
+     "45_to_54": -0.4,
+     "55_and_older": -0.6
+    },
+    "gender": {
+     "male": 0.2,
+     "female": -0.2
+    }
+   },
+   "description": "",
+   "akas": [],
+   "locality": "San Francisco",
+   "neighborhood": "NoPa",
+   "lat": 37.7756,
+   "lon": -122.4379,
+   "address": "628 Divisadero St, San Francisco, CA"
+  },
+  {
+   "entity_id": "0E2B166E-0884-54DD-924F-5B9D9C96026E",
+   "name": "Dolores Park",
+   "type": "place",
+   "popularity": 0.7285714285714285,
+   "tags": {
+    "urn:tag:category:place:park": 1,
+    "urn:tag:keyword:brand:urban_living": 0.7,
+    "urn:tag:keyword:brand:skate_culture": 0.4,
+    "urn:tag:keyword:brand:family": 0.3,
+    "urn:tag:keyword:brand:running": 0.4
+   },
+   "demographics": {
+    "age": {
+     "24_and_younger": 0.3,
+     "25_to_29": 0.6,
+     "30_to_34": 0.3,
+     "35_to_44": -0.1,
+     "45_to_54": -0.5,
+     "55_and_older": -0.7
+    },
+    "gender": {
+     "male": 0.0,
+     "female": -0.0
+    }
+   },
+   "description": "",
+   "akas": [],
+   "locality": "San Francisco",
+   "neighborhood": "Mission",
+   "lat": 37.7596,
+   "lon": -122.4269,
+   "address": "Dolores St, San Francisco, CA"
+  },
+  {
+   "entity_id": "1B2FA3AE-2676-54D9-B136-277E3F23A692",
+   "name": "Green Apple Books",
+   "type": "place",
+   "popularity": 0.6857142857142857,
+   "tags": {
+    "urn:tag:category:place:bookstore": 1,
+    "urn:tag:keyword:brand:bookish": 1,
+    "urn:tag:keyword:brand:vintage": 0.5,
+    "urn:tag:genre:media:storytelling": 0.4
+   },
+   "demographics": {
+    "age": {
+     "24_and_younger": -0.1,
+     "25_to_29": 0.3,
+     "30_to_34": 0.5,
+     "35_to_44": 0.4,
+     "45_to_54": 0.0,
+     "55_and_older": -0.3
+    },
+    "gender": {
+     "male": -0.05,
+     "female": 0.05
+    }
+   },
+   "description": "",
+   "akas": [],
+   "locality": "San Francisco",
+   "neighborhood": "Inner Richmond",
+   "lat": 37.7831,
+   "lon": -122.466,
+   "address": "506 Clement St, San Francisco, CA"
+  },
+  {
+   "entity_id": "DB0C2EAD-B5C5-5F93-8D68-2715F2394759",
+   "name": "Verve Coffee Roasters",
+   "type": "place",
+   "popularity": 0.7714285714285714,
+   "tags": {
+    "urn:tag:category:place:cafe": 1,
+    "urn:tag:keyword:brand:craft_coffee": 1,
+    "urn:tag:keyword:brand:third_wave_coffee": 0.9,
+    "urn:tag:keyword:brand:design_led": 0.6,
+    "urn:tag:keyword:brand:photography": 0.5,
+    "urn:tag:keyword:brand:streetwear": 0.3
+   },
+   "demographics": {
+    "age": {
+     "24_and_younger": 0.0,
+     "25_to_29": 0.5,
+     "30_to_34": 0.5,
+     "35_to_44": 0.1,
+     "45_to_54": -0.4,
+     "55_and_older": -0.6
+    },
+    "gender": {
+     "male": 0.05,
+     "female": -0.05
+    }
+   },
+   "description": "",
+   "akas": [],
+   "locality": "Los Angeles",
+   "neighborhood": "Arts District",
+   "lat": 34.0403,
+   "lon": -118.2329,
+   "address": "833 S Spring St, Los Angeles, CA"
+  },
+  {
+   "entity_id": "5C2DC448-B967-5956-9DC0-93ADBC076F97",
+   "name": "Abbot Kinney Boulevard",
+   "type": "place",
+   "popularity": 0.6428571428571428,
+   "tags": {
+    "urn:tag:category:place:retail_street": 1,
+    "urn:tag:keyword:brand:design_led": 0.7,
+    "urn:tag:keyword:brand:wellness": 0.6,
+    "urn:tag:keyword:brand:luxury": 0.5,
+    "urn:tag:keyword:brand:clean_beauty": 0.5,
+    "urn:tag:keyword:brand:skate_culture": 0.4
+   },
+   "demographics": {
+    "age": {
+     "24_and_younger": 0.1,
+     "25_to_29": 0.5,
+     "30_to_34": 0.5,
+     "35_to_44": 0.1,
+     "45_to_54": -0.4,
+     "55_and_older": -0.6
+    },
+    "gender": {
+     "male": -0.1,
+     "female": 0.1
+    }
+   },
+   "description": "",
+   "akas": [],
+   "locality": "Los Angeles",
+   "neighborhood": "Venice",
+   "lat": 33.9906,
+   "lon": -118.4663,
+   "address": "Abbot Kinney Blvd, Venice, CA"
+  },
+  {
+   "entity_id": "EBCAAA93-DA1D-54C1-9660-8426BB3CD91C",
+   "name": "Runyon Canyon Park",
+   "type": "place",
+   "popularity": 0.6,
+   "tags": {
+    "urn:tag:category:place:park": 1,
+    "urn:tag:keyword:brand:hiking": 0.9,
+    "urn:tag:keyword:brand:running": 0.7,
+    "urn:tag:keyword:brand:wellness": 0.6,
+    "urn:tag:keyword:brand:fitness_community": 0.6,
+    "urn:tag:keyword:brand:outdoor_lifestyle": 0.6
+   },
+   "demographics": {
+    "age": {
+     "24_and_younger": 0.1,
+     "25_to_29": 0.5,
+     "30_to_34": 0.4,
+     "35_to_44": 0.1,
+     "45_to_54": -0.4,
+     "55_and_older": -0.6
+    },
+    "gender": {
+     "male": -0.05,
+     "female": 0.05
+    }
+   },
+   "description": "",
+   "akas": [],
+   "locality": "Los Angeles",
+   "neighborhood": "Hollywood Hills",
+   "lat": 34.1106,
+   "lon": -118.3496,
+   "address": "2000 N Fuller Ave, Los Angeles, CA"
+  },
+  {
+   "entity_id": "33C16D3A-DCCE-5B31-B14E-C1D2348194CE",
+   "name": "The Last Bookstore",
+   "type": "place",
+   "popularity": 0.6,
+   "tags": {
+    "urn:tag:category:place:bookstore": 1,
+    "urn:tag:keyword:brand:bookish": 1,
+    "urn:tag:keyword:brand:vintage": 0.7,
+    "urn:tag:keyword:brand:photography": 0.6,
+    "urn:tag:keyword:brand:design_led": 0.4
+   },
+   "demographics": {
+    "age": {
+     "24_and_younger": 0.2,
+     "25_to_29": 0.5,
+     "30_to_34": 0.4,
+     "35_to_44": 0.1,
+     "45_to_54": -0.4,
+     "55_and_older": -0.6
+    },
+    "gender": {
+     "male": 0.0,
+     "female": -0.0
+    }
+   },
+   "description": "",
+   "akas": [],
+   "locality": "Los Angeles",
+   "neighborhood": "Downtown",
+   "lat": 34.0479,
+   "lon": -118.2498,
+   "address": "453 S Spring St, Los Angeles, CA"
+  },
+  {
+   "entity_id": "7E8115A2-4370-537D-9E00-60C87AA6BFDF",
+   "name": "Erewhon Venice",
+   "type": "place",
+   "popularity": 0.6857142857142857,
+   "tags": {
+    "urn:tag:category:place:grocery": 1,
+    "urn:tag:keyword:brand:wellness": 1,
+    "urn:tag:keyword:brand:luxury": 0.7,
+    "urn:tag:keyword:brand:plant_based": 0.7,
+    "urn:tag:keyword:brand:premium_pricing": 0.9,
+    "urn:tag:keyword:brand:yoga": 0.5
+   },
+   "demographics": {
+    "age": {
+     "24_and_younger": 0.2,
+     "25_to_29": 0.6,
+     "30_to_34": 0.4,
+     "35_to_44": 0.0,
+     "45_to_54": -0.4,
+     "55_and_older": -0.6
+    },
+    "gender": {
+     "male": -0.3,
+     "female": 0.3
+    }
+   },
+   "description": "",
+   "akas": [],
+   "locality": "Los Angeles",
+   "neighborhood": "Venice",
+   "lat": 33.9931,
+   "lon": -118.4712,
+   "address": "585 Venice Blvd, Venice, CA"
+  },
+  {
+   "entity_id": "D7943037-2112-5551-B12B-17237D88422D",
+   "name": "The Fonda Theatre",
+   "type": "place",
+   "popularity": 0.6428571428571428,
+   "tags": {
+    "urn:tag:category:place:music_venue": 1,
+    "urn:tag:genre:music:pop": 0.6,
+    "urn:tag:genre:music:hip_hop": 0.5,
+    "urn:tag:genre:music:psychedelic_rock": 0.4
+   },
+   "demographics": {
+    "age": {
+     "24_and_younger": 0.4,
+     "25_to_29": 0.5,
+     "30_to_34": 0.2,
+     "35_to_44": -0.2,
+     "45_to_54": -0.6,
+     "55_and_older": -0.7
+    },
+    "gender": {
+     "male": 0.1,
+     "female": -0.1
+    }
+   },
+   "description": "",
+   "akas": [],
+   "locality": "Los Angeles",
+   "neighborhood": "Hollywood",
+   "lat": 34.1018,
+   "lon": -118.3263,
+   "address": "6126 Hollywood Blvd, Los Angeles, CA"
+  },
+  {
+   "entity_id": "F0E5D934-D8D5-5443-890D-C0D3CBE54829",
+   "name": "Coava Coffee Roasters",
+   "type": "place",
+   "popularity": 0.8571428571428571,
+   "tags": {
+    "urn:tag:category:place:cafe": 1,
+    "urn:tag:keyword:brand:craft_coffee": 1,
+    "urn:tag:keyword:brand:third_wave_coffee": 1,
+    "urn:tag:keyword:brand:minimalism": 0.7,
+    "urn:tag:keyword:brand:cycling": 0.4,
+    "urn:tag:keyword:brand:design_led": 0.5
+   },
+   "demographics": {
+    "age": {
+     "24_and_younger": 0.0,
+     "25_to_29": 0.5,
+     "30_to_34": 0.5,
+     "35_to_44": 0.2,
+     "45_to_54": -0.4,
+     "55_and_older": -0.6
+    },
+    "gender": {
+     "male": 0.15,
+     "female": -0.15
+    }
+   },
+   "description": "",
+   "akas": [],
+   "locality": "Portland",
+   "neighborhood": "Buckman",
+   "lat": 45.5162,
+   "lon": -122.6557,
+   "address": "1300 SE Grand Ave, Portland, OR"
+  },
+  {
+   "entity_id": "D1286792-9E50-5E67-B14D-CE6AF3BBB346",
+   "name": "Powell's City of Books",
+   "type": "place",
+   "popularity": 0.7714285714285714,
+   "tags": {
+    "urn:tag:category:place:bookstore": 1,
+    "urn:tag:keyword:brand:bookish": 1,
+    "urn:tag:keyword:brand:vintage": 0.5,
+    "urn:tag:genre:media:storytelling": 0.5,
+    "urn:tag:keyword:brand:family": 0.3
+   },
+   "demographics": {
+    "age": {
+     "24_and_younger": -0.1,
+     "25_to_29": 0.3,
+     "30_to_34": 0.4,
+     "35_to_44": 0.4,
+     "45_to_54": 0.1,
+     "55_and_older": -0.2
+    },
+    "gender": {
+     "male": -0.05,
+     "female": 0.05
+    }
+   },
+   "description": "",
+   "akas": [
+    "Powell's Books"
+   ],
+   "locality": "Portland",
+   "neighborhood": "Pearl District",
+   "lat": 45.5231,
+   "lon": -122.6813,
+   "address": "1005 W Burnside St, Portland, OR"
+  },
+  {
+   "entity_id": "EA950B80-760A-59B8-93FF-A9F1F0877ECE",
+   "name": "Forest Park",
+   "type": "place",
+   "popularity": 0.7285714285714285,
+   "tags": {
+    "urn:tag:category:place:park": 1,
+    "urn:tag:keyword:brand:hiking": 1,
+    "urn:tag:keyword:brand:trail_running": 0.8,
+    "urn:tag:keyword:brand:outdoor_lifestyle": 0.9,
+    "urn:tag:keyword:brand:family": 0.4
+   },
+   "demographics": {
+    "age": {
+     "24_and_younger": -0.1,
+     "25_to_29": 0.3,
+     "30_to_34": 0.5,
+     "35_to_44": 0.4,
+     "45_to_54": 0.0,
+     "55_and_older": -0.3
+    },
+    "gender": {
+     "male": 0.15,
+     "female": -0.15
+    }
+   },
+   "description": "",
+   "akas": [],
+   "locality": "Portland",
+   "neighborhood": "Northwest",
+   "lat": 45.5549,
+   "lon": -122.7549,
+   "address": "Portland, OR"
+  },
+  {
+   "entity_id": "93329BFA-898D-54EC-8363-8F2991F71DE9",
+   "name": "Mississippi Studios",
+   "type": "place",
+   "popularity": 0.7285714285714285,
+   "tags": {
+    "urn:tag:category:place:music_venue": 1,
+    "urn:tag:genre:music:indie_folk": 0.8,
+    "urn:tag:genre:music:psychedelic_rock": 0.5,
+    "urn:tag:keyword:brand:craft_coffee": 0.3
+   },
+   "demographics": {
+    "age": {
+     "24_and_younger": 0.0,
+     "25_to_29": 0.5,
+     "30_to_34": 0.5,
+     "35_to_44": 0.2,
+     "45_to_54": -0.4,
+     "55_and_older": -0.6
+    },
+    "gender": {
+     "male": 0.15,
+     "female": -0.15
+    }
+   },
+   "description": "",
+   "akas": [],
+   "locality": "Portland",
+   "neighborhood": "Boise",
+   "lat": 45.5516,
+   "lon": -122.6753,
+   "address": "3939 N Mississippi Ave, Portland, OR"
+  }
+ ],
+ "localities": {
+  "new york": {
+   "entity_id": "3F8DC08E-E945-5ED4-BB3C-24ADC8CE1A0F",
+   "name": "New York",
+   "akas": [
+    "nyc",
+    "new york city",
+    "manhattan",
+    "brooklyn",
+    "the big apple"
+   ],
+   "lat": 40.7128,
+   "lon": -74.006,
+   "neighborhoods": [
+    {
+     "name": "Williamsburg",
+     "lat": 40.714,
+     "lon": -73.961,
+     "popularity": 0.95,
+     "tags": {
+      "urn:tag:keyword:brand:craft_coffee": 1,
+      "urn:tag:keyword:brand:design_led": 0.8,
+      "urn:tag:genre:music:indie_folk": 0.6,
+      "urn:tag:keyword:brand:vintage": 0.6,
+      "urn:tag:keyword:brand:urban_living": 0.8,
+      "urn:tag:keyword:brand:streetwear": 0.4
+     }
+    },
+    {
+     "name": "Bushwick",
+     "lat": 40.6958,
+     "lon": -73.9171,
+     "popularity": 0.85,
+     "tags": {
+      "urn:tag:genre:music:electronic": 0.9,
+      "urn:tag:keyword:brand:streetwear": 0.7,
+      "urn:tag:keyword:brand:skate_culture": 0.5,
+      "urn:tag:keyword:brand:foodie": 0.6,
+      "urn:tag:keyword:brand:craft_coffee": 0.6,
+      "urn:tag:keyword:brand:photography": 0.6
+     }
+    },
+    {
+     "name": "Gowanus",
+     "lat": 40.6742,
+     "lon": -73.989,
+     "popularity": 0.6,
+     "tags": {
+      "urn:tag:keyword:brand:climbing": 0.8,
+      "urn:tag:keyword:brand:plant_based": 0.6,
+      "urn:tag:keyword:brand:design_led": 0.6,
+      "urn:tag:keyword:brand:sustainability": 0.6,
+      "urn:tag:keyword:brand:cycling": 0.5
+     }
+    },
+    {
+     "name": "Park Slope",
+     "lat": 40.671,
+     "lon": -73.9814,
+     "popularity": 0.8,
+     "tags": {
+      "urn:tag:keyword:brand:family": 1,
+      "urn:tag:keyword:brand:bookish": 0.7,
+      "urn:tag:keyword:brand:running": 0.6,
+      "urn:tag:keyword:brand:sustainability": 0.6,
+      "urn:tag:keyword:brand:foodie": 0.5,
+      "urn:tag:keyword:brand:outdoor_lifestyle": 0.4
+     }
+    },
+    {
+     "name": "SoHo",
+     "lat": 40.7233,
+     "lon": -74.003,
+     "popularity": 1.0,
+     "tags": {
+      "urn:tag:keyword:brand:luxury": 0.9,
+      "urn:tag:keyword:brand:design_led": 0.8,
+      "urn:tag:keyword:brand:streetwear": 0.7,
+      "urn:tag:keyword:brand:clean_beauty": 0.6,
+      "urn:tag:keyword:brand:premium_pricing": 0.8,
+      "urn:tag:keyword:brand:limited_drops": 0.6
+     }
+    },
+    {
+     "name": "Lower East Side",
+     "lat": 40.715,
+     "lon": -73.9843,
+     "popularity": 0.9,
+     "tags": {
+      "urn:tag:keyword:brand:streetwear": 0.8,
+      "urn:tag:genre:music:hip_hop": 0.6,
+      "urn:tag:keyword:brand:vintage": 0.6,
+      "urn:tag:category:place:music_venue": 0.5,
+      "urn:tag:keyword:brand:foodie": 0.6,
+      "urn:tag:keyword:brand:skate_culture": 0.5
+     }
+    },
+    {
+     "name": "Upper West Side",
+     "lat": 40.787,
+     "lon": -73.9754,
+     "popularity": 0.8,
+     "tags": {
+      "urn:tag:keyword:brand:family": 0.9,
+      "urn:tag:keyword:brand:bookish": 0.7,
+      "urn:tag:keyword:brand:running": 0.5,
+      "urn:tag:keyword:brand:wellness": 0.5,
+      "urn:tag:keyword:brand:premium_pricing": 0.5
+     }
+    },
+    {
+     "name": "Chelsea",
+     "lat": 40.7465,
+     "lon": -74.0014,
+     "popularity": 0.9,
+     "tags": {
+      "urn:tag:keyword:brand:design_led": 0.8,
+      "urn:tag:keyword:brand:luxury": 0.7,
+      "urn:tag:keyword:brand:fitness_community": 0.6,
+      "urn:tag:keyword:brand:photography": 0.6,
+      "urn:tag:keyword:brand:wellness": 0.5
+     }
+    },
+    {
+     "name": "Astoria",
+     "lat": 40.7644,
+     "lon": -73.9235,
+     "popularity": 0.7,
+     "tags": {
+      "urn:tag:keyword:brand:foodie": 0.9,
+      "urn:tag:keyword:brand:family": 0.5,
+      "urn:tag:keyword:brand:value_pricing": 0.5,
+      "urn:tag:keyword:brand:urban_living": 0.6,
+      "urn:tag:keyword:brand:craft_coffee": 0.4
+     }
+    }
+   ]
+  },
+  "san francisco": {
+   "entity_id": "A7B1AB1F-6FB4-5845-98F5-04068E0A9756",
+   "name": "San Francisco",
+   "akas": [
+    "sf",
+    "san fran",
+    "bay area"
+   ],
+   "lat": 37.7749,
+   "lon": -122.4194,
+   "neighborhoods": [
+    {
+     "name": "Mission",
+     "lat": 37.7599,
+     "lon": -122.4148,
+     "popularity": 0.95,
+     "tags": {
+      "urn:tag:keyword:brand:foodie": 0.9,
+      "urn:tag:keyword:brand:craft_coffee": 0.8,
+      "urn:tag:keyword:brand:skate_culture": 0.5,
+      "urn:tag:keyword:brand:vintage": 0.6,
+      "urn:tag:keyword:brand:climbing": 0.5,
+      "urn:tag:keyword:brand:urban_living": 0.8
+     }
+    },
+    {
+     "name": "SoMa",
+     "lat": 37.7785,
+     "lon": -122.4056,
+     "popularity": 0.8,
+     "tags": {
+      "urn:tag:keyword:brand:tech_early_adopters": 1,
+      "urn:tag:keyword:brand:remote_work": 0.8,
+      "urn:tag:keyword:brand:craft_coffee": 0.7,
+      "urn:tag:keyword:brand:fitness_community": 0.5
+     }
+    },
+    {
+     "name": "Hayes Valley",
+     "lat": 37.7759,
+     "lon": -122.4245,
+     "popularity": 0.85,
+     "tags": {
+      "urn:tag:keyword:brand:design_led": 0.9,
+      "urn:tag:keyword:brand:clean_beauty": 0.6,
+      "urn:tag:keyword:brand:luxury": 0.5,
+      "urn:tag:keyword:brand:craft_coffee": 0.7,
+      "urn:tag:keyword:brand:minimalism": 0.6
+     }
+    },
+    {
+     "name": "Marina",
+     "lat": 37.8037,
+     "lon": -122.4368,
+     "popularity": 0.8,
+     "tags": {
+      "urn:tag:keyword:brand:fitness_community": 0.9,
+      "urn:tag:keyword:brand:running": 0.8,
+      "urn:tag:keyword:brand:wellness": 0.7,
+      "urn:tag:keyword:brand:yoga": 0.6,
+      "urn:tag:keyword:brand:premium_pricing": 0.6
+     }
+    },
+    {
+     "name": "Outer Sunset",
+     "lat": 37.753,
+     "lon": -122.494,
+     "popularity": 0.6,
+     "tags": {
+      "urn:tag:keyword:brand:outdoor_lifestyle": 0.9,
+      "urn:tag:keyword:brand:van_life": 0.5,
+      "urn:tag:keyword:brand:craft_coffee": 0.6,
+      "urn:tag:keyword:brand:sustainability": 0.6,
+      "urn:tag:keyword:brand:photography": 0.5
+     }
+    },
+    {
+     "name": "Inner Richmond",
+     "lat": 37.78,
+     "lon": -122.465,
+     "popularity": 0.6,
+     "tags": {
+      "urn:tag:keyword:brand:bookish": 0.7,
+      "urn:tag:keyword:brand:foodie": 0.7,
+      "urn:tag:keyword:brand:family": 0.6,
+      "urn:tag:keyword:brand:hiking": 0.5
+     }
+    }
+   ]
+  },
+  "los angeles": {
+   "entity_id": "6315F798-3DF0-5BA3-915D-A60DE32C0D5E",
+   "name": "Los Angeles",
+   "akas": [
+    "la",
+    "l.a.",
+    "los angeles city"
+   ],
+   "lat": 34.0522,
+   "lon": -118.2437,
+   "neighborhoods": [
+    {
+     "name": "Venice",
+     "lat": 33.985,
+     "lon": -118.4695,
+     "popularity": 0.9,
+     "tags": {
+      "urn:tag:keyword:brand:wellness": 0.9,
+      "urn:tag:keyword:brand:skate_culture": 0.7,
+      "urn:tag:keyword:brand:design_led": 0.6,
+      "urn:tag:keyword:brand:luxury": 0.5,
+      "urn:tag:keyword:brand:plant_based": 0.6,
+      "urn:tag:keyword:brand:yoga": 0.6
+     }
+    },
+    {
+     "name": "Silver Lake",
+     "lat": 34.0869,
+     "lon": -118.2702,
+     "popularity": 0.85,
+     "tags": {
+      "urn:tag:genre:music:indie_folk": 0.8,
+      "urn:tag:keyword:brand:vintage": 0.7,
+      "urn:tag:keyword:brand:craft_coffee": 0.8,
+      "urn:tag:genre:music:psychedelic_rock": 0.6,
+      "urn:tag:keyword:brand:bookish": 0.5
+     }
+    },
+    {
+     "name": "Arts District",
+     "lat": 34.0403,
+     "lon": -118.2329,
+     "popularity": 0.8,
+     "tags": {
+      "urn:tag:keyword:brand:design_led": 0.8,
+      "urn:tag:keyword:brand:streetwear": 0.7,
+      "urn:tag:keyword:brand:craft_coffee": 0.7,
+      "urn:tag:keyword:brand:photography": 0.6,
+      "urn:tag:keyword:brand:foodie": 0.6
+     }
+    },
+    {
+     "name": "Hollywood",
+     "lat": 34.0928,
+     "lon": -118.3287,
+     "popularity": 1.0,
+     "tags": {
+      "urn:tag:genre:music:pop": 0.9,
+      "urn:tag:category:place:music_venue": 0.7,
+      "urn:tag:genre:music:hip_hop": 0.5,
+      "urn:tag:keyword:brand:travel": 0.6
+     }
+    },
+    {
+     "name": "Santa Monica",
+     "lat": 34.0195,
+     "lon": -118.4912,
+     "popularity": 0.9,
+     "tags": {
+      "urn:tag:keyword:brand:running": 0.8,
+      "urn:tag:keyword:brand:wellness": 0.7,
+      "urn:tag:keyword:brand:family": 0.6,
+      "urn:tag:keyword:brand:cycling": 0.6,
+      "urn:tag:keyword:brand:outdoor_lifestyle": 0.6
+     }
+    },
+    {
+     "name": "Highland Park",
+     "lat": 34.1115,
+     "lon": -118.192,
+     "popularity": 0.7,
+     "tags": {
+      "urn:tag:keyword:brand:vintage": 0.8,
+      "urn:tag:keyword:brand:craft_coffee": 0.6,
+      "urn:tag:genre:music:indie_folk": 0.6,
+      "urn:tag:keyword:brand:foodie": 0.6,
+      "urn:tag:keyword:brand:cycling": 0.4
+     }
+    },
+    {
+     "name": "Pasadena",
+     "lat": 34.1478,
+     "lon": -118.1445,
+     "popularity": 0.7,
+     "tags": {
+      "urn:tag:keyword:brand:family": 0.9,
+      "urn:tag:keyword:brand:hiking": 0.6,
+      "urn:tag:keyword:brand:bookish": 0.5,
+      "urn:tag:genre:media:science": 0.5
+     }
+    }
+   ]
+  },
+  "portland": {
+   "entity_id": "518E5909-38E2-5AB6-968C-7A5F76609BBD",
+   "name": "Portland",
+   "akas": [
+    "portland or",
+    "portland oregon",
+    "pdx"
+   ],
+   "lat": 45.5152,
+   "lon": -122.6784,
+   "neighborhoods": [
+    {
+     "name": "Pearl District",
+     "lat": 45.5285,
+     "lon": -122.683,
+     "popularity": 0.9,
+     "tags": {
+      "urn:tag:keyword:brand:design_led": 0.8,
+      "urn:tag:keyword:brand:bookish": 0.7,
+      "urn:tag:keyword:brand:luxury": 0.5,
+      "urn:tag:keyword:brand:craft_coffee": 0.7
+     }
+    },
+    {
+     "name": "Alberta Arts",
+     "lat": 45.559,
+     "lon": -122.648,
+     "popularity": 0.75,
+     "tags": {
+      "urn:tag:keyword:brand:vintage": 0.8,
+      "urn:tag:genre:music:indie_folk": 0.7,
+      "urn:tag:keyword:brand:foodie": 0.7,
+      "urn:tag:keyword:brand:craft_coffee": 0.7,
+      "urn:tag:keyword:brand:photography": 0.5
+     }
+    },
+    {
+     "name": "Hawthorne",
+     "lat": 45.512,
+     "lon": -122.636,
+     "popularity": 0.8,
+     "tags": {
+      "urn:tag:keyword:brand:vintage": 0.9,
+      "urn:tag:keyword:brand:bookish": 0.6,
+      "urn:tag:keyword:brand:sustainability": 0.7,
+      "urn:tag:keyword:brand:cycling": 0.7,
+      "urn:tag:keyword:brand:plant_based": 0.5
+     }
+    },
+    {
+     "name": "St. Johns",
+     "lat": 45.5897,
+     "lon": -122.7536,
+     "popularity": 0.5,
+     "tags": {
+      "urn:tag:keyword:brand:outdoor_lifestyle": 0.8,
+      "urn:tag:keyword:brand:family": 0.6,
+      "urn:tag:keyword:brand:hiking": 0.6,
+      "urn:tag:keyword:brand:van_life": 0.5
+     }
+    },
+    {
+     "name": "Mississippi",
+     "lat": 45.55,
+     "lon": -122.675,
+     "popularity": 0.75,
+     "tags": {
+      "urn:tag:genre:music:indie_folk": 0.8,
+      "urn:tag:category:place:music_venue": 0.7,
+      "urn:tag:keyword:brand:craft_coffee": 0.7,
+      "urn:tag:keyword:brand:cycling": 0.5
+     }
+    }
+   ]
+  },
+  "london": {
+   "entity_id": "3D491161-AFB9-5A36-9433-F176A50BCF02",
+   "name": "London",
+   "akas": [
+    "london uk",
+    "greater london"
+   ],
+   "lat": 51.5074,
+   "lon": -0.1278,
+   "neighborhoods": [
+    {
+     "name": "Shoreditch",
+     "lat": 51.526,
+     "lon": -0.077,
+     "popularity": 0.95,
+     "tags": {
+      "urn:tag:keyword:brand:streetwear": 0.8,
+      "urn:tag:keyword:brand:design_led": 0.8,
+      "urn:tag:keyword:brand:craft_coffee": 0.8,
+      "urn:tag:genre:music:electronic": 0.6,
+      "urn:tag:keyword:brand:vintage": 0.6
+     }
+    },
+    {
+     "name": "Hackney",
+     "lat": 51.545,
+     "lon": -0.055,
+     "popularity": 0.8,
+     "tags": {
+      "urn:tag:keyword:brand:vintage": 0.8,
+      "urn:tag:keyword:brand:craft_coffee": 0.7,
+      "urn:tag:keyword:brand:plant_based": 0.6,
+      "urn:tag:keyword:brand:cycling": 0.7,
+      "urn:tag:genre:music:indie_folk": 0.5
+     }
+    },
+    {
+     "name": "Peckham",
+     "lat": 51.474,
+     "lon": -0.069,
+     "popularity": 0.7,
+     "tags": {
+      "urn:tag:category:place:music_venue": 0.8,
+      "urn:tag:genre:music:hip_hop": 0.6,
+      "urn:tag:genre:music:electronic": 0.6,
+      "urn:tag:keyword:brand:foodie": 0.6,
+      "urn:tag:keyword:brand:photography": 0.5
+     }
+    },
+    {
+     "name": "Notting Hill",
+     "lat": 51.516,
+     "lon": -0.205,
+     "popularity": 0.85,
+     "tags": {
+      "urn:tag:keyword:brand:luxury": 0.8,
+      "urn:tag:keyword:brand:clean_beauty": 0.6,
+      "urn:tag:keyword:brand:family": 0.5,
+      "urn:tag:keyword:brand:premium_pricing": 0.7,
+      "urn:tag:keyword:brand:bookish": 0.5
+     }
+    },
+    {
+     "name": "Richmond",
+     "lat": 51.4613,
+     "lon": -0.3037,
+     "popularity": 0.6,
+     "tags": {
+      "urn:tag:keyword:brand:family": 0.9,
+      "urn:tag:keyword:brand:running": 0.7,
+      "urn:tag:keyword:brand:outdoor_lifestyle": 0.7,
+      "urn:tag:keyword:brand:cycling": 0.6
+     }
+    }
+   ]
+  }
+ }
+}

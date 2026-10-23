@@ -52,7 +52,7 @@
       const q = input.value.trim();
       if (q.length < 2) { box.hidden = true; return; }
       timer = setTimeout(async () => {
-        if (q === last) return; last = q;
+        if (q === last || document.activeElement !== input) return; last = q;
         try {
           const r = await fetch("/api/resolve", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ query: q }) });
           if (!r.ok) return;

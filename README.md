@@ -1,15 +1,3 @@
----
-title: Taste-Fit
-emoji: 🎯
-colorFrom: red
-colorTo: blue
-sdk: docker
-app_port: 7860
-pinned: false
-license: mit
-short_description: Brand partnership agent on Qloo Taste AI
----
-
 # Taste-Fit — a brand-partnership agent built on Qloo Taste AI
 
 **Will these two audiences actually click?** Give Taste-Fit two brands (or a brand and an artist, podcast, venue, destination…) and it asks the Qloo Insights API what their fans share, where they differ, and what fans of *both* over-index on. It then
@@ -87,15 +75,13 @@ Without `QLOO_API_KEY` the app runs on demo data and the header badge says so. H
 
 `python scripts/smoke_live.py` exercises every live call shape once a key exists (about 8 requests) and prints the raw shape of the compare response.
 
-### Docker / Hugging Face Space
+### Docker / Render (free)
 
 ```bash
 docker build -t taste-fit . && docker run -p 7860:7860 -e QLOO_API_KEY=... taste-fit
-# or, with a write token:
-HF_TOKEN=... QLOO_API_KEY=... python deploy/hf_space.py --space <you>/taste-fit
 ```
 
-The deploy script creates a Docker Space, stores keys as Space **secrets**, uploads the app and prints the URL. `.github/workflows/keepalive.yml` pings the Space twice a day if the repo variable `DEMO_URL` is set.
+The hosted demo runs on Render's free web service from `render.yaml` (Blueprint): Render dashboard → **New → Blueprint** → this repo. Render asks for `QLOO_API_KEY` once and stores it as a service secret; nothing is committed. The container listens on Render's `PORT` and answers `/healthz`. Free services sleep after 15 minutes without traffic, so `.github/workflows/keepalive.yml` pings `/healthz` every 10 minutes when the repo variable `DEMO_URL` is set.
 
 ### Configuration
 
@@ -151,7 +137,7 @@ app/agent/llm/           Anthropic SDK provider, OpenAI-compatible provider
 app/main.py              FastAPI app, SSE, rate limiting
 web/                     UI (index.html, styles.css, app.js, Leaflet map)
 tests/                   38 tests (scoring, mock, live adapter with fake transport, API, agent loop, review regressions)
-deploy/hf_space.py       Hugging Face Space deployment
+render.yaml              Render Blueprint for the hosted demo
 ```
 
 Built for the Qloo Agentic Hackathon · MIT License.

@@ -1,9 +1,9 @@
-# Taste-Fit: FastAPI app + static UI. Runs on Hugging Face Spaces (Docker, port 7860) or anywhere.
+# Taste-Fit: FastAPI app + static UI. Runs on Render (Docker, listens on $PORT) or anywhere Docker runs.
 FROM python:3.13-slim
 
 ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 PIP_NO_CACHE_DIR=1 PORT=7860
 
-# Non-root user (required by Hugging Face Spaces)
+# Non-root user
 RUN useradd -m -u 1000 app
 WORKDIR /home/app/taste-fit
 

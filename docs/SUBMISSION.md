@@ -40,9 +40,9 @@ Entity ids are shortened; no key, no raw payloads. The same ledger is rendered a
 
 ## Demo
 
-* Hosted app: see the Devpost submission (Hugging Face Space, Docker, free tier). The header badge shows whether the run used live Qloo data or demo data.
+* Hosted app: see the Devpost submission (Render free web service, Docker). The header badge shows whether the run used live Qloo data or demo data.
 * Screenshots: `docs/screenshots/home.png`, `docs/screenshots/fit-check.png`, `docs/screenshots/partner-scout.png`.
-* No credentials are needed to use the demo. The key is a Space secret on the server.
+* No credentials are needed to use the demo. The key is a Render service secret on the server.
 
 ## Setup in a clean environment
 

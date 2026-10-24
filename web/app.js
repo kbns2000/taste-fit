@@ -3,6 +3,7 @@
   "use strict";
   const $ = (sel, root) => (root || document).querySelector(sel);
   const $$ = (sel, root) => Array.from((root || document).querySelectorAll(sel));
+  const fmt2 = (v) => (typeof v === "number" && isFinite(v) ? v.toFixed(2) : "–");
   const esc = (s) => String(s == null ? "" : s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   const pct = (v) => Math.max(0, Math.min(100, Number(v) || 0));
 
@@ -259,7 +260,7 @@
     if (!hasMap) { card.hidden = true; return; }
     card.hidden = false;
     $("#map-title").textContent = `Where the joint audience lives · ${res.city}`;
-    $("#zones").innerHTML = (res.zones || []).map((z, i) => `<li>Zone ${i + 1}${z.near_area ? " · " + esc(z.near_area) : ""}${z.near ? " (near " + esc(z.near) + ")" : ""} — affinity ${z.affinity}, popularity ${z.popularity} <span class="cite" data-cite="${esc(res.zone_cites.join(","))}">${esc(res.zone_cites.join(" "))}</span></li>`).join("");
+    $("#zones").innerHTML = (res.zones || []).map((z, i) => `<li>Zone ${i + 1}${z.near_area ? " · " + esc(z.near_area) : ""}${z.near ? " (near " + esc(z.near) + ")" : ""} — affinity ${fmt2(z.affinity)}, popularity ${fmt2(z.popularity)} <span class="cite" data-cite="${esc(res.zone_cites.join(","))}">${esc(res.zone_cites.join(" "))}</span></li>`).join("");
     if (typeof L === "undefined") { $("#map").innerHTML = '<p class="muted small" style="padding:1rem">Map library could not load; hot zones are listed below.</p>'; return; }
     if (!state.map) {
       state.map = L.map("map", { scrollWheelZoom: false });
@@ -274,7 +275,7 @@
     });
     (res.zones || []).forEach((z, i) => {
       const l = L.circleMarker([z.lat, z.lon], { radius: 10, color: "#2fa36b", weight: 3, fillColor: "#fff", fillOpacity: 1 }).addTo(state.map)
-        .bindTooltip(`Hot zone ${i + 1}${z.near ? " · near " + esc(z.near) : ""} · affinity ${z.affinity}`);
+        .bindTooltip(`Hot zone ${i + 1}${z.near ? " · near " + esc(z.near) : ""} · affinity ${fmt2(z.affinity)}`);
       state.layers.push(l); bounds.push([z.lat, z.lon]);
     });
     (res.picks.place || []).forEach((p) => {

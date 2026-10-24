@@ -16,7 +16,8 @@ from pydantic import BaseModel, Field, ValidationError
 from ..qloo.models import QlooError, QuotaExceeded
 from .llm.base import LLMError, LLMProvider, Message, ToolResult
 from .prompts import SYSTEM_PROMPT, tool_result_text, user_instruction
-from .tools import FINALIZE_TOOL, LLM_TOOL_SPECS, RunCapExceeded, ToolBox, clip_to_city, hot_zones, pick_summary
+from .tools import (ACTIVATION_TYPES, FINALIZE_TOOL, LLM_TOOL_SPECS, RunCapExceeded, ToolBox, clip_to_city, hot_zones,
+                    pick_summary)
 
 Emit = Callable[[str, dict[str, Any]], None]
 

@@ -133,3 +133,17 @@ def test_openai_compat_provider_parses_tool_calls():
     out = p.complete("sys", [Message("user", "hi")], [{"name": "find_tags", "description": "d", "input_schema": {"type": "object", "properties": {}}}])
     assert out.stop_reason == "tool_use" and out.tool_calls[0].name == "find_tags"
     assert out.tool_calls[0].input == {"query": "coffee"}
+
+
+def test_writer_tools_run_against_the_toolbox():
+    """The LLM's recommend tool used ACTIVATION_TYPES without importing it, so every call failed."""
+    from app.agent.tools import ToolBox
+    from app.agent.writer import _run_tool
+
+    toolbox = ToolBox(MockQlooClient(), Ledger(), max_calls=16)
+    a, b = toolbox.resolve("Patagonia"), toolbox.resolve("Bon Iver")
+    ctx = {"a": {"entity_id": a.entity_id}, "b": {"entity_id": b.entity_id}, "picks": {}, "pick_cites": {}}
+    out = _run_tool("recommend", {"target_type": "place", "city": "New York", "take": 4}, toolbox, ctx)
+    assert out["results"] and out["ledger_ids"] and ctx["picks"]["place"]
+    out = _run_tool("heatmap", {"city": "New York"}, toolbox, ctx)
+    assert out["hot_zones"] and ctx["heatmap_clip"]["total"] == out["cells"]

@@ -58,7 +58,7 @@ python -m venv .venv && . .venv/bin/activate
 pip install -r requirements-dev.txt
 export QLOO_API_KEY=...                     # optional; without it the app runs on demo data and says so
 uvicorn app.main:app --port 7860            # http://127.0.0.1:7860
-python -m pytest                            # 51 tests, no network
+python -m pytest                            # 52 tests, no network
 ```
 
 ## Safe-use checklist (from the kit)

@@ -71,7 +71,7 @@ pip install -r requirements-dev.txt
 cp .env.example .env                               # fill QLOO_API_KEY (and optionally an LLM key)
 set -a; . ./.env; set +a                           # or export the variables your own way
 uvicorn app.main:app --reload --port 7860          # open http://127.0.0.1:7860
-python -m pytest                                   # 51 tests, mock data, no network
+python -m pytest                                   # 52 tests, mock data, no network
 ```
 
 Without `QLOO_API_KEY` the app runs on demo data and the header badge says so. Hackathon keys use `https://hackathon.api.qloo.com` (the default); production keys set `QLOO_BASE_URL=https://api.qloo.com`.
@@ -140,7 +140,7 @@ app/agent/pipeline.py    fit check / partner scout orchestration
 app/agent/llm/           Anthropic SDK provider, OpenAI-compatible provider
 app/main.py              FastAPI app, SSE, rate limiting
 web/                     UI (index.html, styles.css, app.js, Leaflet map)
-tests/                   51 tests (scoring, mock, live adapter with fake transport, API, agent loop, review regressions)
+tests/                   52 tests (scoring, mock, live adapter with fake transport, API, agent loop, review regressions)
 render.yaml              Render Blueprint for the hosted demo
 ```
 

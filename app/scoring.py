@@ -14,7 +14,10 @@ audience embeddings and separates related from unrelated pairs (2026-10-24 probe
 
 from __future__ import annotations
 
+import json
 import math
+import re
+from pathlib import Path
 from typing import Optional
 
 from pydantic import BaseModel, Field
@@ -94,14 +97,39 @@ def _cosine(a: dict[str, float], b: dict[str, float]) -> float:
 
 
 # Tag families that describe venues or payment, not taste; live top-50 lists for unrelated audiences all
-# carry some of them ("Three Star", "Discover", "Inexpensive"), which inflates overlap.
+# carry some of them ("Three Star", "Discover", "Inexpensive", "Identifies as women-owned"), which inflates overlap.
 NON_TASTE_TAG_KINDS = {"urn:tag:hotel_rating", "urn:tag:credit_card", "urn:tag:cost_description",
-                       "urn:tag:price_range", "urn:tag:payment"}
+                       "urn:tag:price_range", "urn:tag:payment", "urn:tag:inclusivity"}
+
+
+# Generic tags: in the top 50 of at least half of a live panel of audiences (a quarter for venue tags),
+# music genres excepted; measured by scripts/calibrate_tags.py.
+GENERIC_TAGS_FILE = Path(__file__).parent / "qloo" / "generic_tags.json"
+
+
+def _load_generic_tag_ids(path: Path = GENERIC_TAGS_FILE) -> frozenset[str]:
+    try:
+        data = json.loads(path.read_text())
+    except (OSError, ValueError):
+        return frozenset()
+    return frozenset(str(t["tag_id"]) for t in data.get("tags", []) if isinstance(t, dict) and t.get("tag_id"))
+
+
+GENERIC_TAG_IDS = _load_generic_tag_ids()
 
 
 def is_taste_tag(tag: Tag) -> bool:
     kind = ":".join((tag.type or "").split(":")[:3])
-    return kind not in NON_TASTE_TAG_KINDS
+    return kind not in NON_TASTE_TAG_KINDS and tag.tag_id not in GENERIC_TAG_IDS
+
+
+def tag_stem(name: str) -> str:
+    """Fold spellings of one tag ("Hip Hop" / "hip hop", "K Pop" / "Kpop", "J-pop" / "JPop") to one key.
+
+    Only case, spaces and joining punctuation are folded; word endings are left alone, because
+    stripping them merges different ideas ("Electronics" / "electronic", "spaceship" / "space").
+    """
+    return re.sub(r"[\s\-_.'\u2019/]+", "", name.casefold())
 
 
 def shared_taste_from_affinity(a_to_b: Optional[float], b_to_a: Optional[float]) -> Optional[float]:
@@ -113,10 +141,26 @@ def shared_taste_from_affinity(a_to_b: Optional[float], b_to_a: Optional[float])
 
 
 def vectors_from_tags(a_rows: list[Tag], b_rows: list[Tag]) -> tuple[dict[str, float], dict[str, float], dict[str, str]]:
-    """Audience tag vectors from two `filter.type=urn:tag` insight calls (one per audience)."""
-    a = {r.tag_id: float(r.affinity) for r in a_rows if r.affinity and is_taste_tag(r)}
-    b = {r.tag_id: float(r.affinity) for r in b_rows if r.affinity and is_taste_tag(r)}
-    names = {r.tag_id: r.name for r in a_rows + b_rows}
+    """Audience tag vectors from two `filter.type=urn:tag` insight calls (one per audience).
+
+    Venue/payment and generic tags are dropped, and spellings of one tag share one key (the first
+    seen, A's ranking first), so "Hip Hop" in A and "hip hop" in B count as one shared tag.
+    Insertion order keeps Qloo's ranking.
+    """
+    canon: dict[str, str] = {}
+    names: dict[str, str] = {}
+
+    def vec(rows: list[Tag]) -> dict[str, float]:
+        out: dict[str, float] = {}
+        for r in rows:
+            if not r.affinity or not is_taste_tag(r):
+                continue
+            key = canon.setdefault(tag_stem(r.name) or r.tag_id, r.tag_id)
+            names.setdefault(key, r.name)
+            out[key] = max(out.get(key, 0.0), float(r.affinity))
+        return out
+
+    a, b = vec(a_rows), vec(b_rows)
     return a, b, names
 
 

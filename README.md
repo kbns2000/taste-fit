@@ -42,7 +42,7 @@ fresh_reach        = share of B's top-15 taste tags that are not in A's top-20 �
 
 ≥70 strong · 55–69 workable · <55 weak. The cross-affinity comes from `filter.results.entities`; Qloo describes entity-to-entity affinity as a similarity of audience embeddings where about 0.5 is medium and 0.8+ very high, so medium maps to 0 and the maximum to 100. In live data (2026-10-24) Bon Iver scores 0.92 among Patagonia fans and McDonald's 0.67, so the scale separates related from unrelated partners. If Qloo returns no cross-affinity, shared taste falls back to the cosine of the two audiences' tag lists and the UI says so.
 
-The tag lists still explain *what* the audiences share (venue and payment tags such as star ratings, card networks and price bands are left out), and fresh reach shows what B adds. A near-clone (shared taste 90+ and the same kind of entity) is flagged in the brief as a risk rather than penalised in the score.
+The tag lists still explain *what* the audiences share, and fresh reach shows what B adds. Two kinds of tag are left out because they say little about taste: venue and payment attributes (star ratings, card networks, price bands, "Identifies as women-owned"), and generic tags. The generic list (`app/qloo/generic_tags.json`, 22 tags such as "friendship", "teenager", "Restaurant") was measured on a live panel of 16 brands, artists and a podcast with `scripts/calibrate_tags.py`: a tag counts as generic when it is in the top 50 of at least half the panel, or a quarter for venue categories. Music genres are never treated as generic, because "rock" or "indie" is exactly what two artists' audiences should be able to share. Spellings of one tag ("Hip Hop" / "hip hop", "K Pop" / "Kpop") are folded into one. A near-clone (shared taste 90+ and the same kind of entity) is flagged in the brief as a risk rather than penalised in the score.
 
 ## Agent design
 
@@ -71,7 +71,7 @@ pip install -r requirements-dev.txt
 cp .env.example .env                               # fill QLOO_API_KEY (and optionally an LLM key)
 set -a; . ./.env; set +a                           # or export the variables your own way
 uvicorn app.main:app --reload --port 7860          # open http://127.0.0.1:7860
-python -m pytest                                   # 46 tests, mock data, no network
+python -m pytest                                   # 49 tests, mock data, no network
 ```
 
 Without `QLOO_API_KEY` the app runs on demo data and the header badge says so. Hackathon keys use `https://hackathon.api.qloo.com` (the default); production keys set `QLOO_BASE_URL=https://api.qloo.com`.
@@ -139,7 +139,7 @@ app/agent/pipeline.py    fit check / partner scout orchestration
 app/agent/llm/           Anthropic SDK provider, OpenAI-compatible provider
 app/main.py              FastAPI app, SSE, rate limiting
 web/                     UI (index.html, styles.css, app.js, Leaflet map)
-tests/                   46 tests (scoring, mock, live adapter with fake transport, API, agent loop, review regressions)
+tests/                   49 tests (scoring, mock, live adapter with fake transport, API, agent loop, review regressions)
 render.yaml              Render Blueprint for the hosted demo
 ```
 

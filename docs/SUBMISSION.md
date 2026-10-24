@@ -58,7 +58,7 @@ python -m venv .venv && . .venv/bin/activate
 pip install -r requirements-dev.txt
 export QLOO_API_KEY=...                     # optional; without it the app runs on demo data and says so
 uvicorn app.main:app --port 7860            # http://127.0.0.1:7860
-python -m pytest                            # 46 tests, no network
+python -m pytest                            # 49 tests, no network
 ```
 
 ## Safe-use checklist (from the kit)
@@ -73,7 +73,7 @@ python -m pytest                            # 46 tests, no network
 ## Known limitations
 
 * `/v2/analysis/compare` returns the catalog tags of each entity (`results.a`, `results.b`, common ones in `results.tags`), not audience affinities, so it cannot score shared taste across domains. Shared taste uses the cross-affinity instead; compare is context. `scripts/smoke_live.py` prints the live shapes.
-* Live tag-insight affinities sit at about 0.99–1.0 across an audience's whole top 50 (2026-10-24), and unrelated audiences share generic tags (star ratings, card networks, price bands). That is why the score uses cross-affinity, and why those venue and payment tags are dropped from the overlap lists; Qloo's ranking order breaks ties.
+* Live tag-insight affinities sit at about 0.99–1.0 across an audience's whole top 50 (2026-10-24), and unrelated audiences share generic tags. That is why the score uses cross-affinity. The overlap lists drop venue and payment attributes and 22 generic tags measured on a 16-audience live panel (`scripts/calibrate_tags.py`; "friendship" is in 13 of 16 top-50 lists, "Identifies as women-owned" in 15; music genres are never dropped). After that, two audiences' top-50 lists share a median of three tags and 15 of the 120 panel pairs share none, so the overlap card explains the score rather than drives it; Qloo's ranking order breaks ties.
 * The score is a heuristic for prioritising partnership conversations, not a prediction of campaign lift.
 * Heatmap cells have no neighbourhood names from the API; zones are named by the nearest recommended place when one is within ~2 km.
 * Demo data covers 74 entities in 5 cities; outside it the app says "not found" rather than guessing.

@@ -1,0 +1,157 @@
+{
+ "source": "scripts/calibrate_tags.py on the live Qloo Insights API",
+ "measured": "2026-10-24",
+ "panel": [
+  "Patagonia",
+  "The North Face",
+  "McDonald's",
+  "Nike",
+  "Apple",
+  "Starbucks",
+  "IKEA",
+  "Sephora",
+  "Tesla",
+  "Chanel",
+  "Bon Iver",
+  "Taylor Swift",
+  "Drake",
+  "Metallica",
+  "BTS",
+  "The Joe Rogan Experience"
+ ],
+ "rule": "top-50 tag of >= 50% of the panel (>= 25% for ...:place tags); music genres never",
+ "tags": [
+  {
+   "tag_id": "urn:tag:inclusivity:place:identifies_as_women_owned",
+   "name": "Identifies as women-owned",
+   "subtype": "urn:tag:inclusivity:place",
+   "count": 15
+  },
+  {
+   "tag_id": "urn:tag:keyword:media:friendship",
+   "name": "friendship",
+   "subtype": "urn:tag:keyword:media",
+   "count": 13
+  },
+  {
+   "tag_id": "urn:tag:keyword:media:friend",
+   "name": "friend",
+   "subtype": "urn:tag:keyword:media",
+   "count": 11
+  },
+  {
+   "tag_id": "urn:tag:keyword:media:teenager",
+   "name": "teenager",
+   "subtype": "urn:tag:keyword:media",
+   "count": 10
+  },
+  {
+   "tag_id": "urn:tag:keyword:media:female_protagonist",
+   "name": "female protagonist",
+   "subtype": "urn:tag:keyword:media",
+   "count": 9
+  },
+  {
+   "tag_id": "urn:tag:keyword:media:high_school",
+   "name": "high school",
+   "subtype": "urn:tag:keyword:media",
+   "count": 9
+  },
+  {
+   "tag_id": "urn:tag:keyword:media:school",
+   "name": "school",
+   "subtype": "urn:tag:keyword:media",
+   "count": 9
+  },
+  {
+   "tag_id": "urn:tag:keyword:media:family_relationships",
+   "name": "family relationships",
+   "subtype": "urn:tag:keyword:media",
+   "count": 8
+  },
+  {
+   "tag_id": "urn:tag:keyword:media:love",
+   "name": "love",
+   "subtype": "urn:tag:keyword:media",
+   "count": 8
+  },
+  {
+   "tag_id": "urn:tag:keyword:media:new_york_city",
+   "name": "new york city",
+   "subtype": "urn:tag:keyword:media",
+   "count": 8
+  },
+  {
+   "tag_id": "urn:tag:genre:place:restaurant",
+   "name": "Restaurant",
+   "subtype": "urn:tag:genre:place",
+   "count": 8
+  },
+  {
+   "tag_id": "urn:tag:cost_description:place:expensive",
+   "name": "Expensive",
+   "subtype": "urn:tag:cost_description:place",
+   "count": 7
+  },
+  {
+   "tag_id": "urn:tag:genre:place:hotel",
+   "name": "Hotel",
+   "subtype": "urn:tag:genre:place",
+   "count": 7
+  },
+  {
+   "tag_id": "urn:tag:credit_card:place:discover",
+   "name": "Discover",
+   "subtype": "urn:tag:credit_card:place",
+   "count": 6
+  },
+  {
+   "tag_id": "urn:tag:hotel_rating:place:four_star",
+   "name": "Four Star",
+   "subtype": "urn:tag:hotel_rating:place",
+   "count": 6
+  },
+  {
+   "tag_id": "urn:tag:credit_card:place:visa",
+   "name": "VISA",
+   "subtype": "urn:tag:credit_card:place",
+   "count": 6
+  },
+  {
+   "tag_id": "urn:tag:genre:place:restaurant:bar",
+   "name": "Bar",
+   "subtype": "urn:tag:genre:place",
+   "count": 5
+  },
+  {
+   "tag_id": "urn:tag:cost_description:place:inexpensive",
+   "name": "Inexpensive",
+   "subtype": "urn:tag:cost_description:place",
+   "count": 5
+  },
+  {
+   "tag_id": "urn:tag:hotel_rating:place:three_star",
+   "name": "Three Star",
+   "subtype": "urn:tag:hotel_rating:place",
+   "count": 5
+  },
+  {
+   "tag_id": "urn:tag:genre:place:tourist_attraction",
+   "name": "Tourist attraction",
+   "subtype": "urn:tag:genre:place",
+   "count": 5
+  },
+  {
+   "tag_id": "urn:tag:hotel_rating:place:five_star",
+   "name": "Five Star",
+   "subtype": "urn:tag:hotel_rating:place",
+   "count": 4
+  },
+  {
+   "tag_id": "urn:tag:cost_description:place:moderately_expensive",
+   "name": "Moderately expensive",
+   "subtype": "urn:tag:cost_description:place",
+   "count": 4
+  }
+ ]
+}

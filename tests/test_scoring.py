@@ -1,5 +1,8 @@
+import json
+
+from app import scoring
 from app.qloo.models import Demographics, Tag
-from app.scoring import band_for, compute_fit, shared_taste_from_affinity, vectors_from_tags
+from app.scoring import band_for, compute_fit, shared_taste_from_affinity, tag_stem, vectors_from_tags
 
 
 def _demo(eid, **age):
@@ -80,3 +83,37 @@ def test_demographic_segments_flagged():
                       _demo("b", **{"25_to_29": 0.4, "55_and_older": -0.4}))
     assert fit.agreeing_segments == ["25-29"]
     assert fit.diverging_segments == ["55+"]
+
+
+def test_spellings_of_one_tag_fold_into_one_shared_tag():
+    assert tag_stem("Hip Hop") == tag_stem("hip-hop") == tag_stem("HipHop")
+    assert tag_stem("K Pop") == tag_stem("Kpop") and tag_stem("J-pop") == tag_stem("JPop")
+    # word endings are left alone: these are different ideas
+    assert tag_stem("Electronics") != tag_stem("electronic")
+    assert tag_stem("spaceship") != tag_stem("space") and tag_stem("C++") != tag_stem("C#")
+    rows_a = [Tag(tag_id="m:hip_hop", name="Hip Hop", affinity=1.0, type="urn:tag:genre:music"),
+              Tag(tag_id="k:hip_hop", name="hip hop", affinity=0.99, type="urn:tag:keyword:media")]
+    rows_b = [Tag(tag_id="k:hip_hop", name="hip hop", affinity=1.0, type="urn:tag:keyword:media")]
+    a, b, names = vectors_from_tags(rows_a, rows_b)
+    assert a == {"m:hip_hop": 1.0} and b == {"m:hip_hop": 1.0}
+    assert names["m:hip_hop"] == "Hip Hop"
+    fit = compute_fit(a, b, names, None, None)
+    assert [t.name for t in fit.shared_tags] == ["Hip Hop"]
+
+
+def test_generic_panel_tags_are_dropped(monkeypatch):
+    monkeypatch.setattr(scoring, "GENERIC_TAG_IDS", frozenset({"g:indie"}))
+    rows = [Tag(tag_id="g:indie", name="indie", affinity=1.0, type="urn:tag:genre:music"),
+            Tag(tag_id="g:folk", name="folk", affinity=1.0, type="urn:tag:genre:music"),
+            Tag(tag_id="w", name="Identifies as women-owned", affinity=1.0, type="urn:tag:inclusivity:place")]
+    a, b, _ = vectors_from_tags(rows, rows)
+    assert a == b == {"g:folk": 1.0}
+
+
+def test_generic_tag_file_loads():
+    ids = scoring._load_generic_tag_ids()
+    assert "urn:tag:keyword:media:friendship" in ids  # measured on the 2026-10-24 live panel
+    assert not any(i.startswith("urn:tag:genre:music") for i in ids)  # genres stay shareable
+    fixtures = json.loads((scoring.GENERIC_TAGS_FILE.parent / "fixtures.json").read_text())
+    assert not ids & set(fixtures["tags"]), "a generic live tag would hide a demo-data tag"
+    assert scoring._load_generic_tag_ids(scoring.GENERIC_TAGS_FILE.with_name("missing.json")) == frozenset()

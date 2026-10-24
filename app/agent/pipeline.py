@@ -16,7 +16,7 @@ from ..qloo.client import QlooClient
 from ..qloo.models import Entity, QlooError, QuotaExceeded
 from .ledger import Ledger
 from .llm.base import LLMProvider
-from .tools import RunCapExceeded, ToolBox, hot_zones, pick_summary
+from .tools import RunCapExceeded, ToolBox, clip_to_city, hot_zones, pick_summary
 from .verifier import verify_brief
 from .writer import llm_brief, scripted_brief
 
@@ -120,14 +120,16 @@ def run_fit_check(a_query: str, b_query: str, city: Optional[str], client: QlooC
     zones: list[dict[str, Any]] = []
     zone_cites: list[str] = []
     heat: list[dict[str, Any]] = []
+    clip: Optional[dict[str, Any]] = None
     if city:
         emit("step", {"name": "heatmap", "text": f"Mapping where the joint audience concentrates in {city}"})
         try:
             cells, zone_cites = toolbox.heatmap([a.entity_id, b.entity_id], city)
             places = [toolbox.entities[p["entity_id"]] for p in picks.get("place", []) if p["entity_id"] in toolbox.entities]
+            cells, clip = clip_to_city(cells, places)
             zones = hot_zones(cells, places)
             heat = [c.model_dump() for c in cells]
-            emit("heatmap", {"zones": zones, "cells": heat, "cites": zone_cites})
+            emit("heatmap", {"zones": zones, "cells": heat, "cites": zone_cites, "clip": clip})
         except (RunCapExceeded, QlooError) as exc:
             emit("warn", {"text": _city_error(exc, city) or f"heatmap skipped: {exc}"})
 
@@ -136,7 +138,7 @@ def run_fit_check(a_query: str, b_query: str, city: Optional[str], client: QlooC
         "fit": fit_dict, "fit_cites": fit_cites, "fit_cite_groups": fit_groups,
         "catalog": catalog, "catalog_cites": catalog_cites,
         "picks": picks, "pick_cites": pick_cites,
-        "zones": zones, "zone_cites": zone_cites, "heatmap": heat,
+        "zones": zones, "zone_cites": zone_cites, "heatmap": heat, "heatmap_clip": clip,
         "source": ledger.source(), "ledger": ledger.as_list(),
     }
 
@@ -164,6 +166,7 @@ def run_fit_check(a_query: str, b_query: str, city: Optional[str], client: QlooC
         "catalog": catalog, "catalog_cites": catalog_cites,
         "picks": ctx["picks"], "pick_cites": ctx["pick_cites"],
         "zones": ctx.get("zones") or [], "zone_cites": ctx.get("zone_cites") or [], "heatmap": ctx.get("heatmap") or [],
+        "heatmap_clip": ctx.get("heatmap_clip"),
         "brief": brief, "verification": verification,
         "ledger": ledger.as_list(), "source": ledger.source(),
         "writer": writer_meta, "qloo_calls": ledger.calls(),

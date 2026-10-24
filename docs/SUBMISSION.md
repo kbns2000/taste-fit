@@ -58,7 +58,7 @@ python -m venv .venv && . .venv/bin/activate
 pip install -r requirements-dev.txt
 export QLOO_API_KEY=...                     # optional; without it the app runs on demo data and says so
 uvicorn app.main:app --port 7860            # http://127.0.0.1:7860
-python -m pytest                            # 49 tests, no network
+python -m pytest                            # 51 tests, no network
 ```
 
 ## Safe-use checklist (from the kit)
@@ -76,5 +76,6 @@ python -m pytest                            # 49 tests, no network
 * Live tag-insight affinities sit at about 0.99–1.0 across an audience's whole top 50 (2026-10-24), and unrelated audiences share generic tags. That is why the score uses cross-affinity. The overlap lists drop venue and payment attributes and 22 generic tags measured on a 16-audience live panel (`scripts/calibrate_tags.py`; "friendship" is in 13 of 16 top-50 lists, "Identifies as women-owned" in 15; music genres are never dropped). After that, two audiences' top-50 lists share a median of three tags and 15 of the 120 panel pairs share none, so the overlap card explains the score rather than drives it; Qloo's ranking order breaks ties.
 * The score is a heuristic for prioritising partnership conversations, not a prediction of campaign lift.
 * Heatmap cells have no neighbourhood names from the API; zones are named by the nearest recommended place when one is within ~2 km.
+* `filter.location.query` can resolve a city to a wider area ("New York" returned the whole state, 3,557 cells, on 2026-10-24). Hot zones and the map keep the cells within 30 km of the city centre and the UI states how many were dropped.
 * Demo data covers 74 entities in 5 cities; outside it the app says "not found" rather than guessing.
 * LLM writing is optional; without a key the scripted writer produces the same structure.

@@ -16,7 +16,7 @@ from pydantic import BaseModel, Field, ValidationError
 from ..qloo.models import QlooError, QuotaExceeded
 from .llm.base import LLMError, LLMProvider, Message, ToolResult
 from .prompts import SYSTEM_PROMPT, tool_result_text, user_instruction
-from .tools import FINALIZE_TOOL, LLM_TOOL_SPECS, RunCapExceeded, ToolBox, hot_zones, pick_summary
+from .tools import FINALIZE_TOOL, LLM_TOOL_SPECS, RunCapExceeded, ToolBox, clip_to_city, hot_zones, pick_summary
 
 Emit = Callable[[str, dict[str, Any]], None]
 
@@ -218,10 +218,11 @@ def _run_tool(name: str, args: dict[str, Any], toolbox: ToolBox, ctx: dict[str, 
             raise ValueError("city is required")
         cells, ids = toolbox.heatmap([a_id, b_id], city)
         places = [toolbox.entities[p["entity_id"]] for p in ctx["picks"].get("place", []) if p["entity_id"] in toolbox.entities]
+        cells, clip = clip_to_city(cells, places)
         zones = hot_zones(cells, places)
         if zones:
             ctx["zones"], ctx["zone_cites"], ctx["city"] = zones, ids, ctx.get("city") or args["city"]
-            ctx["heatmap"] = [c.model_dump() for c in cells]
+            ctx["heatmap"], ctx["heatmap_clip"] = [c.model_dump() for c in cells], clip
         return {"ledger_ids": ids, "cells": len(cells), "hot_zones": zones}
     if name == "find_tags":
         rows, ids = toolbox.find_tags(str(args.get("query") or "")[:80])

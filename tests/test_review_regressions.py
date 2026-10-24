@@ -156,3 +156,39 @@ def test_api_rejects_bad_type_hints():
     client = TestClient(app)
     r = client.post("/api/runs", json={"mode": "fit", "a": "Patagonia", "b": "Bon Iver", "a_type": "urn:entity:brand; drop"})
     assert r.status_code == 422
+
+
+def _statewide_cells():
+    from app.qloo.models import HeatCell
+    nyc = [HeatCell(lat=40.70 + i * 0.04, lon=-74.00 + j * 0.04, affinity=0.6, popularity=0.9)
+           for i in range(3) for j in range(3)]
+    upstate = [HeatCell(lat=44.099, lon=-73.938, affinity=0.99, popularity=0.1),  # Adirondacks, seen live
+               HeatCell(lat=42.65, lon=-73.75, affinity=0.8, popularity=0.4)]       # Albany
+    return nyc, upstate
+
+
+def test_heatmap_is_clipped_to_the_city():
+    """Live 2026-10-24: "New York" resolves to the state (3,557 cells); one hot zone landed in the Adirondacks."""
+    from app.agent.tools import _km, clip_to_city, hot_zones
+    from app.qloo.models import Entity
+
+    assert 5500 < _km(51.5074, -0.1278, 40.7128, -74.0060) < 5650  # London-New York ~5,570 km
+    nyc, upstate = _statewide_cells()
+    places = [Entity(entity_id=f"p{i}", name=f"P{i}", lat=40.72 + i * 0.01, lon=-73.98) for i in range(4)]
+    kept, clip = clip_to_city(nyc + upstate, places)
+    assert kept == nyc and clip["total"] == 11 and clip["kept"] == 9 and clip["radius_km"] == 30.0
+    assert all(z["lat"] < 41 for z in hot_zones(kept, places))
+    kept, clip = clip_to_city(nyc + upstate, [])  # no places: centre on the busiest cell
+    assert kept == nyc
+    assert clip_to_city([], places)[0] == [] and clip_to_city([], [])[1]["center"] is None
+
+
+def test_pipeline_clips_a_statewide_heatmap():
+    class _Statewide(MockQlooClient):
+        def heatmap(self, entity_ids, location_query, trace=None):
+            nyc, upstate = _statewide_cells()
+            return nyc + upstate
+
+    res = run_fit_check("Patagonia", "Bon Iver", "New York", _Statewide(), None, lambda k, p: None, _cfg())
+    assert res["heatmap_clip"]["total"] == 11 and res["heatmap_clip"]["kept"] == 9
+    assert len(res["heatmap"]) == 9 and all(z["lat"] < 41 for z in res["zones"])

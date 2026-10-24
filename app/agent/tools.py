@@ -7,6 +7,7 @@ prevents an over-eager model from burning quota.
 
 from __future__ import annotations
 
+import math
 from typing import Any, Optional
 
 from ..qloo.client import QlooClient
@@ -248,6 +249,39 @@ def pick_summary(entity: Entity, a_id: str, b_id: str) -> dict[str, Any]:
         "image": entity.image,
         "format": ACTIVATION_TYPES.get(entity.type, "partnership tie-in"),
     }
+
+
+# Qloo can resolve a city name to a wider area ("New York" -> the whole state, 3,557 cells on 2026-10-24),
+# so the map keeps the cells within this distance of the city centre.
+CITY_RADIUS_KM = 30.0
+
+
+def _km(lat1: float, lon1: float, lat2: float, lon2: float) -> float:
+    """Great-circle distance in km."""
+    p1, p2 = math.radians(lat1), math.radians(lat2)
+    h = math.sin((p2 - p1) / 2) ** 2 + math.cos(p1) * math.cos(p2) * math.sin(math.radians(lon2 - lon1) / 2) ** 2
+    return 2 * 6371.0 * math.asin(math.sqrt(min(1.0, h)))
+
+
+def city_center(cells: list[HeatCell], places: list[Entity]) -> Optional[tuple[float, float]]:
+    """Median of the recommended places (3 or more), else the busiest heatmap cell."""
+    pts = [(p.lat, p.lon) for p in places if p.lat is not None and p.lon is not None]
+    if len(pts) >= 3:
+        lats, lons = sorted(x for x, _ in pts), sorted(y for _, y in pts)
+        return lats[len(lats) // 2], lons[len(lons) // 2]
+    if cells:
+        top = max(cells, key=lambda c: (c.popularity, c.affinity))
+        return top.lat, top.lon
+    return None
+
+
+def clip_to_city(cells: list[HeatCell], places: list[Entity],
+                 radius_km: float = CITY_RADIUS_KM) -> tuple[list[HeatCell], dict[str, Any]]:
+    """Heatmap cells within `radius_km` of the city centre, plus what was kept (shown under the map)."""
+    center = city_center(cells, places)
+    kept = [c for c in cells if center and _km(c.lat, c.lon, *center) <= radius_km] or cells
+    return kept, {"total": len(cells), "kept": len(kept), "radius_km": radius_km if center else None,
+                  "center": [round(center[0], 4), round(center[1], 4)] if center else None}
 
 
 def hot_zones(cells: list[HeatCell], places: list[Entity], top: int = 3) -> list[dict[str, Any]]:

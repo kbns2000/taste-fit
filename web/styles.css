@@ -148,6 +148,11 @@ main { max-width: 1100px; margin: 0 auto; padding: 0 16px 48px; }
 .driver.leans_a, .driver.leans_b { font-weight: 600; }
 
 .map { height: 380px; border-radius: 10px; overflow: hidden; border: 1px solid var(--line); margin-top: .5rem; background: var(--surface-2); }
+.map .leaflet-tile-pane { filter: grayscale(1) brightness(1.06) contrast(.88); }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .map .leaflet-tile-pane { filter: grayscale(1) invert(1) brightness(.82) contrast(.9); }
+}
+:root[data-theme="dark"] .map .leaflet-tile-pane { filter: grayscale(1) invert(1) brightness(.82) contrast(.9); }
 .zones { margin: .7rem 0 0; padding-left: 1.2rem; font-size: .9rem; }
 .leaflet-container { font: inherit; }
 

@@ -145,7 +145,7 @@
     });
     on("fit", (d) => addStep(`Taste-Fit ${d.fit.fit}/100 (${d.fit.band}) from ${d.cites.join(", ")}`, "done", d.t));
     on("picks", (d) => addStep(`${d.items.length} ${d.type}${d.items.length === 1 ? "" : "s"}: ${d.items.slice(0, 3).map((p) => p.name).join(", ")}…`, "done", d.t));
-    on("heatmap", (d) => addStep(`Heatmap: ${d.cells.length} cells, ${d.zones.length} hot zones`, "done", d.t));
+    on("heatmap", (d) => addStep(`Heatmap: ${d.cells.length} cells${d.clip && d.clip.kept < d.clip.total ? ` near the city (of ${d.clip.total})` : ""}, ${d.zones.length} hot zones`, "done", d.t));
     on("candidates", (d) => addStep(`Qloo candidates: ${d.items.slice(0, 5).map((p) => p.name).join(", ")}`, "done", d.t));
     on("scored", (d) => addStep(`${d.name}: ${d.fit}/100 (${d.band})`, "done", d.t));
     on("agent_tool", (d) => addStep(`agent called ${d.tool}(${Object.values(d.input).filter(Boolean).join(", ")})`, "tool", d.t));
@@ -279,13 +279,22 @@
     if (typeof L === "undefined") { $("#map").innerHTML = '<p class="muted small" style="padding:1rem">Map library could not load; hot zones are listed below.</p>'; return; }
     if (!state.map) {
       state.map = L.map("map", { scrollWheelZoom: false });
-      L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", { maxZoom: 18, attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/">CARTO</a>' }).addTo(state.map);
+      // OpenStreetMap's own tiles need no key (CARTO basemaps now watermark keyless requests); greyed in CSS.
+      L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", { maxZoom: 19, referrerPolicy: "strict-origin-when-cross-origin", attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' }).addTo(state.map);
     }
     state.layers.forEach((l) => state.map.removeLayer(l)); state.layers = [];
     const bounds = [];
-    (res.heatmap || []).forEach((c) => {
+    const clip = res.heatmap_clip;
+    $("#map-note").textContent = clip && clip.kept < clip.total
+      ? `Qloo matched "${res.city}" to a wider area (${clip.total} cells); the map keeps the ${clip.kept} within ${clip.radius_km} km of the city centre.`
+      : "";
+    const cells = res.heatmap || [];
+    const dLat = gridStep(cells, "lat"), dLon = gridStep(cells, "lon");
+    cells.forEach((c) => {  // draw each cell at the grid's own size, so coarse and fine heatmaps both tile
       const op = 0.08 + 0.55 * pct(c.affinity * 100) / 100;
-      const l = L.circle([c.lat, c.lon], { radius: 420, stroke: false, fillColor: "#5b8def", fillOpacity: op }).addTo(state.map);
+      const style = { stroke: false, fillColor: "#5b8def", fillOpacity: op };
+      const l = (dLat && dLon ? L.rectangle([[c.lat - dLat / 2, c.lon - dLon / 2], [c.lat + dLat / 2, c.lon + dLon / 2]], style)
+                              : L.circle([c.lat, c.lon], { radius: 420, ...style })).addTo(state.map);
       state.layers.push(l); bounds.push([c.lat, c.lon]);
     });
     (res.zones || []).forEach((z, i) => {
@@ -293,13 +302,26 @@
         .bindTooltip(`Hot zone ${i + 1}${z.near ? " · near " + esc(z.near) : ""} · affinity ${fmt2(z.affinity)}`);
       state.layers.push(l); bounds.push([z.lat, z.lon]);
     });
+    const centre = clip && clip.center ? L.latLng(clip.center[0], clip.center[1]) : null;
     (res.picks.place || []).forEach((p) => {
       if (p.lat == null || p.lon == null) return;
       const l = L.marker([p.lat, p.lon]).addTo(state.map).bindPopup(`<b>${esc(p.name)}</b><br>${esc(p.address || p.locality || "")}<br>affinity ${p.affinity != null ? p.affinity.toFixed(2) : "–"}`);
-      state.layers.push(l); bounds.push([p.lat, p.lon]);
+      state.layers.push(l);
+      if (!centre || centre.distanceTo([p.lat, p.lon]) <= clip.radius_km * 1000) bounds.push([p.lat, p.lon]);
     });
     if (bounds.length) state.map.fitBounds(bounds, { padding: [20, 20] });
     setTimeout(() => state.map.invalidateSize(), 100);
+  }
+
+  function gridStep(cells, along) {  // median gap between neighbouring heatmap cells in one row (or column), in degrees
+    const across = along === "lon" ? "lat" : "lon", lines = new Map(), gaps = [];
+    cells.forEach((c) => { const k = c[across].toFixed(4); if (!lines.has(k)) lines.set(k, []); lines.get(k).push(c[along]); });
+    lines.forEach((vs) => {
+      vs.sort((x, y) => x - y);
+      for (let i = 1; i < vs.length; i++) if (vs[i] - vs[i - 1] > 1e-4) gaps.push(vs[i] - vs[i - 1]);
+    });
+    gaps.sort((x, y) => x - y);
+    return gaps.length >= 2 ? Math.min(0.2, gaps[Math.floor(gaps.length / 2)]) : null;
   }
 
   function cites(list) { return (list || []).map((c) => `<a class="cite" data-cite="${esc(c)}" href="#ledger">${esc(c)}</a>`).join(""); }

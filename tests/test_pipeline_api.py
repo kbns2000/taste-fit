@@ -22,6 +22,8 @@ def test_fit_check_end_to_end_on_mock():
     assert {"artist", "podcast", "place"} <= set(res["picks"])
     assert res["zones"] and res["heatmap"]
     assert res["verification"]["passed"], res["verification"]
+    assert res["catalog"]["a_count"] > 0 and res["catalog_cites"]
+    assert any(e["endpoint"] == "/v2/analysis/compare" for e in res["ledger"])
     assert res["brief"]["activations"] and all(a["cites"] for a in res["brief"]["activations"])
     ids = {e["id"] for e in res["ledger"]}
     for why in res["brief"]["why"]:

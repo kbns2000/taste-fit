@@ -100,3 +100,43 @@ def test_daily_budget_guard():
     with pytest.raises(QuotaExceeded):
         c.search("two")
     assert c.budget_status()["calls_today"] == 1
+
+
+def test_explainability_dict_of_lists_live_shape():
+    """Live shape seen 2026-10-24: query.explainability = {"signal.interests.entities": [{entity_id, score}, ...]}."""
+    def handler(request: httpx.Request):
+        return httpx.Response(200, json={"success": True, "results": {"entities": [
+            {"name": "Fleet Foxes", "entity_id": "X1", "subtype": "urn:entity:artist",
+             "query": {"affinity": 0.91, "explainability": {"signal.interests.entities": [
+                 {"entity_id": "SIG_A", "score": 0.522}, {"entity_id": "SIG_B", "score": 0.478}]}}}]}})
+
+    rows = _client(handler).recommend(["SIG_A", "SIG_B"], "artist", take=3)
+    assert rows[0].explainability == {"SIG_A": 0.522, "SIG_B": 0.478}
+
+
+def test_compare_live_shape_is_catalog_tags():
+    """Live shape seen 2026-10-24: results = {"tags": [], "a": [...], "b": [...], "matchEntities": []}."""
+    def tag(tid, name, sub):
+        return {"tag_id": tid, "name": name, "type": "urn:tag", "subtype": sub, "entity_id": "E",
+                "popularity": 0.5, "query": {"count": "1"}}
+
+    def handler(request: httpx.Request):
+        return httpx.Response(200, json={"success": True, "results": {
+            "tags": [],
+            "a": [tag("t:outdoor", "Outdoor", "urn:tag:genre:brand"), tag("t:eco", "Eco", "urn:tag:genre:brand")],
+            "b": [tag("t:folk", "Indie Folk", "urn:tag:genre:music"), tag("t:eco", "Eco", "urn:tag:genre:music")],
+            "matchEntities": []}})
+
+    trace = []
+    cat = _client(handler).compare(["A"], ["B"], trace=trace)
+    assert [t.name for t in cat.a_tags] == ["Outdoor", "Eco"] and len(cat.b_tags) == 2
+    assert [t.tag_id for t in cat.common] == ["t:eco"]  # derived from a/b when "tags" is empty
+    assert trace[0].count == 4 and trace[0].status == "ok"
+
+
+def test_compare_with_nothing_raises():
+    def handler(request: httpx.Request):
+        return httpx.Response(200, json={"success": True, "results": {"tags": [], "a": [], "b": []}})
+
+    with pytest.raises(QlooError):
+        _client(handler).compare(["A"], ["B"])

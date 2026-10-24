@@ -1,5 +1,5 @@
 from app.qloo.models import Demographics, Tag
-from app.scoring import band_for, compute_fit, vectors_from_compare, vectors_from_tags
+from app.scoring import band_for, compute_fit, vectors_from_tags
 
 
 def _demo(eid, **age):
@@ -43,15 +43,7 @@ def test_bands():
     assert band_for(54.9) == "weak"
 
 
-def test_vectors_from_compare_treats_zero_as_absent():
-    rows = [Tag(tag_id="t1", name="T1", a_affinity=0.8, b_affinity=0.0),
-            Tag(tag_id="t2", name="T2", a_affinity=0.7, b_affinity=0.6)]
-    a, b, names = vectors_from_compare(rows)
-    assert set(a) == {"t1", "t2"} and set(b) == {"t2"}
-    assert names["t1"] == "T1"
-
-
-def test_vectors_from_tags_fallback():
+def test_vectors_from_tags():
     a, b, _ = vectors_from_tags([Tag(tag_id="x", name="X", affinity=0.5)], [Tag(tag_id="y", name="Y", affinity=0.4)])
     assert a == {"x": 0.5} and b == {"y": 0.4}
 

@@ -2,9 +2,9 @@
 
     QLOO_API_KEY=... python scripts/smoke_live.py
 
-Runs the seven call shapes the product uses and prints counts plus the
-top-level keys of the raw /v2/analysis/compare payload, whose exact shape is
-not documented, so the parser can be adjusted if needed. Spends ~8 calls.
+Runs the call shapes the product uses and prints counts plus the shapes of
+the compare (catalog tags) and explainability (per-signal split) responses,
+so the parser can be checked against live data. Spends ~8 calls.
 """
 
 from __future__ import annotations
@@ -46,19 +46,23 @@ def main() -> int:
         if not a or not b:
             return 1
         ai, bi = a[0].entity_id, b[0].entity_id
-        tags = c.taste_tags([ai], take=10, trace=trace)
-        print("taste_tags:", [(t.name, t.affinity) for t in tags[:5]])
+        tags = c.taste_tags([ai], take=50, trace=trace)
+        affs = sorted((t.affinity or 0.0) for t in tags)
+        print("taste_tags:", [(t.name, t.affinity) for t in tags[:5]],
+              f"| {len(tags)} tags, affinity min {affs[0] if affs else None} median {affs[len(affs) // 2] if affs else None}")
         demo = c.demographics([ai], trace=trace)
         print("demographics:", [(d.entity_id[:8], d.age, d.gender) for d in demo])
         recs = c.recommend([ai, bi], "artist", take=5, trace=trace)
-        print("recommend+explainability:", [(e.name, e.affinity, e.explainability) for e in recs[:3]])
+        print("recommend+explainability:", [(e.name, e.affinity, e.explainability) for e in recs[:3]],
+              f"| {sum(1 for e in recs if e.explainability)}/{len(recs)} picks carry a per-signal split")
         heat = c.heatmap([ai, bi], "New York", trace=trace)
         print("heatmap cells:", len(heat), heat[:1])
         try:
-            cmp_rows = c.compare([ai], [bi], trace=trace)
-            print("compare:", [(t.name, t.a_affinity, t.b_affinity, t.delta) for t in cmp_rows[:5]])
+            cat = c.compare([ai], [bi], trace=trace)
+            print(f"compare (catalog tags): a {len(cat.a_tags)}, b {len(cat.b_tags)}, common {len(cat.common)}",
+                  [t.name for t in cat.common[:5]], [t.name for t in cat.a_tags[:3]], [t.name for t in cat.b_tags[:3]])
         except QlooError as exc:
-            print("compare parse fallback needed:", exc)
+            print("compare failed:", exc)
         # raw shape of compare (keys only)
         r = httpx.get(f"{cfg.qloo_base_url}/v2/analysis/compare",
                       params={"a.signal.interests.entities": ai, "b.signal.interests.entities": bi},

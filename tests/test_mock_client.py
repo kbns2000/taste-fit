@@ -52,8 +52,9 @@ def test_heatmap_and_compare():
     assert len(cells) == 6 * 9
     assert all(c.geohash for c in cells)
     assert max(c.affinity_rank for c in cells) == 1.0
-    rows = m.compare([a], [b])
-    assert rows and all(r.a_affinity is not None and r.b_affinity is not None for r in rows)
+    cat = m.compare([a], [b])
+    assert cat.a_tags and cat.b_tags
+    assert {t.tag_id for t in cat.common} == {t.tag_id for t in cat.a_tags} & {t.tag_id for t in cat.b_tags}
     assert m.heatmap([a], "nowhere") == []
 
 

@@ -194,3 +194,4 @@ tr.hl td { background: var(--b-soft); }
   .fields { grid-template-columns: 1fr; }
   .top-right .link:last-child { display: none; }
 }
+.catalog-note { margin-top: .9rem; }

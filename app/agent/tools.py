@@ -11,7 +11,7 @@ from typing import Any, Optional
 
 from ..qloo.client import QlooClient
 from ..qloo.models import Demographics, Entity, HeatCell, QlooError, Tag
-from ..scoring import FitScore, compute_fit, vectors_from_compare, vectors_from_tags
+from ..scoring import FitScore, compute_fit, vectors_from_tags
 from .ledger import Ledger
 
 ACTIVATION_TYPES = {
@@ -37,6 +37,7 @@ class ToolBox:
         self.max_calls = max_calls
         self.entities: dict[str, Entity] = {}  # id -> resolved entity
         self._demo_cache: dict[str, tuple[Optional[Demographics], list[str]]] = {}
+        self._tags_cache: dict[str, tuple[list[Tag], list[str]]] = {}
         self.alternatives: dict[str, list[dict[str, Any]]] = {}  # resolved id -> other search hits
 
     # -- guard -------------------------------------------------------------------
@@ -101,25 +102,32 @@ class ToolBox:
         self._demo_cache[entity_id] = ((rows[0] if rows else None), ids)
         return self._demo_cache[entity_id]
 
-    def compare(self, a_id: str, b_id: str) -> tuple[dict[str, float], dict[str, float], dict[str, str], list[str], str]:
-        """Tag vectors for A and B. Prefers /v2/analysis/compare; falls back to two tag insights."""
-        self._check_cap()
-        label = f"compare audiences {self._names([a_id])} vs {self._names([b_id])}"
-        try:
-            rows = self.client.compare([a_id], [b_id], trace=self.ledger.trace)
-            ids = self._absorb(label, [t.name for t in rows])
-            a, b, names = vectors_from_compare(rows)
-            if a and b:
-                return a, b, names, ids, "compare"
-        except QlooError as exc:
-            if exc.status == 400 or getattr(exc, "status", None) in (401, 403):
-                self._absorb(f"{label} (failed)", [])
-                raise
-            self._absorb(f"{label} (unavailable)", [])
-        a_rows, ids_a = self.taste_tags([a_id], take=50)
-        b_rows, ids_b = self.taste_tags([b_id], take=50)
+    def audience_tags(self, a_id: str, b_id: str) -> tuple[dict[str, float], dict[str, float], dict[str, str], list[str]]:
+        """What each audience over-indexes on: one `urn:tag` insight per entity (cross-domain by design)."""
+        a_rows, ids_a = self._audience_tags_for(a_id)
+        b_rows, ids_b = self._audience_tags_for(b_id)
         a, b, names = vectors_from_tags(a_rows, b_rows)
-        return a, b, names, ids_a + ids_b, "tags"
+        return a, b, names, ids_a + ids_b
+
+    def _audience_tags_for(self, entity_id: str) -> tuple[list[Tag], list[str]]:
+        # Partner scout scores several candidates against the same A: fetch (and cite) A's tags once per run.
+        if entity_id not in self._tags_cache:
+            self._tags_cache[entity_id] = self.taste_tags([entity_id], take=50)
+        return self._tags_cache[entity_id]
+
+    def catalog_overlap(self, a_id: str, b_id: str) -> tuple[dict[str, Any], list[str]]:
+        """`/v2/analysis/compare`: catalog tags the two entities themselves share (what they are, not who likes them)."""
+        self._check_cap()
+        label = f"compare catalog tags {self._names([a_id])} vs {self._names([b_id])}"
+        result = self._call(label, lambda: self.client.compare([a_id], [b_id], trace=self.ledger.trace))
+        ids = self._absorb(label, [t.name for t in result.common][:20])
+        summary = {
+            "common": [t.name for t in result.common[:12]],
+            "common_count": len(result.common),
+            "a_count": len(result.a_tags),
+            "b_count": len(result.b_tags),
+        }
+        return summary, ids
 
     def fit(self, a_id: str, b_id: str) -> tuple[FitScore, list[str]]:
         score, groups = self.fit_with_groups(a_id, b_id)
@@ -127,7 +135,7 @@ class ToolBox:
 
     def fit_with_groups(self, a_id: str, b_id: str) -> tuple[FitScore, dict[str, list[str]]]:
         """Fit score plus the ledger ids behind each input (tags vs demographics)."""
-        a_vec, b_vec, names, ids, _ = self.compare(a_id, b_id)
+        a_vec, b_vec, names, ids = self.audience_tags(a_id, b_id)
         a_demo, ids_a = self.demographics(a_id)
         b_demo, ids_b = self.demographics(b_id)
         score = compute_fit(a_vec, b_vec, names, a_demo, b_demo)

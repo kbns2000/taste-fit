@@ -65,10 +65,22 @@ class Tag(BaseModel):
     name: str
     type: Optional[str] = None  # e.g. urn:tag:keyword:brand
     affinity: Optional[float] = None
-    # Filled by compare_audiences
+    # Per-audience affinities when a row carries both sides
     a_affinity: Optional[float] = None
     b_affinity: Optional[float] = None
     delta: Optional[float] = None
+
+
+class CatalogCompare(BaseModel):
+    """`/v2/analysis/compare`: the catalog tags attached to the two entities themselves.
+
+    Live responses look like results = {"tags": [...in common...], "a": [...], "b": [...],
+    "matchEntities": [...]}. These describe what the entities *are* (genre, category), not what their
+    audiences like, so a brand and a band rarely share any. Audience taste comes from tag insights.
+    """
+    common: list[Tag] = Field(default_factory=list)
+    a_tags: list[Tag] = Field(default_factory=list)
+    b_tags: list[Tag] = Field(default_factory=list)
 
 
 class Demographics(BaseModel):

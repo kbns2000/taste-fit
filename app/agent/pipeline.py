@@ -104,7 +104,13 @@ def run_fit_check(a_query: str, b_query: str, city: Optional[str], client: QlooC
     fit, fit_groups = toolbox.fit_with_groups(a.entity_id, b.entity_id)
     fit_cites = fit_groups["tags"] + fit_groups["demographics"]
     fit_dict = fit.model_dump()
-    emit("fit", {"fit": fit_dict, "cites": fit_cites})
+    catalog: Optional[dict[str, Any]] = None
+    catalog_cites: list[str] = []
+    try:  # optional context: on failure the call is still filed in the ledger as "(failed)"
+        catalog, catalog_cites = toolbox.catalog_overlap(a.entity_id, b.entity_id)
+    except (RunCapExceeded, QlooError):
+        pass
+    emit("fit", {"fit": fit_dict, "cites": fit_cites, "catalog": catalog, "catalog_cites": catalog_cites})
 
     emit("step", {"name": "activations", "text": "Asking Qloo what fans of both over-index on"})
     picks, pick_cites, city_failed = _activations(toolbox, a, b, city, emit)
@@ -128,6 +134,7 @@ def run_fit_check(a_query: str, b_query: str, city: Optional[str], client: QlooC
     ctx: dict[str, Any] = {
         "mode": "fit", "a": _entity_dict(a), "b": _entity_dict(b), "city": city,
         "fit": fit_dict, "fit_cites": fit_cites, "fit_cite_groups": fit_groups,
+        "catalog": catalog, "catalog_cites": catalog_cites,
         "picks": picks, "pick_cites": pick_cites,
         "zones": zones, "zone_cites": zone_cites, "heatmap": heat,
         "source": ledger.source(), "ledger": ledger.as_list(),
@@ -154,6 +161,7 @@ def run_fit_check(a_query: str, b_query: str, city: Optional[str], client: QlooC
         "mode": "fit", "a": ctx["a"], "b": ctx["b"], "city": city,
         "alternatives": {"a": toolbox.alternatives.get(a.entity_id, []), "b": toolbox.alternatives.get(b.entity_id, [])},
         "fit": fit_dict, "fit_cites": fit_cites, "fit_cite_groups": fit_groups,
+        "catalog": catalog, "catalog_cites": catalog_cites,
         "picks": ctx["picks"], "pick_cites": ctx["pick_cites"],
         "zones": ctx.get("zones") or [], "zone_cites": ctx.get("zone_cites") or [], "heatmap": ctx.get("heatmap") or [],
         "brief": brief, "verification": verification,

@@ -95,21 +95,8 @@ def _cosine(a: dict[str, float], b: dict[str, float]) -> float:
     return dot / (na * nb)
 
 
-def vectors_from_compare(rows: list[Tag]) -> tuple[dict[str, float], dict[str, float], dict[str, str]]:
-    """Tag vectors for A and B from `/v2/analysis/compare` rows."""
-    a, b, names = {}, {}, {}
-    for row in rows:
-        names[row.tag_id] = row.name
-        # a 0 affinity means "not among this audience's tags": treat as absent
-        if row.a_affinity:
-            a[row.tag_id] = float(row.a_affinity)
-        if row.b_affinity:
-            b[row.tag_id] = float(row.b_affinity)
-    return a, b, names
-
-
 def vectors_from_tags(a_rows: list[Tag], b_rows: list[Tag]) -> tuple[dict[str, float], dict[str, float], dict[str, str]]:
-    """Tag vectors from two separate `filter.type=urn:tag` insight calls (fallback)."""
+    """Audience tag vectors from two `filter.type=urn:tag` insight calls (one per audience)."""
     a = {r.tag_id: float(r.affinity) for r in a_rows if r.affinity}
     b = {r.tag_id: float(r.affinity) for r in b_rows if r.affinity}
     names = {r.tag_id: r.name for r in a_rows + b_rows}

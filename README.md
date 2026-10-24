@@ -18,7 +18,8 @@ Partnership and co-marketing decisions are usually made on vibes, follower count
 
 | Product question | Qloo capability used |
 |---|---|
-| What do the two audiences share, and where do they differ? | `/v2/analysis/compare` (tag affinities for audience A vs B), falling back to two `filter.type=urn:tag` insights |
+| What do the two audiences share, and where do they differ? | `filter.type=urn:tag` insights per entity: what each audience over-indexes on, across domains |
+| Are the two the same kind of thing on paper? | `/v2/analysis/compare` (catalog tags the entities share), shown next to the audience overlap |
 | Are these the same people demographically? | `filter.type=urn:demographics` per entity |
 | What would fans of **both** show up for? | joint-signal `/v2/insights` with `signal.interests.entities=A,B` and `feature.explainability=true` per target type |
 | Where in the city should the activation be? | `filter.type=urn:heatmap` with `filter.location.query`, plus `urn:entity:place` with `filter.location.query` |
@@ -32,7 +33,7 @@ The LLM in the loop does not invent any of this; it can only *ask for more Qloo 
 All inputs are Qloo outputs, so each number traces back to a ledger entry:
 
 ```
-shared_taste       = cosine(tag affinities of A, tag affinities of B) × 100
+shared_taste       = cosine(A audience's tag affinities, B audience's tag affinities) × 100
 audience_alignment = (cosine(demographic index A, demographic index B) + 1) / 2 × 100
 fresh_reach        = share of B's top-15 tags that are not in A's top-20 × 100
 balance            = 100 − |fresh_reach − 40| × 2.5        (clipped to 0..100)
@@ -68,12 +69,12 @@ pip install -r requirements-dev.txt
 cp .env.example .env                               # fill QLOO_API_KEY (and optionally an LLM key)
 set -a; . ./.env; set +a                           # or export the variables your own way
 uvicorn app.main:app --reload --port 7860          # open http://127.0.0.1:7860
-python -m pytest                                   # 38 tests, mock data, no network
+python -m pytest                                   # 40 tests, mock data, no network
 ```
 
 Without `QLOO_API_KEY` the app runs on demo data and the header badge says so. Hackathon keys use `https://hackathon.api.qloo.com` (the default); production keys set `QLOO_BASE_URL=https://api.qloo.com`.
 
-`python scripts/smoke_live.py` exercises every live call shape once a key exists (about 8 requests) and prints the raw shape of the compare response.
+`python scripts/smoke_live.py` exercises every live call shape once a key exists (about 8 requests) and prints the shapes of the compare and explainability responses.
 
 ### Docker / Render (free)
 
@@ -118,7 +119,7 @@ The hosted demo runs on Render's free web service from `render.yaml` (Blueprint)
 * The key lives only in a server-side environment variable and only travels in the `X-Api-Key` header. It is never logged, never in the ledger, never in the browser.
 * The score is a heuristic for prioritising conversations, not a forecast of campaign lift. Validate with a pilot.
 * Demo-data runs are labelled; the demo world is small, so unknown names return "not found" rather than a guess.
-* The exact shape of `/v2/analysis/compare` is not documented; the adapter parses it defensively and falls back to two tag-insight calls.
+* `/v2/analysis/compare` compares the catalog tags attached to the entities (genre, category), not audience affinities, so a brand and a band rarely share any. Shared taste comes from each audience's tag insights; compare is shown as context ("different on paper, same fans").
 
 ## Repository layout
 
@@ -136,7 +137,7 @@ app/agent/pipeline.py    fit check / partner scout orchestration
 app/agent/llm/           Anthropic SDK provider, OpenAI-compatible provider
 app/main.py              FastAPI app, SSE, rate limiting
 web/                     UI (index.html, styles.css, app.js, Leaflet map)
-tests/                   38 tests (scoring, mock, live adapter with fake transport, API, agent loop, review regressions)
+tests/                   40 tests (scoring, mock, live adapter with fake transport, API, agent loop, review regressions)
 render.yaml              Render Blueprint for the hosted demo
 ```
 

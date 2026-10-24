@@ -27,6 +27,7 @@ from typing import Any, Iterable, Optional, Protocol
 import httpx
 
 from .models import (
+    CatalogCompare,
     Demographics,
     Entity,
     HeatCell,
@@ -91,7 +92,7 @@ class QlooClient(Protocol):
     def heatmap(self, entity_ids: list[str], location_query: str,
                 trace: Optional[list] = None) -> list[HeatCell]: ...
 
-    def compare(self, a_ids: list[str], b_ids: list[str], trace: Optional[list] = None) -> list[Tag]: ...
+    def compare(self, a_ids: list[str], b_ids: list[str], trace: Optional[list] = None) -> CatalogCompare: ...
 
     def find_tags(self, query: str, take: int = 10, trace: Optional[list] = None) -> list[Tag]: ...
 
@@ -137,6 +138,45 @@ def _first_image(props: dict) -> Optional[str]:
     return None
 
 
+def _explain_items(items: list, wanted: set[str], out: dict[str, float]) -> None:
+    """[{"entity_id"|"id": ..., "score"|"weight"|"affinity"|"value": ...}, ...] -> out[id] = score."""
+    for item in items:
+        if not isinstance(item, dict):
+            continue
+        key = str(item.get("entity_id") or item.get("id") or "")
+        score = next((_num(item[k]) for k in ("score", "weight", "affinity", "value") if k in item), None)
+        if key and score is not None and (not wanted or key.lower() in wanted):
+            out[key] = score
+
+
+def _explain_from(exp: Any, signal_ids: Optional[Iterable[str]] = None) -> dict[str, float]:
+    """Per-signal contribution from `query.explainability`.
+
+    Live shape (2026-10-24): {"signal.interests.entities": [{"entity_id": <signal id>, "score": 0.52}, ...]}.
+    Also accepted: a bare list of those items, {"signal.interests.entities": {id: score}} and {id: score}.
+    """
+    wanted = set(s.lower() for s in (signal_ids or []))
+    out: dict[str, float] = {}
+    if isinstance(exp, list):
+        _explain_items(exp, wanted, out)
+        return out
+    if not isinstance(exp, dict):
+        return out
+    for value in exp.values():  # dict of lists (live shape)
+        if isinstance(value, list):
+            _explain_items(value, wanted, out)
+    if out:
+        return out
+    for cand in [exp] + [v for v in exp.values() if isinstance(v, dict)]:  # dict of numbers
+        for key, value in cand.items():
+            score = _num(value)
+            if score is not None and (not wanted or key.lower() in wanted):
+                out[key] = score
+        if out:
+            break
+    return out
+
+
 def _entity_from_raw(raw: dict, signal_ids: Optional[Iterable[str]] = None) -> Optional[Entity]:
     if not isinstance(raw, dict):
         return None
@@ -162,32 +202,7 @@ def _entity_from_raw(raw: dict, signal_ids: Optional[Iterable[str]] = None) -> O
             tags.append(str(tag["name"]))
         if len(tags) >= 8:
             break
-    explain: dict[str, float] = {}
-    exp = query.get("explainability")
-    if isinstance(exp, list):
-        # list shape: [{"entity_id": ..., "score"|"weight"|"affinity": ...}, ...]
-        wanted = set(s.lower() for s in (signal_ids or []))
-        for item in exp:
-            if not isinstance(item, dict):
-                continue
-            key = str(item.get("entity_id") or item.get("id") or "")
-            score = next((_num(item[k]) for k in ("score", "weight", "affinity", "value") if k in item), None)
-            if key and score is not None and (not wanted or key.lower() in wanted):
-                explain[key] = score
-    elif isinstance(exp, dict):
-        # Shapes seen in the wild: {"signal.interests.entities": {id: score}}
-        # or {id: score}. Pick numeric leaves keyed by entity ids.
-        candidates = [exp] + [v for v in exp.values() if isinstance(v, dict)]
-        wanted = set(s.lower() for s in (signal_ids or []))
-        for cand in candidates:
-            for key, value in cand.items():
-                score = _num(value)
-                if score is None:
-                    continue
-                if not wanted or key.lower() in wanted:
-                    explain[key] = score
-            if explain:
-                break
+    explain = _explain_from(query.get("explainability"), signal_ids)
     return Entity(
         entity_id=str(entity_id),
         name=str(name),
@@ -335,7 +350,7 @@ class LiveQlooClient:
                 out[key] = str(value)
         return out
 
-    def _get(self, path: str, params: dict[str, Any], trace: Optional[list], key: str,
+    def _get(self, path: str, params: dict[str, Any], trace: Optional[list], key: "str | tuple[str, ...]",
              preview_of=None) -> Any:
         encoded = self._encode(params)
         cache_key = path + "?" + "&".join(f"{k}={v}" for k, v in sorted(encoded.items()))
@@ -351,7 +366,8 @@ class LiveQlooClient:
             if record.status != "error":
                 self._cache.put(cache_key, payload)
         record.duration_ms = int((time.perf_counter() - started) * 1000)
-        items = _results(payload, key) if payload is not None else []
+        keys = (key,) if isinstance(key, str) else key
+        items = [i for k in keys for i in _results(payload, k)] if payload is not None else []
         record.count = len(items)
         if record.status != "error" and record.count == 0:
             record.status = "empty"
@@ -521,14 +537,21 @@ class LiveQlooClient:
             ))
         return out
 
-    def compare(self, a_ids: list[str], b_ids: list[str], trace: Optional[list] = None) -> list[Tag]:
+    def compare(self, a_ids: list[str], b_ids: list[str], trace: Optional[list] = None) -> CatalogCompare:
         params = {"a.signal.interests.entities": a_ids, "b.signal.interests.entities": b_ids}
-        payload = self._get("/v2/analysis/compare", params, trace, "tags",
+        payload = self._get("/v2/analysis/compare", params, trace, ("tags", "a", "b"),
                             preview_of=lambda items: [str(i.get("name")) for i in items[:6] if isinstance(i, dict)])
-        tags = [t for t in (_tag_from_raw(r) for r in _results(payload, "tags")) if t]
-        if not tags:
-            raise QlooError("compare returned no tag rows", retryable=False)
-        return tags
+
+        def parse(key: str) -> list[Tag]:
+            return [t for t in (_tag_from_raw(r) for r in _results(payload, key)) if t]
+
+        common, a_tags, b_tags = parse("tags"), parse("a"), parse("b")
+        if not (common or a_tags or b_tags):
+            raise QlooError("compare returned no tags", retryable=False)
+        seen = {t.tag_id for t in common}
+        in_b = {t.tag_id for t in b_tags}
+        common += [t for t in a_tags if t.tag_id in in_b and t.tag_id not in seen]
+        return CatalogCompare(common=common, a_tags=a_tags, b_tags=b_tags)
 
     def trending(self, entity_ids: list[str], target_type: str, start_date: str, end_date: str,
                  take: int = 10, trace: Optional[list] = None) -> list[TrendPoint]:

@@ -224,6 +224,10 @@
       <div><h3>Shared (${f.shared_tags.length})</h3>${f.shared_tags.map(tagRow).join("") || '<p class="muted small">No shared tags.</p>'}</div>
       <div><h3>Only ${esc(a.name)}</h3>${f.a_only_tags.map((t) => `<span class="chip a">${esc(t.name)}</span>`).join("") || '<p class="muted small">—</p>'}</div>
       <div><h3>Only ${esc(b.name)} <small>(fresh reach)</small></h3>${f.b_only_tags.map((t) => `<span class="chip b">${esc(t.name)}</span>`).join("") || '<p class="muted small">—</p>'}</div>`;
+    const cat = res.catalog;
+    $("#catalog-note").innerHTML = !cat ? "" : cat.common_count
+      ? `Qloo catalog: both are tagged ${cat.common.slice(0, 4).map(esc).join(", ")}. ${cites(res.catalog_cites)}`
+      : `Qloo catalog: ${esc(a.name)} and ${esc(b.name)} share no catalog tags (${cat.a_count} vs ${cat.b_count}), so any overlap above is in what their fans like, not in what the two are. ${cites(res.catalog_cites)}`;
 
     // picks
     const pk = $("#picks"); pk.innerHTML = "";

@@ -98,8 +98,9 @@
 
       <article class="card">
         <h2>Taste overlap</h2>
-        <p class="muted small">Tags from Qloo's taste vocabulary; bars show each audience's affinity.</p>
+        <p class="muted small">Tags each audience over-indexes on (Qloo <code>urn:tag</code> insights); bars show each audience's affinity.</p>
         <div class="overlap" id="overlap"></div>
+        <p class="muted small catalog-note" id="catalog-note"></p>
       </article>
 
       <article class="card">
@@ -158,7 +159,7 @@
     <h2>How it works</h2>
     <div class="grid-3">
       <div><h3>1 · Resolve</h3><p><code>/search</code> turns free text into Qloo entities (brands, artists, places, podcasts…).</p></div>
-      <div><h3>2 · Compare</h3><p><code>/v2/analysis/compare</code> (or two <code>urn:tag</code> insights) gives both audiences' tag affinities; <code>urn:demographics</code> gives age and gender indices. The score is a printed formula, not a vibe.</p></div>
+      <div><h3>2 · Compare</h3><p>Two <code>urn:tag</code> insights give what each audience over-indexes on; <code>urn:demographics</code> gives age and gender indices; <code>/v2/analysis/compare</code> shows which catalog tags the two entities share. The score is a printed formula, not a vibe.</p></div>
       <div><h3>3 · Activate</h3><p>Joint-signal <code>/v2/insights</code> with explainability finds artists, podcasts and places that fans of <em>both</em> over-index on; <code>urn:heatmap</code> shows where in the city.</p></div>
       <div><h3>4 · Write</h3><p>An LLM agent (Claude, with a scripted fallback) can pull more evidence through the same tools, then must submit the brief through a strict schema.</p></div>
       <div><h3>5 · Verify</h3><p>Every citation and named entity is checked against the ledger. Anything Qloo did not return is removed and flagged.</p></div>

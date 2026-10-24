@@ -77,6 +77,14 @@ def scripted_brief(ctx: dict[str, Any]) -> dict[str, Any]:
     else:
         why.append({"text": f"Qloo finds no taste tags that both audiences over-index on "
                             f"(shared taste {fit['shared_taste']}/100).", "cites": tag_cites})
+    cat, cat_cites = ctx.get("catalog"), ctx.get("catalog_cites") or []
+    if cat and cat_cites:
+        if cat["common_count"] == 0 and fit["shared_taste"] >= 30:
+            why.append({"text": f"On paper {a} and {b} share no Qloo catalog tags, so the overlap is in what their "
+                                f"fans like, not in what the two are.", "cites": cat_cites + tag_cites})
+        elif cat["common_count"]:
+            why.append({"text": f"Qloo's catalog already tags both with {', '.join(cat['common'][:3])}.",
+                        "cites": cat_cites})
     if fit["agreeing_segments"]:
         why.append({"text": f"Both audiences over-index on the same segments: {', '.join(fit['agreeing_segments'])} "
                             f"(audience alignment {fit['audience_alignment']}/100).", "cites": demo_cites})

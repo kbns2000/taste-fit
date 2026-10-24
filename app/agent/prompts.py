@@ -24,6 +24,16 @@ Budget: at most {max_tools} extra tool calls. Use them only when they would chan
 (for example: a place list for the chosen city, or a second activation type)."""
 
 
+def _catalog_line(ctx: dict[str, Any]) -> str:
+    cat = ctx.get("catalog")
+    if not cat:
+        return "Qloo catalog compare: not available"
+    cites = ", ".join(ctx.get("catalog_cites") or [])
+    common = ", ".join(cat["common"][:8]) or "none"
+    return (f"Qloo catalog compare (tags attached to the entities themselves, not audience taste) [{cites}]: "
+            f"{cat['common_count']} in common ({common}); A has {cat['a_count']} catalog tags, B has {cat['b_count']}")
+
+
 def render_evidence(ctx: dict[str, Any]) -> str:
     fit = ctx["fit"]
     a, b = ctx["a"], ctx["b"]
@@ -45,6 +55,7 @@ def render_evidence(ctx: dict[str, Any]) -> str:
             f"{d['label']} {d['a']:+.2f}/{d['b']:+.2f}" for d in fit["demographics"]),
         f"Segments both over-index: {', '.join(fit['agreeing_segments']) or 'none'}; "
         f"diverging: {', '.join(fit['diverging_segments']) or 'none'}",
+        _catalog_line(ctx),
         "",
         "JOINT RECOMMENDATIONS (fans of A + B; driver from feature.explainability):",
     ]

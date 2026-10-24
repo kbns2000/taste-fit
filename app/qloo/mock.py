@@ -22,7 +22,7 @@ from pathlib import Path
 from typing import Any, Callable, Optional
 
 from .client import CallRecord
-from .models import Demographics, Entity, HeatCell, Tag, TrendPoint, short_type, to_urn
+from .models import CatalogCompare, Demographics, Entity, HeatCell, Tag, TrendPoint, short_type, to_urn
 
 FIXTURES_PATH = Path(__file__).with_name("fixtures.json")
 
@@ -100,6 +100,9 @@ def load_world(path: str = str(FIXTURES_PATH)) -> dict[str, Any]:
         world = json.load(fh)
     world["by_id"] = {e["entity_id"]: e for e in world["entities"]}
     return world
+
+
+CATALOG_TAGS = 6  # tags the mock 'catalog' attaches to each entity
 
 
 class MockQlooClient:
@@ -336,21 +339,22 @@ class MockQlooClient:
         self._record("/v2/insights", params, cells, trace, started, lambda xs: [f"{len(xs)} cells"])
         return cells
 
-    def compare(self, a_ids: list[str], b_ids: list[str], trace: Optional[list] = None) -> list[Tag]:
+    def compare(self, a_ids: list[str], b_ids: list[str], trace: Optional[list] = None) -> CatalogCompare:
+        """Catalog tags attached to the entities themselves (top tags of each raw profile), like live compare."""
         started = time.perf_counter()
-        a_vec, b_vec = self._signal_vec(a_ids), self._signal_vec(b_ids)
-        rows = []
-        for tag_id in sorted(set(a_vec) | set(b_vec)):
-            meta = self._tag_meta(tag_id)
-            a_aff = max(0.0, min(1.0, 0.55 + 0.45 * a_vec.get(tag_id, 0.0) + _jitter(tag_id, *a_ids))) if tag_id in a_vec else 0.0
-            b_aff = max(0.0, min(1.0, 0.55 + 0.45 * b_vec.get(tag_id, 0.0) + _jitter(tag_id, *b_ids))) if tag_id in b_vec else 0.0
-            rows.append(Tag(tag_id=tag_id, name=meta["name"], type=meta["type"],
-                            affinity=round((a_aff + b_aff) / 2, 4), a_affinity=round(a_aff, 4),
-                            b_affinity=round(b_aff, 4), delta=round(a_aff - b_aff, 4)))
-        rows.sort(key=lambda t: -(t.affinity or 0))
+
+        def catalog(ids: list[str]) -> list[Tag]:
+            vec = self._signal_vec(ids)
+            top = sorted(vec.items(), key=lambda kv: -kv[1])[:CATALOG_TAGS]
+            return [Tag(tag_id=t, name=self._tag_meta(t)["name"], type=self._tag_meta(t)["type"]) for t, _ in top]
+
+        a_tags, b_tags = catalog(a_ids), catalog(b_ids)
+        in_b = {t.tag_id for t in b_tags}
+        common = [t for t in a_tags if t.tag_id in in_b]
         params = {"a.signal.interests.entities": a_ids, "b.signal.interests.entities": b_ids}
-        self._record("/v2/analysis/compare", params, rows, trace, started, lambda xs: [t.name for t in xs])
-        return rows
+        self._record("/v2/analysis/compare", params, common + a_tags + b_tags, trace, started,
+                     lambda xs: [t.name for t in xs])
+        return CatalogCompare(common=common, a_tags=a_tags, b_tags=b_tags)
 
     def trending(self, entity_ids: list[str], target_type: str, start_date: str, end_date: str,
                  take: int = 10, trace: Optional[list] = None) -> list[TrendPoint]:

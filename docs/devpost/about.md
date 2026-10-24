@@ -1,4 +1,3 @@
-
 ## Inspiration
 Brand partnerships, co-marketing deals and sponsorships are still decided on follower counts, gut feel or slow panel surveys. None of those answer the question that actually decides whether a collab lands: **do the fans of brand A and the fans of partner B share a taste core, who are they, and what would fans of both show up for?** Qloo's cross-domain taste graph is the only data that can answer that across brands, music, podcasts and places at once. If Taste-Fit ran without Qloo, it would have nothing to say. So we built the tool a partnerships lead would open before a pitch meeting.
 
@@ -18,7 +17,7 @@ Give Taste-Fit two entities (brand × brand, brand × artist, brand × podcast, 
 - **Agent:** a scripted core gathers the evidence deterministically (about thirteen Qloo calls per run). The writer agent — Claude through the official Anthropic SDK with strict tool schemas, or any OpenAI-compatible endpoint — may call `recommend`, `heatmap` and `find_tags` for more evidence and must submit the brief through a strict `finalize_brief` tool. A scripted writer produces the same structure when no LLM key is set, so the product is complete end to end either way.
 - **Evidence ledger:** every Qloo request is numbered (endpoint, redacted parameters, result count, names, duration, cache hit). The UI renders it as a table; footnotes in the brief jump to the row.
 - **Quota and safety:** per-run call cap, daily budget, six-hour cache, bounded retries honouring `Retry-After`, per-visitor rate limit, and a labelled demo-data fallback. The key lives only in a server-side environment variable and the `X-Api-Key` header.
-- **Stack:** Python 3.13, FastAPI with Server-Sent Events for live agent progress, a vanilla-JS UI with Leaflet, Docker on Render's free web service. A deterministic demo world shaped like Qloo responses powers 49 tests and offline runs. Open source under the MIT license.
+- **Stack:** Python 3.13, FastAPI with Server-Sent Events for live agent progress, a vanilla-JS UI with Leaflet, Docker on Render's free web service. A deterministic demo world shaped like Qloo responses powers 51 tests and offline runs. Open source under the MIT license.
 
 ## Challenges we ran into
 - Making an LLM useful without letting it invent audience facts. We separated evidence gathering (scripted, logged) from writing (tool-gated, strict schema) and added a verifier that checks every citation and entity against the ledger.

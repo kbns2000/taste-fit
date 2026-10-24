@@ -24,6 +24,20 @@ Budget: at most {max_tools} extra tool calls. Use them only when they would chan
 (for example: a place list for the chosen city, or a second activation type)."""
 
 
+def _shared_basis_line(ctx: dict[str, Any]) -> str:
+    fit, a, b = ctx["fit"], ctx["a"]["name"], ctx["b"]["name"]
+    cites = ", ".join((ctx.get("fit_cite_groups") or {}).get("affinity") or [])
+    if fit.get("shared_basis") == "cross_affinity":
+        parts = []
+        if fit.get("a_to_b") is not None:
+            parts.append(f"{b} among fans of {a}: {fit['a_to_b']}")
+        if fit.get("b_to_a") is not None:
+            parts.append(f"{a} among fans of {b}: {fit['b_to_a']}")
+        return ("Shared taste = Qloo cross-affinity (0.5 medium, >0.8 very high), rescaled so 0.5 -> 0 and 1.0 -> 100"
+                f" [{cites}]: " + "; ".join(parts))
+    return "Shared taste = cosine of the two audiences' taste-tag lists (no cross-affinity was available)"
+
+
 def _catalog_line(ctx: dict[str, Any]) -> str:
     cat = ctx.get("catalog")
     if not cat:
@@ -45,8 +59,10 @@ def render_evidence(ctx: dict[str, Any]) -> str:
         f"CITY: {ctx.get('city') or 'none given'}",
         "",
         f"TASTE-FIT SCORE: {fit['fit']}/100 ({fit['band']}) "
-        f"= 0.5*shared_taste {fit['shared_taste']} + 0.3*audience_alignment {fit['audience_alignment']} "
-        f"+ 0.2*balance {fit['balance']} (fresh_reach {fit['fresh_reach']}%)  cites: {', '.join(ctx['fit_cites'])}",
+        f"= 0.6*shared_taste {fit['shared_taste']} + 0.4*audience_alignment {fit['audience_alignment']}  "
+        f"cites: {', '.join(ctx['fit_cites'])}",
+        _shared_basis_line(ctx),
+        f"Fresh reach (shown, not scored): {fit['fresh_reach']}% of B's top taste tags are not among A's top tags",
         "Shared tags (A affinity / B affinity): " + ", ".join(
             f"{t['name']} ({t['a_affinity']}/{t['b_affinity']})" for t in fit["shared_tags"][:10]) or "none",
         "Only A: " + ", ".join(t["name"] for t in fit["a_only_tags"][:6]),

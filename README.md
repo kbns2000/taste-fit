@@ -18,6 +18,7 @@ Partnership and co-marketing decisions are usually made on vibes, follower count
 
 | Product question | Qloo capability used |
 |---|---|
+| How much does each audience like the other side? | `/v2/insights` with `filter.results.entities`, both directions: Qloo's affinity of B among A's fans and of A among B's fans |
 | What do the two audiences share, and where do they differ? | `filter.type=urn:tag` insights per entity: what each audience over-indexes on, across domains |
 | Are the two the same kind of thing on paper? | `/v2/analysis/compare` (catalog tags the entities share), shown next to the audience overlap |
 | Are these the same people demographically? | `filter.type=urn:demographics` per entity |
@@ -33,14 +34,15 @@ The LLM in the loop does not invent any of this; it can only *ask for more Qloo 
 All inputs are Qloo outputs, so each number traces back to a ledger entry:
 
 ```
-shared_taste       = cosine(A audience's tag affinities, B audience's tag affinities) × 100
+shared_taste       = (mean(affinity of B among A's fans, affinity of A among B's fans) − 0.5) / 0.5 × 100   (clipped to 0..100)
 audience_alignment = (cosine(demographic index A, demographic index B) + 1) / 2 × 100
-fresh_reach        = share of B's top-15 tags that are not in A's top-20 × 100
-balance            = 100 − |fresh_reach − 40| × 2.5        (clipped to 0..100)
-fit                = 0.5·shared_taste + 0.3·audience_alignment + 0.2·balance
+fit                = 0.6·shared_taste + 0.4·audience_alignment
+fresh_reach        = share of B's top-15 taste tags that are not in A's top-20 × 100   (shown, not scored)
 ```
 
-≥70 strong · 55–69 workable · <55 weak. A taste clone scores high on shared taste but loses on balance (no new reach); an unrelated partner has reach but no shared core. The sweet spot is a partner that overlaps on a real core and extends the audience by roughly 30–50%.
+≥70 strong · 55–69 workable · <55 weak. The cross-affinity comes from `filter.results.entities`; Qloo describes entity-to-entity affinity as a similarity of audience embeddings where about 0.5 is medium and 0.8+ very high, so medium maps to 0 and the maximum to 100. In live data (2026-10-24) Bon Iver scores 0.92 among Patagonia fans and McDonald's 0.67, so the scale separates related from unrelated partners. If Qloo returns no cross-affinity, shared taste falls back to the cosine of the two audiences' tag lists and the UI says so.
+
+The tag lists still explain *what* the audiences share (venue and payment tags such as star ratings, card networks and price bands are left out), and fresh reach shows what B adds. A near-clone (shared taste 90+ and the same kind of entity) is flagged in the brief as a risk rather than penalised in the score.
 
 ## Agent design
 
@@ -69,12 +71,12 @@ pip install -r requirements-dev.txt
 cp .env.example .env                               # fill QLOO_API_KEY (and optionally an LLM key)
 set -a; . ./.env; set +a                           # or export the variables your own way
 uvicorn app.main:app --reload --port 7860          # open http://127.0.0.1:7860
-python -m pytest                                   # 40 tests, mock data, no network
+python -m pytest                                   # 46 tests, mock data, no network
 ```
 
 Without `QLOO_API_KEY` the app runs on demo data and the header badge says so. Hackathon keys use `https://hackathon.api.qloo.com` (the default); production keys set `QLOO_BASE_URL=https://api.qloo.com`.
 
-`python scripts/smoke_live.py` exercises every live call shape once a key exists (about 8 requests) and prints the shapes of the compare and explainability responses.
+`python scripts/smoke_live.py` exercises every live call shape once a key exists (about 10 requests) and prints the cross-affinity both ways plus the shapes of the compare and explainability responses.
 
 ### Docker / Render (free)
 
@@ -119,7 +121,7 @@ The hosted demo runs on Render's free web service from `render.yaml` (Blueprint)
 * The key lives only in a server-side environment variable and only travels in the `X-Api-Key` header. It is never logged, never in the ledger, never in the browser.
 * The score is a heuristic for prioritising conversations, not a forecast of campaign lift. Validate with a pilot.
 * Demo-data runs are labelled; the demo world is small, so unknown names return "not found" rather than a guess.
-* `/v2/analysis/compare` compares the catalog tags attached to the entities (genre, category), not audience affinities, so a brand and a band rarely share any. Shared taste comes from each audience's tag insights; compare is shown as context ("different on paper, same fans").
+* `/v2/analysis/compare` compares the catalog tags attached to the entities (genre, category), not audience affinities, so a brand and a band rarely share any. Shared taste comes from the cross-affinity; compare is shown as context ("different on paper, same fans").
 
 ## Repository layout
 
@@ -137,7 +139,7 @@ app/agent/pipeline.py    fit check / partner scout orchestration
 app/agent/llm/           Anthropic SDK provider, OpenAI-compatible provider
 app/main.py              FastAPI app, SSE, rate limiting
 web/                     UI (index.html, styles.css, app.js, Leaflet map)
-tests/                   40 tests (scoring, mock, live adapter with fake transport, API, agent loop, review regressions)
+tests/                   46 tests (scoring, mock, live adapter with fake transport, API, agent loop, review regressions)
 render.yaml              Render Blueprint for the hosted demo
 ```
 

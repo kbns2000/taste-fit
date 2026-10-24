@@ -80,3 +80,29 @@ def test_api_validation_and_unknown_entity():
     assert client.get("/api/runs/nope").status_code == 404
     found = client.post("/api/resolve", json={"query": "pata"}).json()["results"]
     assert found[0]["name"] == "Patagonia"
+
+
+def test_fit_check_scores_shared_taste_from_cross_affinity():
+    res = execute({"mode": "fit", "a": "Patagonia", "b": "Bon Iver"}, lambda k, p: None, _cfg())
+    fit = res["fit"]
+    assert fit["shared_basis"] == "cross_affinity"
+    assert fit["a_to_b"] is not None and fit["b_to_a"] is not None
+    assert "balance" not in fit
+    assert abs(fit["fit"] - (0.6 * fit["shared_taste"] + 0.4 * fit["audience_alignment"])) < 0.11
+    aff = res["fit_cite_groups"]["affinity"]
+    assert len(aff) == 2 and set(aff) <= set(res["fit_cites"])
+    assert sum("filter.results.entities" in e["params"] for e in res["ledger"]) == 2
+
+
+def test_fit_check_falls_back_to_tags_when_affinity_fails(monkeypatch):
+    from app.qloo.mock import MockQlooClient
+    from app.qloo.models import QlooError
+
+    def boom(self, *a, **kw):
+        raise QlooError("upstream hiccup", status=500)
+
+    monkeypatch.setattr(MockQlooClient, "affinity_among", boom)
+    res = execute({"mode": "fit", "a": "Patagonia", "b": "Bon Iver"}, lambda k, p: None, _cfg())
+    assert res["fit"]["shared_basis"] == "tags" and res["fit"]["a_to_b"] is None
+    assert res["fit_cite_groups"]["affinity"] == []
+    assert res["verification"]["passed"], res["verification"]

@@ -339,6 +339,24 @@ class MockQlooClient:
         self._record("/v2/insights", params, cells, trace, started, lambda xs: [f"{len(xs)} cells"])
         return cells
 
+    def affinity_among(self, signal_ids: list[str], target_ids: list[str], target_type: str,
+                       trace: Optional[list] = None) -> dict[str, float]:
+        """Cross-affinity in the shape live Qloo returns (0.5 = "medium"); unrelated demo pairs land near 0.5."""
+        started = time.perf_counter()
+        vec = self._signal_vec(signal_ids)
+        out: dict[str, float] = {}
+        for tid in target_ids:
+            raw = self._raw(tid)
+            if raw is None:
+                continue
+            cos = max(0.0, _cosine(vec, raw["tags"]))
+            out[tid] = round(min(1.0, 0.5 + 0.5 * math.sqrt(cos) + _jitter(tid, *signal_ids)), 4)
+        params = {"filter.type": to_urn(target_type), "signal.interests.entities": signal_ids,
+                  "filter.results.entities": target_ids, "take": len(target_ids)}
+        rows = [self._raw(t)["name"] for t in out]
+        self._record("/v2/insights", params, rows, trace, started, lambda xs: list(xs))
+        return out
+
     def compare(self, a_ids: list[str], b_ids: list[str], trace: Optional[list] = None) -> CatalogCompare:
         """Catalog tags attached to the entities themselves (top tags of each raw profile), like live compare."""
         started = time.perf_counter()

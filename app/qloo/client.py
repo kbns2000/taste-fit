@@ -89,6 +89,9 @@ class QlooClient(Protocol):
                   exclude_ids: Optional[list[str]] = None,
                   trace: Optional[list] = None) -> list[Entity]: ...
 
+    def affinity_among(self, signal_ids: list[str], target_ids: list[str], target_type: str,
+                       trace: Optional[list] = None) -> dict[str, float]: ...
+
     def heatmap(self, entity_ids: list[str], location_query: str,
                 trace: Optional[list] = None) -> list[HeatCell]: ...
 
@@ -236,6 +239,7 @@ def _tag_from_raw(raw: dict) -> Optional[Tag]:
         name=name,
         type=raw.get("subtype") or raw.get("type"),
         affinity=_num(query.get("affinity")),
+        popularity=_num(raw.get("popularity")),
         a_affinity=_num((a or {}).get("affinity") if a else query.get("a_affinity")),
         b_affinity=_num((b or {}).get("affinity") if b else query.get("b_affinity")),
         delta=_num(query.get("delta")),
@@ -535,6 +539,31 @@ class LiveQlooClient:
                 affinity_rank=_num(query.get("affinity_rank")) or 0.0,
                 popularity=_num(query.get("popularity")) or 0.0,
             ))
+        return out
+
+    def affinity_among(self, signal_ids: list[str], target_ids: list[str], target_type: str,
+                       trace: Optional[list] = None) -> dict[str, float]:
+        """Affinity of specific entities for an audience (`filter.results.entities`).
+
+        Qloo documents this filter as the way "to assess the affinity of an entity towards input"; for
+        entity-to-entity insights the score is a cosine similarity of audience embeddings (0.5 = medium).
+        """
+        params = {
+            "filter.type": to_urn(target_type),
+            "signal.interests.entities": signal_ids,
+            "filter.results.entities": target_ids,
+            "take": max(1, min(len(target_ids), 50)),
+        }
+        payload = self._get("/v2/insights", params, trace, "entities",
+                            preview_of=lambda items: [str(i.get("name")) for i in items[:5] if isinstance(i, dict)])
+        out: dict[str, float] = {}
+        for raw in _results(payload, "entities"):
+            if not isinstance(raw, dict):
+                continue
+            eid = str(raw.get("entity_id") or raw.get("id") or "")
+            score = _num((raw.get("query") or {}).get("affinity"))
+            if eid and score is not None:
+                out[eid] = score
         return out
 
     def compare(self, a_ids: list[str], b_ids: list[str], trace: Optional[list] = None) -> CatalogCompare:

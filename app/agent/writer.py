@@ -58,6 +58,10 @@ def validate_brief(payload: Any) -> Optional[dict[str, Any]]:
 # Scripted writer
 # ---------------------------------------------------------------------------
 
+def _pct(affinity: float) -> int:
+    return int(affinity * 100 + 0.5)  # half-up, like the UI's Math.round
+
+
 def scripted_brief(ctx: dict[str, Any]) -> dict[str, Any]:
     fit = ctx["fit"]
     a, b, city = ctx["a"]["name"], ctx["b"]["name"], ctx.get("city")
@@ -65,13 +69,24 @@ def scripted_brief(ctx: dict[str, Any]) -> dict[str, Any]:
     fresh = [t["name"] for t in fit["b_only_tags"][:3]]
     groups = ctx.get("fit_cite_groups") or {}
     tag_cites = groups.get("tags") or ctx["fit_cites"][:1]
+    aff_cites = groups.get("affinity") or tag_cites
     demo_cites = groups.get("demographics") or ctx["fit_cites"][1:3] or ctx["fit_cites"]
     cites = ctx["fit_cites"]
     band = fit["band"]
     verdict = {"strong": "go", "workable": "go_with_conditions", "weak": "no_go"}[band]
 
     why = []
-    if shared:
+    if fit.get("shared_basis") == "cross_affinity":
+        parts = []
+        if fit.get("a_to_b") is not None:
+            parts.append(f"{b} among {a} fans at {_pct(fit['a_to_b'])}")
+        if fit.get("b_to_a") is not None:
+            parts.append(f"{a} among {b} fans at {_pct(fit['b_to_a'])}")
+        why.append({"text": f"Qloo scores the affinity of {' and of '.join(parts)} on a 0-100 scale where 50 is medium "
+                            f"(shared taste {fit['shared_taste']}/100).", "cites": aff_cites})
+        if shared:
+            why.append({"text": f"Both audiences over-index on {', '.join(shared)}.", "cites": tag_cites})
+    elif shared:
         why.append({"text": f"Fans of {a} and {b} share a taste core around {', '.join(shared)} "
                             f"(shared taste {fit['shared_taste']}/100).", "cites": tag_cites})
     else:
@@ -146,10 +161,11 @@ def scripted_brief(ctx: dict[str, Any]) -> dict[str, Any]:
     risks = []
     if fit["diverging_segments"]:
         risks.append(f"Diverging segments ({', '.join(fit['diverging_segments'])}): one brand's core may feel left out.")
-    if fit["balance"] < 50:
-        risks.append("Reach balance is off: " + ("the audiences are near-clones, so the partnership adds little new reach."
-                                                 if fit["fresh_reach"] < 25 else
-                                                 "very little overlap, so the message has to work for two unrelated audiences."))
+    if fit["shared_taste"] >= 90 and ctx["a"].get("type") == ctx["b"].get("type"):
+        risks.append("The audiences are near-identical and the two are the same kind of entity: "
+                     "expect little new reach, and check for direct competition.")
+    elif fit["shared_taste"] < 40:
+        risks.append("Little taste overlap: the message has to work for two largely separate audiences.")
     if ctx["source"] != "live":
         risks.append("This run used demo data shaped like Qloo responses, not live Qloo signals.")
     if not risks:

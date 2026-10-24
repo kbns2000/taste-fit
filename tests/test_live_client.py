@@ -140,3 +140,34 @@ def test_compare_with_nothing_raises():
 
     with pytest.raises(QlooError):
         _client(handler).compare(["A"], ["B"])
+
+
+def test_affinity_among_uses_filter_results_entities():
+    """Cross-affinity (2026-10-24 probe): B's affinity among A's fans comes back as query.affinity."""
+    seen = {}
+
+    def handler(request: httpx.Request):
+        seen["url"] = str(request.url)
+        return httpx.Response(200, json={"success": True, "results": {"entities": [
+            {"name": "Bon Iver", "entity_id": "B1", "subtype": "urn:entity:artist", "query": {"affinity": 0.924}},
+            {"name": "No score", "entity_id": "B2", "subtype": "urn:entity:artist", "query": {}}]}})
+
+    trace = []
+    out = _client(handler).affinity_among(["A1"], ["B1", "B2"], "artist", trace=trace)
+    assert out == {"B1": 0.924}
+    assert "filter.type=urn%3Aentity%3Aartist" in seen["url"]
+    assert "signal.interests.entities=A1" in seen["url"]
+    assert "filter.results.entities=B1%2CB2" in seen["url"]
+    assert "take=2" in seen["url"]
+    assert trace[0].count == 2 and trace[0].status == "ok"
+
+
+def test_tag_insights_keep_subtype_and_popularity():
+    def handler(request: httpx.Request):
+        return httpx.Response(200, json={"success": True, "results": {"tags": [
+            {"tag_id": "t1", "name": " indie", "type": "urn:tag", "subtype": "urn:tag:genre:qloo",
+             "popularity": 0.42, "query": {"affinity": 0.999}}]}})
+
+    rows = _client(handler).taste_tags(["A1"], take=50)
+    assert rows[0].name == "indie" and rows[0].type == "urn:tag:genre:qloo"
+    assert rows[0].popularity == 0.42 and rows[0].affinity == 0.999

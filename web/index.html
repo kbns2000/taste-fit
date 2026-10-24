@@ -79,9 +79,9 @@
               <div class="ring-num"><b id="score-num">–</b><small>/100</small></div>
             </div>
             <ul class="subscores">
-              <li><span>Shared taste <small>50%</small></span><div class="bar"><i id="bar-shared"></i></div><b id="val-shared"></b></li>
-              <li><span>Audience alignment <small>30%</small></span><div class="bar"><i id="bar-align"></i></div><b id="val-align"></b></li>
-              <li><span>Reach balance <small>20%</small></span><div class="bar"><i id="bar-balance"></i></div><b id="val-balance"></b></li>
+              <li><span>Shared taste <small>60%</small></span><div class="bar"><i id="bar-shared"></i></div><b id="val-shared"></b></li>
+              <li><span>Audience alignment <small>40%</small></span><div class="bar"><i id="bar-align"></i></div><b id="val-align"></b></li>
+              <li class="info"><span>Fresh reach <small>shown, not scored</small></span><div class="bar"><i id="bar-fresh"></i></div><b id="val-fresh"></b></li>
             </ul>
           </div>
           <p class="formula" id="formula"></p>
@@ -98,7 +98,7 @@
 
       <article class="card">
         <h2>Taste overlap</h2>
-        <p class="muted small">Tags each audience over-indexes on (Qloo <code>urn:tag</code> insights); bars show each audience's affinity.</p>
+        <p class="muted small">What the shared taste is made of: tags each audience over-indexes on (Qloo <code>urn:tag</code> insights, venue and payment tags left out); bars show each audience's affinity.</p>
         <div class="overlap" id="overlap"></div>
         <p class="muted small catalog-note" id="catalog-note"></p>
       </article>
@@ -159,7 +159,7 @@
     <h2>How it works</h2>
     <div class="grid-3">
       <div><h3>1 · Resolve</h3><p><code>/search</code> turns free text into Qloo entities (brands, artists, places, podcasts…).</p></div>
-      <div><h3>2 · Compare</h3><p>Two <code>urn:tag</code> insights give what each audience over-indexes on; <code>urn:demographics</code> gives age and gender indices; <code>/v2/analysis/compare</code> shows which catalog tags the two entities share. The score is a printed formula, not a vibe.</p></div>
+      <div><h3>2 · Compare</h3><p><code>filter.results.entities</code> asks Qloo how much each audience likes the other side (both directions); <code>urn:tag</code> insights say what they share; <code>urn:demographics</code> gives age and gender indices; <code>/v2/analysis/compare</code> shows which catalog tags the two entities share. The score is a printed formula, not a vibe.</p></div>
       <div><h3>3 · Activate</h3><p>Joint-signal <code>/v2/insights</code> with explainability finds artists, podcasts and places that fans of <em>both</em> over-index on; <code>urn:heatmap</code> shows where in the city.</p></div>
       <div><h3>4 · Write</h3><p>An LLM agent (Claude, with a scripted fallback) can pull more evidence through the same tools, then must submit the brief through a strict schema.</p></div>
       <div><h3>5 · Verify</h3><p>Every citation and named entity is checked against the ledger. Anything Qloo did not return is removed and flagged.</p></div>

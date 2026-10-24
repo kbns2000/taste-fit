@@ -100,9 +100,9 @@ def run_fit_check(a_query: str, b_query: str, city: Optional[str], client: QlooC
                       "alternatives": {"a": toolbox.alternatives.get(a.entity_id, []),
                                        "b": toolbox.alternatives.get(b.entity_id, [])}})
 
-    emit("step", {"name": "fit", "text": "Comparing taste tags and demographics"})
+    emit("step", {"name": "fit", "text": "Measuring cross-affinity, taste tags and demographics"})
     fit, fit_groups = toolbox.fit_with_groups(a.entity_id, b.entity_id)
-    fit_cites = fit_groups["tags"] + fit_groups["demographics"]
+    fit_cites = fit_groups["affinity"] + fit_groups["tags"] + fit_groups["demographics"]
     fit_dict = fit.model_dump()
     catalog: Optional[dict[str, Any]] = None
     catalog_cites: list[str] = []
@@ -199,10 +199,16 @@ def run_partner_scout(a_query: str, city: Optional[str], client: QlooClient, emi
     emit("candidates", {"items": [_entity_dict(e) | {"affinity": e.affinity} for e in rows], "cites": cand_cites})
 
     ranked: list[dict[str, Any]] = []
-    for cand in rows[:SCOUT_CANDIDATES]:
+    shortlist = rows[:SCOUT_CANDIDATES]
+    emit("step", {"name": "affinity", "text": f"Measuring each candidate's affinity among fans of {a.name}"})
+    try:  # one batched filter.results.entities call for the A -> B direction
+        a_to, a_to_cites = toolbox.affinity_among(a.entity_id, [c.entity_id for c in shortlist])
+    except (RunCapExceeded, QlooError):
+        a_to, a_to_cites = {}, []
+    for cand in shortlist:
         emit("step", {"name": "fit", "text": f"Scoring {a.name} x {cand.name}"})
         try:
-            fit, cites = toolbox.fit(a.entity_id, cand.entity_id)
+            fit, cites = toolbox.fit(a.entity_id, cand.entity_id, a_to_b=(a_to.get(cand.entity_id), a_to_cites))
         except (RunCapExceeded, QlooError) as exc:
             emit("warn", {"text": f"{cand.name} skipped: {exc}"})
             continue

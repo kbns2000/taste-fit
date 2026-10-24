@@ -129,17 +129,47 @@ class ToolBox:
         }
         return summary, ids
 
-    def fit(self, a_id: str, b_id: str) -> tuple[FitScore, list[str]]:
-        score, groups = self.fit_with_groups(a_id, b_id)
-        return score, groups["tags"] + groups["demographics"]
+    def affinity_among(self, signal_id: str, target_ids: list[str]) -> tuple[dict[str, float], list[str]]:
+        """Qloo affinity of each target among fans of `signal_id` (`filter.results.entities`).
 
-    def fit_with_groups(self, a_id: str, b_id: str) -> tuple[FitScore, dict[str, list[str]]]:
-        """Fit score plus the ledger ids behind each input (tags vs demographics)."""
+        Targets must share one entity type (one query per type). On failure the call is filed as
+        "(failed)", nothing is cited, and an empty map is returned, so the score falls back to tag overlap.
+        """
+        if not target_ids:
+            return {}, []
+        target_type = self.entities[target_ids[0]].type if target_ids[0] in self.entities else "brand"
+        self._check_cap()
+        label = f"affinity of {self._names(target_ids)} among fans of {self._names([signal_id])}"
+        try:
+            out = self._call(label, lambda: self.client.affinity_among([signal_id], target_ids, target_type,
+                                                                       trace=self.ledger.trace))
+        except QlooError as exc:
+            if exc.status in (401, 403):
+                raise
+            return {}, []
+        ids = self._absorb(label, [self.entities[t].name for t in out if t in self.entities])
+        return out, ids
+
+    def fit(self, a_id: str, b_id: str, a_to_b: Optional[tuple[Optional[float], list[str]]] = None
+            ) -> tuple[FitScore, list[str]]:
+        score, groups = self.fit_with_groups(a_id, b_id, a_to_b)
+        return score, groups["affinity"] + groups["tags"] + groups["demographics"]
+
+    def fit_with_groups(self, a_id: str, b_id: str, a_to_b: Optional[tuple[Optional[float], list[str]]] = None
+                        ) -> tuple[FitScore, dict[str, list[str]]]:
+        """Fit score plus the ledger ids behind each input (cross-affinity, tags, demographics).
+
+        `a_to_b` lets partner scout pass B's affinity among A's fans from one batched call.
+        """
         a_vec, b_vec, names, ids = self.audience_tags(a_id, b_id)
+        if a_to_b is None:
+            m, ids_ab = self.affinity_among(a_id, [b_id])
+            a_to_b = (m.get(b_id), ids_ab)
+        m, ids_ba = self.affinity_among(b_id, [a_id])
         a_demo, ids_a = self.demographics(a_id)
         b_demo, ids_b = self.demographics(b_id)
-        score = compute_fit(a_vec, b_vec, names, a_demo, b_demo)
-        return score, {"tags": ids, "demographics": ids_a + ids_b}
+        score = compute_fit(a_vec, b_vec, names, a_demo, b_demo, a_to_b=a_to_b[0], b_to_a=m.get(a_id))
+        return score, {"affinity": a_to_b[1] + ids_ba, "tags": ids, "demographics": ids_a + ids_b}
 
     # -- activations -------------------------------------------------------------
     def recommend(self, entity_ids: list[str], target_type: str, take: int = 8,

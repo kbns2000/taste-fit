@@ -4,7 +4,8 @@
 
 Runs the call shapes the product uses and prints counts plus the shapes of
 the compare (catalog tags) and explainability (per-signal split) responses,
-so the parser can be checked against live data. Spends ~8 calls.
+plus the cross-affinity both ways (the shared-taste input), so the parser can be
+checked against live data. Spends ~10 calls.
 """
 
 from __future__ import annotations
@@ -53,6 +54,11 @@ def main() -> int:
         affs = sorted((t.affinity or 0.0) for t in tags)
         print("taste_tags:", [(t.name, t.affinity) for t in tags[:5]],
               f"| {len(tags)} tags, affinity min {affs[0] if affs else None} median {affs[len(affs) // 2] if affs else None}")
+        a_to_b = c.affinity_among([ai], [bi], "artist", trace=trace).get(bi)
+        b_to_a = c.affinity_among([bi], [ai], "brand", trace=trace).get(ai)
+        mean = [v for v in (a_to_b, b_to_a) if v is not None]
+        print(f"cross-affinity: Bon Iver among Patagonia fans {a_to_b}, Patagonia among Bon Iver fans {b_to_a}"
+              f" -> shared taste {round(max(0.0, (sum(mean) / len(mean) - 0.5) / 0.5 * 100), 1) if mean else None}")
         demo = c.demographics([ai], trace=trace)
         print("demographics:", [(d.entity_id[:8], d.age, d.gender) for d in demo])
         recs = c.recommend([ai, bi], "artist", take=5, trace=trace)

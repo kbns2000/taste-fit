@@ -65,6 +65,7 @@ class Tag(BaseModel):
     name: str
     type: Optional[str] = None  # e.g. urn:tag:keyword:brand
     affinity: Optional[float] = None
+    popularity: Optional[float] = None
     # Per-audience affinities when a row carries both sides
     a_affinity: Optional[float] = None
     b_affinity: Optional[float] = None

@@ -194,9 +194,18 @@
     ring.style.stroke = f.band === "strong" ? "var(--both)" : f.band === "workable" ? "var(--warn)" : "var(--bad)";
     requestAnimationFrame(() => { ring.style.strokeDashoffset = String(326.7 * (1 - pct(f.fit) / 100)); });
     const set = (id, v) => { $("#bar-" + id).style.width = pct(v) + "%"; $("#val-" + id).textContent = Math.round(v); };
-    set("shared", f.shared_taste); set("align", f.audience_alignment); set("balance", f.balance);
-    $("#formula").textContent = `fit = 0.5×${f.shared_taste} + 0.3×${f.audience_alignment} + 0.2×${f.balance} = ${f.fit}   ·   balance = 100 − |fresh_reach ${f.fresh_reach}% − 40| × 2.5`;
-    $("#fresh-note").textContent = `${f.fresh_reach}% of ${b.name}'s top taste tags are new to ${a.name}'s audience. Around 40% is the sweet spot: enough new reach without losing the shared core. Sources: ${res.fit_cites.join(", ")}.`;
+    set("shared", f.shared_taste); set("align", f.audience_alignment); set("fresh", f.fresh_reach);
+    $("#val-fresh").textContent = Math.round(f.fresh_reach) + "%";
+    const dirs = [f.a_to_b, f.b_to_a].filter((v) => v != null);
+    const sharedHow = f.shared_basis === "cross_affinity"
+      ? `shared_taste = (mean(${dirs.join(", ")}) − 0.5) / 0.5 × 100`
+      : "shared_taste = cosine of the two tag lists (no cross-affinity returned)";
+    $("#formula").textContent = `fit = 0.6×${f.shared_taste} + 0.4×${f.audience_alignment} = ${f.fit}   ·   ${sharedHow}`;
+    const rates = [];
+    if (f.a_to_b != null) rates.push(`${b.name} among ${a.name} fans at ${Math.round(f.a_to_b * 100)}`);
+    if (f.b_to_a != null) rates.push(`${a.name} among ${b.name} fans at ${Math.round(f.b_to_a * 100)}`);
+    $("#fresh-note").textContent = (rates.length ? `Qloo scores the affinity of ${rates.join(" and of ")} (0-100, 50 = medium). ` : "")
+      + `${f.fresh_reach}% of ${b.name}'s top taste tags are new to ${a.name}'s audience (fresh reach, shown but not scored). Sources: ${res.fit_cites.join(", ")}.`;
 
     // demographics
     const dc = $("#demo-chart"); dc.innerHTML = ""; $("#demo-note").textContent = "";

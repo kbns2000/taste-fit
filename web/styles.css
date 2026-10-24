@@ -105,6 +105,8 @@ main { max-width: 1100px; margin: 0 auto; padding: 0 16px 48px; }
 .bar { height: 8px; background: var(--surface-2); border-radius: 99px; overflow: hidden; }
 .bar i { display: block; height: 100%; width: 0; background: var(--b); border-radius: 99px; transition: width .8s ease; }
 .subscores b { font-variant-numeric: tabular-nums; text-align: right; }
+.subscores li.info .bar i { background: var(--muted); opacity: .55; }
+.subscores li.info b { color: var(--muted); font-weight: 500; }
 .formula { font-family: var(--mono); font-size: .78rem; color: var(--muted); margin-top: .9rem; word-break: break-word; }
 
 .demo-chart { display: grid; gap: .45rem; margin-top: .6rem; }

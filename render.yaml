@@ -1,0 +1,16 @@
+# Render Blueprint: hosts the hackathon demo on Render's free web service (Docker, no card needed).
+# Dashboard -> New -> Blueprint -> this repo. Render asks for QLOO_API_KEY once; it is stored as a
+# Render secret and never committed. Without it the app runs on demo data (badge shown).
+services:
+  - type: web
+    name: taste-fit
+    runtime: docker
+    plan: free
+    region: virginia
+    branch: main
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /healthz
+    autoDeploy: true
+    envVars:
+      - key: QLOO_API_KEY
+        sync: false

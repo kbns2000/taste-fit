@@ -1,8 +1,9 @@
-# Free Hugging Face Spaces sleep after 48h without traffic; a small ping keeps the demo warm for judges.
+# Render's free web service sleeps after 15 minutes without traffic (waking takes 30-60 s);
+# a ping every 10 minutes keeps the demo warm for judges. Set the repo variable DEMO_URL to enable.
 name: keepalive
 on:
   schedule:
-    - cron: "17 */12 * * *"
+    - cron: "*/10 * * * *"
   workflow_dispatch:
 jobs:
   ping:

@@ -105,7 +105,8 @@ def test_generic_panel_tags_are_dropped(monkeypatch):
     monkeypatch.setattr(scoring, "GENERIC_TAG_IDS", frozenset({"g:indie"}))
     rows = [Tag(tag_id="g:indie", name="indie", affinity=1.0, type="urn:tag:genre:music"),
             Tag(tag_id="g:folk", name="folk", affinity=1.0, type="urn:tag:genre:music"),
-            Tag(tag_id="w", name="Identifies as women-owned", affinity=1.0, type="urn:tag:inclusivity:place")]
+            Tag(tag_id="w", name="Identifies as women-owned", affinity=1.0, type="urn:tag:inclusivity:place"),
+            Tag(tag_id="d", name="Burger", affinity=1.0, type="urn:tag:specialty_dish:place")]
     a, b, _ = vectors_from_tags(rows, rows)
     assert a == b == {"g:folk": 1.0}
 

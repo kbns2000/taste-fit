@@ -97,9 +97,10 @@ def _cosine(a: dict[str, float], b: dict[str, float]) -> float:
 
 
 # Tag families that describe venues or payment, not taste; live top-50 lists for unrelated audiences all
-# carry some of them ("Three Star", "Discover", "Inexpensive", "Identifies as women-owned"), which inflates overlap.
+# carry some of them ("Three Star", "Discover", "Inexpensive", "Identifies as women-owned"), which inflates
+# overlap. Dishes venues are known for ("Burger", "Chardonnay") rank high for unrelated audiences too.
 NON_TASTE_TAG_KINDS = {"urn:tag:hotel_rating", "urn:tag:credit_card", "urn:tag:cost_description",
-                       "urn:tag:price_range", "urn:tag:payment", "urn:tag:inclusivity"}
+                       "urn:tag:price_range", "urn:tag:payment", "urn:tag:inclusivity", "urn:tag:specialty_dish"}
 
 
 # Generic tags: in the top 50 of at least half of a live panel of audiences (a quarter for venue tags),

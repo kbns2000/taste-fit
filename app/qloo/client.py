@@ -225,7 +225,7 @@ def _tag_from_raw(raw: dict) -> Optional[Tag]:
     if not isinstance(raw, dict):
         return None
     tag_id = raw.get("tag_id") or raw.get("id") or raw.get("tag_value")
-    name = raw.get("name")
+    name = str(raw.get("name") or "").strip()  # live tag names can carry leading spaces (" indie")
     if not tag_id or not name:
         return None
     query = raw.get("query") or {}
@@ -233,7 +233,7 @@ def _tag_from_raw(raw: dict) -> Optional[Tag]:
     b = query.get("b") if isinstance(query.get("b"), dict) else None
     return Tag(
         tag_id=str(tag_id),
-        name=str(name),
+        name=name,
         type=raw.get("subtype") or raw.get("type"),
         affinity=_num(query.get("affinity")),
         a_affinity=_num((a or {}).get("affinity") if a else query.get("a_affinity")),

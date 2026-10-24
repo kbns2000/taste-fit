@@ -255,7 +255,9 @@
   }
 
   function driverLabel(d, a, b) {
-    return d === "both" ? "both audiences drive it" : d === "mostly_a" ? "mostly " + a.name + " fans" : d === "mostly_b" ? "mostly " + b.name + " fans" : "joint signal";
+    return d === "both" ? "both audiences drive it"
+      : d === "mostly_a" ? "mostly " + a.name + " fans" : d === "mostly_b" ? "mostly " + b.name + " fans"
+      : d === "leans_a" ? "leans " + a.name + " fans" : d === "leans_b" ? "leans " + b.name + " fans" : "joint signal";
   }
 
   function renderMap(res) {

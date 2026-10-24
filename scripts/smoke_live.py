@@ -12,10 +12,13 @@ from __future__ import annotations
 import json
 import os
 import sys
+from pathlib import Path
 
 import httpx
 
-from app.config import Settings
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))  # run from anywhere: python scripts/<name>.py
+
+from app.config import Settings  # noqa: E402
 from app.qloo.client import LiveQlooClient
 from app.qloo.models import QlooError
 

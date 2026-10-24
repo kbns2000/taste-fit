@@ -177,16 +177,27 @@ class ToolBox:
         return " + ".join(self.entities[i].name if i in self.entities else i[:8] for i in ids)
 
 
+# Live explainability splits for two signals cluster near 50/50 (0.41-0.59 seen on 2026-10-24),
+# so a 55/45 split already means one audience pulls ~20% harder than the other.
+LEAN_SHARE = 0.55
+MOSTLY_SHARE = 0.65
+
+
 def classify_pick(entity: Entity, a_id: str, b_id: str) -> str:
     """Use feature.explainability to say who drives a joint recommendation."""
     ex = entity.explainability or {}
     a, b = ex.get(a_id, 0.0), ex.get(b_id, 0.0)
-    if not ex or (a == 0 and b == 0):
+    if not ex or (a + b) <= 0:
         return "joint"
-    if a >= 0.65:
+    share_a = a / (a + b)
+    if share_a >= MOSTLY_SHARE:
         return "mostly_a"
-    if b >= 0.65:
+    if share_a <= 1 - MOSTLY_SHARE:
         return "mostly_b"
+    if share_a >= LEAN_SHARE:
+        return "leans_a"
+    if share_a <= 1 - LEAN_SHARE:
+        return "leans_b"
     return "both"
 
 

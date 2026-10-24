@@ -285,8 +285,8 @@
     state.layers.forEach((l) => state.map.removeLayer(l)); state.layers = [];
     const bounds = [];
     const clip = res.heatmap_clip;
-    $("#map-note").textContent = clip && clip.kept < clip.total
-      ? `Qloo matched "${res.city}" to a wider area (${clip.total} cells); the map keeps the ${clip.kept} within ${clip.radius_km} km of the city centre.`
+    $("#map-note").textContent = clip && clip.radius_km && clip.kept < clip.total
+      ? `Qloo's heatmap for "${res.city}" has ${clip.total} cells reaching ${clip.farthest_km} km from the city centre; the map shows the ${clip.kept} within ${clip.radius_km} km.`
       : "";
     const cells = res.heatmap || [];
     const dLat = gridStep(cells, "lat"), dLon = gridStep(cells, "lon");
@@ -302,7 +302,7 @@
         .bindTooltip(`Hot zone ${i + 1}${z.near ? " · near " + esc(z.near) : ""} · affinity ${fmt2(z.affinity)}`);
       state.layers.push(l); bounds.push([z.lat, z.lon]);
     });
-    const centre = clip && clip.center ? L.latLng(clip.center[0], clip.center[1]) : null;
+    const centre = clip && clip.center && clip.radius_km ? L.latLng(clip.center[0], clip.center[1]) : null;
     (res.picks.place || []).forEach((p) => {
       if (p.lat == null || p.lon == null) return;
       const l = L.marker([p.lat, p.lon]).addTo(state.map).bindPopup(`<b>${esc(p.name)}</b><br>${esc(p.address || p.locality || "")}<br>affinity ${p.affinity != null ? p.affinity.toFixed(2) : "–"}`);

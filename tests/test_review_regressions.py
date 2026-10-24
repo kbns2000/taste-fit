@@ -181,6 +181,12 @@ def test_heatmap_is_clipped_to_the_city():
     kept, clip = clip_to_city(nyc + upstate, [])  # no places: centre on the busiest cell
     assert kept == nyc
     assert clip_to_city([], places)[0] == [] and clip_to_city([], [])[1]["center"] is None
+    # places from the same over-wide query can split; the side with more audience wins, not a median
+    split = places[:3] + [Entity(entity_id=f"u{i}", name=f"U{i}", lat=42.65 + i * 0.05, lon=-73.75) for i in range(3)]
+    assert clip_to_city(nyc + upstate, split)[0] == nyc
+    # a city-sized heatmap is left whole
+    kept, clip = clip_to_city(nyc, places)
+    assert kept == nyc and clip["radius_km"] is None and clip["farthest_km"] < 30
 
 
 def test_pipeline_clips_a_statewide_heatmap():

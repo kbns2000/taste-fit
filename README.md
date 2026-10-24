@@ -121,7 +121,7 @@ The hosted demo runs on Render's free web service from `render.yaml` (Blueprint)
 * The key lives only in a server-side environment variable and only travels in the `X-Api-Key` header. It is never logged, never in the ledger, never in the browser.
 * The score is a heuristic for prioritising conversations, not a forecast of campaign lift. Validate with a pilot.
 * Demo-data runs are labelled; the demo world is small, so unknown names return "not found" rather than a guess.
-* Qloo can resolve a city name to a wider area: on 2026-10-24 "New York" returned a heatmap of the whole state (3,557 cells), with one hot zone in the Adirondacks. The map and hot zones keep the cells within 30 km of the city centre (the median of the recommended places, or the busiest cell) and say how many were dropped. Map tiles are OpenStreetMap's, which need no key.
+* Qloo can resolve a city name to a wider area: on 2026-10-24 "New York" returned a heatmap of the whole state (3,557 cells), with one hot zone in the Adirondacks. When the cells reach more than 60 km from the city centre, the map and hot zones keep the cells within 30 km of it and say so. The centre is the 30 km disc holding the most recommended places, then the most audience (cell popularity), so a few far-flung places cannot pull it out of town. Map tiles are OpenStreetMap's, which need no key.
 * `/v2/analysis/compare` compares the catalog tags attached to the entities (genre, category), not audience affinities, so a brand and a band rarely share any. Shared taste comes from the cross-affinity; compare is shown as context ("different on paper, same fans").
 
 ## Repository layout
